@@ -1,0 +1,128 @@
+# vim: tabstop=8 shiftwidth=8 noexpandtab
+
+
+	define	GRID	24
+	define	FRAME	4
+
+	define	A	r0
+	define	C	r3
+	define	S	r1
+	define	T	r2
+	define	X	r7
+
+
+
+	# prepare grid
+	mov	X	GRID
+	mov	T	20
+prep1:
+	mov	[X]	FRAME
+	mov	C	11
+	add	X	C
+	dec	T
+	jnz	prep1
+
+	mov	T	12
+prep2:
+	mov	[X]	FRAME
+	inc	X
+	dec	T
+	jnz	prep2
+
+
+
+	# clear
+	mov	C	27
+	put
+	mov	C	91
+	put
+	mov	C	50
+	put
+	mov	C	74
+	put
+
+
+
+mainloop:
+
+	# TODO: input
+
+
+
+	# move cursor to corner
+	mov	C	27
+	put
+	mov	C	91
+	put
+	mov	C	49
+	put
+	mov	C	59
+	put
+	mov	C	72
+	put
+
+
+	# draw grid
+	mov	X	GRID
+	mov	T	2
+draw1:
+	mov	S	0
+
+draw2:
+
+	# pixel
+	mov	C	27
+	put
+	mov	C	91
+	put
+	mov	C	52
+	put
+
+	mov	A	[X]
+	mov	C	48
+	add	A	C
+	put
+
+	mov	C	109
+	put
+	mov	C	32
+	put
+	put
+
+
+	# next cell
+	inc	X
+	inc	S
+	mov	C	12
+	sub	C	S
+	jnz	draw2
+
+
+	# next row
+	dec	X
+	mov	C	10
+	put
+
+	inc	T
+	mov	C	23
+	sub	C	T
+	jnz	draw1
+
+
+	# sleep and loop
+	slp
+	jmp	mainloop
+
+done:
+
+
+	# reset color
+	mov	C	27
+	put
+	mov	C	91
+	put
+	mov	C	48
+	put
+	mov	C	109
+	put
+
