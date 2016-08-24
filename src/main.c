@@ -4,35 +4,14 @@
 #include <assert.h>
 #include <unistd.h>
 
+enum { END, LD1, LD2, LD3, MOV, ADD, SUB, MUL, INC, DEC, JMP, JZ, JNZ, GET, PUT, SLP };
 
-enum {
-	END,
-	LD1, // 1
-	LD2,
-	LD3,
-	MOV, // 4
-	ADD,
-	SUB,
-	MUL,
-	INC, // 8
-	DEC,
-	JMP, // 10
-	JZ,
-	JNZ,
-	GET, // 13
-	PUT,
-	SLP,
-};
-
-uint8_t		bin[1 << 12];
-uint16_t	mem[1 << 12];
-uint16_t	reg[8];
-uint16_t	pc;
-uint16_t*	a;
+uint8_t bin[1 << 12];
+uint16_t mem[1 << 12], reg[8], pc, *a;
 
 uint8_t fetch() {
 	uint8_t c = bin[pc / 2];
-	return (c >> pc++ % 2 * 4) & 0xf;
+	return c >> pc++ % 2 * 4 & 15;
 }
 
 uint16_t number(uint8_t len) {
