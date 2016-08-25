@@ -1,15 +1,38 @@
-# vim: tabstop=8 shiftwidth=8 noexpandtab
+# vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
 
 	define	GRID	24
+
+	# colors
 	define	FRAME	4
+	define	STONE	7
+
+
 
 	define	A	r0
-	define	C	r3
-	define	S	r1
-	define	T	r2
-	define	X	r7
+	define	B	r1
+	define	C	r2
+	define	S	r3
+	define	T	r4
+	define	X	r5
 
+	define	XPOS	r6
+	define	YPOS	r7
+
+
+
+	# set cursor position
+	inc	XPOS
+	inc	XPOS
+	inc	XPOS
+	inc	XPOS
+
+
+	inc	YPOS
+	inc	YPOS
+	inc	YPOS
+	inc	YPOS
+	inc	YPOS
 
 
 	# prepare grid
@@ -41,11 +64,133 @@ prep2:
 	mov	C	74
 	put
 
-
-
 mainloop:
 
-	# TODO: input
+
+	# save cursor position
+	mov	C	0
+	mov	[C]	XPOS
+	inc	C
+	mov	[C]	YPOS
+
+
+	# input
+read:
+	mov	A	T
+	get	T
+	inc	T
+	jnz	read
+
+
+
+	# quit
+	mov	C	28
+	sub	A	C
+	jz	done
+	mov	C	86
+	sub	A	C
+	jz	done
+
+
+
+
+		# move
+		mov	C	48
+		add	A	C
+		jnz	up
+		dec	YPOS
+	up:
+		dec	A
+		jnz	down
+		inc	YPOS
+	down:
+		dec	A
+		jnz	left
+		inc	XPOS
+	left:
+		dec	A
+		jnz	right
+		dec	XPOS
+	right:
+
+
+
+
+	# TODO: update grid
+	# erase the old grid entries of the current stone
+	# insert new entries
+	# check for collision
+	# do that in a loop
+
+	updategrid:
+		mov	X	GRID
+		mov	T	2
+	update1:
+		mov	S	0
+
+	update2:
+		mov	A	[X]
+
+
+		# clear old entries
+		mov	C	STONE
+		sub	C	A
+		jnz	update3
+		mov	C	0
+		mov	[X]	C
+	update3:
+
+
+
+		# collision check
+       		mov	C	T
+       		sub	C	YPOS
+       		jnz	nostone
+       		mov	C	S
+       		sub	C	XPOS
+       		jnz	nostone
+
+
+		mov	A	A
+		jz	nocollision
+
+		# reset cursor position
+		mov	C	0
+		mov	XPOS	[C]
+		inc	C
+		mov	YPOS	[C]
+
+		# TODO: mark cell
+		jmp	updategrid
+
+
+	nocollision:
+
+
+       		# write cell
+       		mov	C	STONE
+       		mov	[X]	C
+
+	nostone:
+
+
+
+
+
+		inc	X
+
+		inc	S
+		mov	C	12
+		sub	C	S
+		jnz	update2
+
+		dec	X
+
+		inc	T
+		mov	C	23
+		sub	C	T
+		jnz	update1
+	# END
 
 
 

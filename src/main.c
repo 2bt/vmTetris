@@ -9,25 +9,24 @@ enum { END, LD1, LD2, LD3, MOV, ADD, SUB, MUL, INC, DEC, JMP, JZ, JNZ, GET, PUT,
 uint8_t bin[1 << 12];
 uint16_t mem[1 << 12], reg[8], pc, *a;
 
-uint8_t fetch() {
-	uint8_t c = bin[pc / 2];
-	return c >> pc++ % 2 * 4 & 15;
-}
-
-uint16_t number(uint8_t len) {
+uint16_t fetch(uint8_t len) {
 	uint16_t n = 0;
-	while (len--) n = n << 4 | fetch();
+	while (len--) {
+		n = n << 4 | bin[pc++];	// debug
+//		uint8_t c = bin[pc / 2];
+//		n = n << 4 | (c >> pc++ % 2 * 4 & 15);
+	}
 	return n;
 }
 
 uint16_t* dst() {
-	uint8_t m = fetch();
+	uint8_t m = fetch(1);
 	if (m < 8) return a = reg + m;
 	return a = mem + reg[m % 8];
 }
 
 uint16_t src() {
-	uint8_t m = fetch();
+	uint8_t m = fetch(1);
 	if (m < 8) return reg[m];
 	return mem[reg[m % 8]];
 }
@@ -39,12 +38,12 @@ int main(int argc, char** argv) {
 	fread(bin, 1, sizeof(bin), f);
 	fclose(f);
 	system("stty cbreak -echo min 0");
-	uint8_t op, n;
-	while ((op = fetch())) {
+	uint16_t op, n;
+	while ((op = fetch(1))) {
 		switch (op) {
 		case LD1:
 		case LD2:
-		case LD3: dst(); *a = number(op - LD1 + 1); break;
+		case LD3: dst(); *a = fetch(op - LD1 + 1); break;
 		case MOV: dst(); *a = src(); break;
 		case ADD: dst(); *a += src(); break;
 		case SUB: dst(); *a -= src(); break;
@@ -53,10 +52,28 @@ int main(int argc, char** argv) {
 		case DEC: --*dst(); break;
 		case JMP:
 		case JZ:
-		case JNZ: n = number(3); if (op == JMP || !*a ^ (op == JNZ)) pc = n; break;
+		case JNZ: n = fetch(3); if (op == JMP || !*a ^ (op == JNZ)) pc = n; break;
 		case GET: *dst() = getchar(); break;
 		case PUT: putchar(*a); break;
 		case SLP: usleep(50000); break;
+
+
+		// debugging
+		case 16:
+			puts("");
+			for ( int i = 0; i < 8; i++ ) printf(" %6d |", reg[i]);
+			printf(" %03x\n", pc - 1);
+			break;
+
+
+		case 17:
+			for ( int i = 0; i < 300; i++ ) printf(" %02x", mem[i]);
+			printf("\n");
+			break;
+
+		default: return 1;
+
+
 		}
 	}
 	system("stty sane");

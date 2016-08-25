@@ -78,8 +78,8 @@ for l in sys.stdin:
 	elif op == "put": bin_cmd = [ 14 ]
 	elif op == "slp": bin_cmd = [ 15 ]
 	else:
-		bin_cmd = []
 		print "WOOT"
+		bin_cmd = [ int(op) ]
 
 	counter += len(bin_cmd)
 	bin_cmds += [ bin_cmd ]
@@ -105,7 +105,9 @@ out += [0]
 code = ""
 while len(out) > 1:
 	x = out.pop(0)
-	x = x | out.pop(0) * 16
+
+	# one nibble per byte for easy debugging
+#	x = x | out.pop(0) * 16
 	code += chr(x)
 
 file("code", "w").write(code)
