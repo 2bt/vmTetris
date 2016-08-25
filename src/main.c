@@ -57,6 +57,8 @@ int main(int argc, char** argv) {
 		case PUT: putchar(*a); break;
 		case SLP: usleep(50000); break;
 
+		// TODO: merge SLP and GET
+		// TODO: implement RND
 
 		// debugging
 		case 16:

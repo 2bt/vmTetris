@@ -1,43 +1,48 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
 
-	define	GRID	24
+# how to encode stones?
+# each stone is made up of 4 cells
+# take them as 4 offsets to the index of the cursor
+
+
+
+
+
+	define LINES	5	# memory address of line count
+
+
+
+	define	PREGRID	22
+	define	GRID	44
 
 	# colors
 	define	FRAME	4
 	define	STONE	7
+	define	FILL	3
 
 
 
 	define	A	r0
 	define	B	r1
 	define	C	r2
-	define	S	r3
-	define	T	r4
-	define	X	r5
-
-	define	XPOS	r6
-	define	YPOS	r7
+	define	D	r3
+	define	S	r4
+	define	T	r5
+	define	X	r6
+	define	POS	r7
 
 
 
 	# set cursor position
-	inc	XPOS
-	inc	XPOS
-	inc	XPOS
-	inc	XPOS
-
-
-	inc	YPOS
-	inc	YPOS
-	inc	YPOS
-	inc	YPOS
-	inc	YPOS
+	mov	POS	49
 
 
 	# prepare grid
-	mov	X	GRID
-	mov	T	20
+	mov	X	PREGRID
+	mov	T	22
+
+
 prep1:
 	mov	[X]	FRAME
 	mov	C	11
@@ -54,7 +59,33 @@ prep2:
 
 
 
-	# clear
+# clear line test
+#	mov	C	FILL
+#	mov	X	67
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+#	mov	[X]	C
+#	inc	X
+
+
+
+
+	# clear screen
 	mov	C	27
 	put
 	mov	C	91
@@ -69,9 +100,7 @@ mainloop:
 
 	# save cursor position
 	mov	C	0
-	mov	[C]	XPOS
-	inc	C
-	mov	[C]	YPOS
+	mov	[C]	POS
 
 
 	# input
@@ -92,39 +121,35 @@ read:
 	jz	done
 
 
-
-
 		# move
 		mov	C	48
 		add	A	C
 		jnz	up
-		dec	YPOS
+		mov	C	11
+		sub	POS	C
 	up:
 		dec	A
 		jnz	down
-		inc	YPOS
+		mov	C	11
+		add	POS	C
 	down:
 		dec	A
 		jnz	left
-		inc	XPOS
+		inc	POS
 	left:
 		dec	A
 		jnz	right
-		dec	XPOS
+		dec	POS
 	right:
 
 
 
 
-	# TODO: update grid
-	# erase the old grid entries of the current stone
-	# insert new entries
-	# check for collision
-	# do that in a loop
-
+	# update grid:
+	mov	B	STONE
 	updategrid:
 		mov	X	GRID
-		mov	T	2
+		mov	T	4
 	update1:
 		mov	S	0
 
@@ -136,45 +161,66 @@ read:
 		mov	C	STONE
 		sub	C	A
 		jnz	update3
-		mov	C	0
-		mov	[X]	C
+		mov	A	0
+		mov	[X]	A
 	update3:
 
 
 
-		# collision check
-       		mov	C	T
-       		sub	C	YPOS
-       		jnz	nostone
-       		mov	C	S
-       		sub	C	XPOS
-       		jnz	nostone
+		# check if we occupy this cell
+		# TODO: check for all 4 cells
+		mov	C	POS
+		sub	C	X
+		jz	occupy
 
+		mov	C	POS
+		mov	D	1
+		add	C	D
+		sub	C	X
+		jz	occupy
+
+
+		mov	C	POS
+		mov	D	11
+		add	C	D
+		sub	C	X
+		jz	occupy
+
+
+		mov	C	POS
+		mov	D	12
+		add	C	D
+		sub	C	X
+		jz	occupy
+
+
+		jmp	nooccupy
+
+
+
+	occupy:
 
 		mov	A	A
 		jz	nocollision
 
-		# reset cursor position
-		mov	C	0
-		mov	XPOS	[C]
-		inc	C
-		mov	YPOS	[C]
+			# reset cursor position
+			mov	C	0
+			mov	POS	[C]
 
-		# TODO: mark cell
-		jmp	updategrid
+
+			# enable cell write
+			# TODO: enable only when moving downward
+			mov	B	FILL
+
+
+			jmp	updategrid
 
 
 	nocollision:
-
-
        		# write cell
-       		mov	C	STONE
-       		mov	[X]	C
+       		mov	[X]	B
 
-	nostone:
-
-
-
+	nooccupy:
 
 
 		inc	X
@@ -187,12 +233,73 @@ read:
 		dec	X
 
 		inc	T
-		mov	C	23
+		mov	C	25
 		sub	C	T
 		jnz	update1
-	# END
+	# end update grid
 
 
+
+	# check if stone was dropped
+	mov	C	FILL
+	sub	B	C
+	jnz	nodrop
+
+	# reset cursor on collision
+	mov	POS	49
+
+
+
+
+
+	# check for full lines
+	mov	X	GRID
+	mov	T	4
+	full1:
+		inc	X
+		mov	S	10
+		mov	A	10
+
+		full2:
+			mov	C	FILL
+			sub	C	[X]
+			jnz	full3
+			dec	A
+		full3:
+			inc	X
+			dec	S
+			jnz	full2
+
+		mov	A	A
+		jnz	full4
+
+		# the line is full
+		mov	C	LINES
+		inc	[C]
+
+		# shift all upper lines down
+		mov	S	X
+		mov	A	X
+		mov	C	11
+		sub	A	C
+		shift:
+			mov	[S]	[A]
+			dec	S
+			dec	A
+			mov	B	A
+			mov	C	22
+			sub	B	C
+			jnz	shift
+
+	full4:
+		inc	T
+		mov	C	25
+		sub	C	T
+		jnz	full1
+
+
+
+nodrop:
 
 	# move cursor to corner
 	mov	C	27
@@ -209,7 +316,7 @@ read:
 
 	# draw grid
 	mov	X	GRID
-	mov	T	2
+	mov	T	4
 draw1:
 	mov	S	0
 
@@ -249,7 +356,7 @@ draw2:
 	put
 
 	inc	T
-	mov	C	23
+	mov	C	25
 	sub	C	T
 	jnz	draw1
 
