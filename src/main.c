@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <unistd.h>
 
-enum { END, LD1, LD2, LD3, MOV, ADD, SUB, MUL, INC, DEC, JMP, JZ, JNZ, GET, PUT, SLP };
+enum { END, LD1, LD2, MOV, ADD, SUB, MUL, RND, INC, DEC, JMP, JZ, JNZ, GET, PUT, SLP };
 
 uint8_t bin[1 << 12];
 uint16_t mem[1 << 12], reg[8], pc, *a;
@@ -42,12 +42,12 @@ int main(int argc, char** argv) {
 	while ((op = fetch(1))) {
 		switch (op) {
 		case LD1:
-		case LD2:
-		case LD3: dst(); *a = fetch(op - LD1 + 1); break;
+		case LD2: dst(); *a = fetch(op - LD1 + 1); break;
 		case MOV: dst(); *a = src(); break;
 		case ADD: dst(); *a += src(); break;
 		case SUB: dst(); *a -= src(); break;
 		case MUL: dst(); *a *= src(); break;
+		case RND: dst(); *a = rand() % src(); break;
 		case INC: ++*dst(); break;
 		case DEC: --*dst(); break;
 		case JMP:

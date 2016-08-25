@@ -8,13 +8,15 @@
 
 
 
+	# memory addresses
+	define POS_	0
+	define DOWN_	3
+	define LINES_	5
 
-	define LINES	5	# memory address of line count
 
 
-
-	define	PREGRID	22
-	define	GRID	44
+	define	PREGRID_ 22
+	define	GRID_	44
 
 	# colors
 	define	FRAME	4
@@ -39,7 +41,7 @@
 
 
 	# prepare grid
-	mov	X	PREGRID
+	mov	X	PREGRID_
 	mov	T	22
 
 
@@ -99,8 +101,14 @@ mainloop:
 
 
 	# save cursor position
-	mov	C	0
+	mov	C	POS_
 	mov	[C]	POS
+
+
+	# clear down flag
+	mov	C	DOWN_
+	mov	[C]	0
+
 
 
 	# input
@@ -121,26 +129,31 @@ read:
 	jz	done
 
 
+
+
 		# move
 		mov	C	48
 		add	A	C
-		jnz	up
+		jnz	noup
 		mov	C	11
 		sub	POS	C
-	up:
+	noup:
 		dec	A
-		jnz	down
+		jnz	nodown
 		mov	C	11
 		add	POS	C
-	down:
+		# remember that we're moving down
+		mov	C	DOWN_
+		inc	[C]
+	nodown:
 		dec	A
-		jnz	left
+		jnz	noleft
 		inc	POS
-	left:
+	noleft:
 		dec	A
-		jnz	right
+		jnz	noright
 		dec	POS
-	right:
+	noright:
 
 
 
@@ -148,7 +161,7 @@ read:
 	# update grid:
 	mov	B	STONE
 	updategrid:
-		mov	X	GRID
+		mov	X	GRID_
 		mov	T	4
 	update1:
 		mov	S	0
@@ -203,15 +216,17 @@ read:
 		mov	A	A
 		jz	nocollision
 
+
+			# enable cell write only when moving downward
+			mov	C	DOWN_
+			mov	C	[C]
+			jz	nowrite
+			mov	B	FILL
+		nowrite:
+
 			# reset cursor position
 			mov	C	0
 			mov	POS	[C]
-
-
-			# enable cell write
-			# TODO: enable only when moving downward
-			mov	B	FILL
-
 
 			jmp	updategrid
 
@@ -219,6 +234,7 @@ read:
 	nocollision:
        		# write cell
        		mov	[X]	B
+		# TODO: check for gameover
 
 	nooccupy:
 
@@ -245,15 +261,17 @@ read:
 	sub	B	C
 	jnz	nodrop
 
+
 	# reset cursor on collision
 	mov	POS	49
+	# TODO: select new random stone and rotation
 
 
 
 
 
 	# check for full lines
-	mov	X	GRID
+	mov	X	GRID_
 	mov	T	4
 	full1:
 		inc	X
@@ -274,7 +292,7 @@ read:
 		jnz	full4
 
 		# the line is full
-		mov	C	LINES
+		mov	C	LINES_
 		inc	[C]
 
 		# shift all upper lines down
@@ -315,8 +333,10 @@ nodrop:
 
 
 	# draw grid
-	mov	X	GRID
+	mov	X	GRID_
 	mov	T	4
+#	mov	X	11
+#	mov	T	1
 draw1:
 	mov	S	0
 

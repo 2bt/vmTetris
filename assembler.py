@@ -30,7 +30,7 @@ def num_to_code(n):
 R = ["r%s" % x for x in "01234567"] + ["[r%s]" % x for x in "01234567"]
 
 
-bin_ops = "add", "sub", "mul"
+bin_ops = "add", "sub", "mul", "rnd"
 inc_ops = "inc", "dec"
 jmp_ops = "jmp", "jz", "jnz"
 
@@ -42,6 +42,7 @@ labels		= {}
 
 
 for l in sys.stdin:
+	print l[:-1]
 
 	l = l.strip()
 	c = l.find("#")
@@ -58,7 +59,7 @@ for l in sys.stdin:
 
 	# define
 	if w[0] == "define":
-		assert w[1].isalnum()
+		assert w[1][0].isalnum()
 		defines[w[1]] = w[2]
 		continue
 
@@ -68,10 +69,11 @@ for l in sys.stdin:
 		b = apply_defs(w[2])
 		if b.isdigit():
 			c = num_to_code(int(b))
+			assert len(c) < 3
 			bin_cmd = [ len(c), a ] + c
 		else:
-			bin_cmd = [ 4, a, R.index(b) ]
-	elif op in bin_ops: bin_cmd = [ bin_ops.index(op) + 5, R.index(apply_defs(w[1])), R.index(apply_defs(w[2])) ]
+			bin_cmd = [ 3, a, R.index(b) ]
+	elif op in bin_ops: bin_cmd = [ bin_ops.index(op) + 4, R.index(apply_defs(w[1])), R.index(apply_defs(w[2])) ]
 	elif op in inc_ops: bin_cmd = [ inc_ops.index(op) + 8, R.index(apply_defs(w[1])) ]
 	elif op in jmp_ops: bin_cmd = [ jmp_ops.index(op) + 10, 0, 0, w[1] ]
 	elif op == "get": bin_cmd = [ 13, R.index(apply_defs(w[1])) ]
