@@ -1,27 +1,29 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
 
-# how to encode stones?
-# each stone is made up of 4 cells
-# take them as 4 offsets to the index of the cursor
-
-
-
 
 	# memory addresses
-	define POS_	0
-	define DOWN_	3
-	define LINES_	5
+	define	POS_	0
 
+	define	ROT_	1
+	define	ROT2_	2
+
+	define	STONE_	4
+
+
+	define	DOWN_	3
+	define	LINES_	5
 
 
 	define	PREGRID_ 22
 	define	GRID_	44
+	define	START	27
+
 
 	# colors
-	define	FRAME	4
-	define	STONE	7
-	define	FILL	3
+	define	FRAME	7
+	define	STONE	4
+	define	FILL	5
 
 
 
@@ -35,9 +37,8 @@
 	define	POS	r7
 
 
-
 	# set cursor position
-	mov	POS	49
+	mov	POS	START
 
 
 	# prepare grid
@@ -61,29 +62,266 @@ prep2:
 
 
 
-# clear line test
-#	mov	C	FILL
-#	mov	X	67
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
-#	mov	[X]	C
-#	inc	X
+	# load stone data
+		mov	X	32
+		mov	C	10
+		mul	X	C
 
+
+		# square
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+
+
+		# T
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+
+		# I
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+
+		# L
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	9
+		inc	X
+
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		mov	[X]	2
+		inc	X
+		mov	[X]	9
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+
+		# J
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		# Z
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+
+		mov	[X]	2
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+
+		mov	[X]	2
+		inc	X
+		mov	[X]	10
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	10
+		inc	X
+
+		# S
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	9
+		inc	X
+		inc	[X]
+		inc	X
+
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+
+		inc	[X]
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	9
+		inc	X
+		inc	[X]
+		inc	X
+
+		inc	[X]
+		inc	X
+		mov	[X]	11
+		inc	X
+		inc	[X]
+		inc	X
+		mov	[X]	11
 
 
 
@@ -97,12 +335,20 @@ prep2:
 	mov	C	74
 	put
 
+
+	jmp	start
+
 mainloop:
 
 
-	# save cursor position
+	# save cursor position and rotation
 	mov	C	POS_
 	mov	[C]	POS
+
+	mov	C	ROT_
+	mov	D	ROT2_
+	mov	[D]	[C]
+
 
 
 	# clear down flag
@@ -130,15 +376,9 @@ read:
 
 
 
-
 		# move
-		mov	C	48
+		mov	C	47
 		add	A	C
-		jnz	noup
-		mov	C	11
-		sub	POS	C
-	noup:
-		dec	A
 		jnz	nodown
 		mov	C	11
 		add	POS	C
@@ -155,6 +395,17 @@ read:
 		dec	POS
 	noright:
 
+		# rotate
+		mov	C	52
+		sub	A	C
+		jnz	norot
+		mov	C	ROT_
+		mov	D	12
+		sub	[C]	D
+		jz	norot
+		mov	D	16
+		add	[C]	D
+	norot:
 
 
 
@@ -180,35 +431,32 @@ read:
 
 
 
-		# check if we occupy this cell
-		# TODO: check for all 4 cells
-		mov	C	POS
-		sub	C	X
-		jz	occupy
+		# check if the 4 stone cells occupy the current cell
+		mov	C	STONE_
+		mov	D	[C]
+		mov	C	ROT_
+		add	D	[C]
 
 		mov	C	POS
-		mov	D	1
-		add	C	D
+
+		add	C	[D]
 		sub	C	X
 		jz	occupy
-
-
-		mov	C	POS
-		mov	D	11
-		add	C	D
+		add	C	X
+		inc	D
+		add	C	[D]
 		sub	C	X
 		jz	occupy
-
-
-		mov	C	POS
-		mov	D	12
-		add	C	D
+		add	C	X
+		inc	D
+		add	C	[D]
 		sub	C	X
 		jz	occupy
-
-
-		jmp	nooccupy
-
+		add	C	X
+		inc	D
+		add	C	[D]
+		sub	C	X
+		jnz	nooccupy
 
 
 	occupy:
@@ -224,9 +472,13 @@ read:
 			mov	B	FILL
 		nowrite:
 
-			# reset cursor position
-			mov	C	0
+			# reset cursor position and rotation
+			mov	C	POS_
 			mov	POS	[C]
+			inc	C
+			mov	D	C
+			inc	D
+			mov	[C]	[D]
 
 			jmp	updategrid
 
@@ -262,10 +514,23 @@ read:
 	jnz	nodrop
 
 
-	# reset cursor on collision
-	mov	POS	49
-	# TODO: select new random stone and rotation
+start:
 
+	# reset cursor on collision
+	mov	POS	START
+
+	# select new random stone
+	mov	D	7
+	rnd
+	mov	C	20
+	add	D	C
+	mov	C	16
+	mul	D	C
+	mov	C	STONE_
+	mov	[C]	D
+	# random rotation
+	mov	D	3
+	rnd
 
 
 

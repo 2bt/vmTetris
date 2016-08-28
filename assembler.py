@@ -7,7 +7,7 @@ import sys
 defines = {}
 
 
-def apply_defs(o):
+def subst(o):
 	while 1:
 		if o in defines:
 			o = defines[o]
@@ -27,11 +27,12 @@ def num_to_code(n):
 	return c
 
 
-R = ["r%s" % x for x in "01234567"] + ["[r%s]" % x for x in "01234567"]
+R = ["r%d" % x for x in range(8)]
+R += ["[%s]" % r for r in R]
 
 
-bin_ops = "add", "sub", "mul", "rnd"
-inc_ops = "inc", "dec"
+bin_ops = "add", "sub", "mul"
+mon_ops = "inc", "dec"
 jmp_ops = "jmp", "jz", "jnz"
 
 
@@ -65,19 +66,20 @@ for l in sys.stdin:
 
 	op = w[0]
 	if op == "mov":
-		a = R.index(apply_defs(w[1]))
-		b = apply_defs(w[2])
+		a = R.index(subst(w[1]))
+		b = subst(w[2])
 		if b.isdigit():
 			c = num_to_code(int(b))
 			assert len(c) < 3
 			bin_cmd = [ len(c), a ] + c
 		else:
 			bin_cmd = [ 3, a, R.index(b) ]
-	elif op in bin_ops: bin_cmd = [ bin_ops.index(op) + 4, R.index(apply_defs(w[1])), R.index(apply_defs(w[2])) ]
-	elif op in inc_ops: bin_cmd = [ inc_ops.index(op) + 8, R.index(apply_defs(w[1])) ]
-	elif op in jmp_ops: bin_cmd = [ jmp_ops.index(op) + 10, 0, 0, w[1] ]
-	elif op == "get": bin_cmd = [ 13, R.index(apply_defs(w[1])) ]
-	elif op == "put": bin_cmd = [ 14 ]
+	elif op in bin_ops: bin_cmd = [ bin_ops.index(op) + 4, R.index(subst(w[1])), R.index(subst(w[2])) ]
+	elif op in mon_ops: bin_cmd = [ mon_ops.index(op) + 7, R.index(subst(w[1])) ]
+	elif op in jmp_ops: bin_cmd = [ jmp_ops.index(op) + 9, 0, 0, w[1] ]
+	elif op == "get": bin_cmd = [ 12, R.index(subst(w[1])) ]
+	elif op == "put": bin_cmd = [ 13 ]
+	elif op == "rnd": bin_cmd = [ 14 ]
 	elif op == "slp": bin_cmd = [ 15 ]
 	else:
 		print "WOOT"

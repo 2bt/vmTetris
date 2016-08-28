@@ -2,9 +2,10 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
+#include <time.h>
 #include <unistd.h>
 
-enum { END, LD1, LD2, MOV, ADD, SUB, MUL, RND, INC, DEC, JMP, JZ, JNZ, GET, PUT, SLP };
+enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, JMP, JZ, JNZ, GET, PUT, RND, SLP };
 
 uint8_t bin[1 << 12];
 uint16_t mem[1 << 12], reg[8], pc, *a;
@@ -39,26 +40,24 @@ int main(int argc, char** argv) {
 	fclose(f);
 	system("stty cbreak -echo min 0");
 	uint16_t op, n;
+	srand(time(0));
 	while ((op = fetch(1))) {
 		switch (op) {
 		case LD1:
-		case LD2: dst(); *a = fetch(op - LD1 + 1); break;
+		case LD2: dst(); *a = fetch(op); break;
 		case MOV: dst(); *a = src(); break;
 		case ADD: dst(); *a += src(); break;
 		case SUB: dst(); *a -= src(); break;
 		case MUL: dst(); *a *= src(); break;
-		case RND: dst(); *a = rand() % src(); break;
 		case INC: ++*dst(); break;
 		case DEC: --*dst(); break;
 		case JMP:
 		case JZ:
-		case JNZ: n = fetch(3); if (op == JMP || !*a ^ (op == JNZ)) pc = n; break;
+		case JNZ: n = fetch(3); if (op == JMP || !*a ^ (op > JZ)) pc = n; break;
 		case GET: *dst() = getchar(); break;
 		case PUT: putchar(*a); break;
+		case RND: *a = rand() % *a; break;
 		case SLP: usleep(50000); break;
-
-		// TODO: merge SLP and GET
-		// TODO: implement RND
 
 		// debugging
 		case 16:
@@ -72,6 +71,7 @@ int main(int argc, char** argv) {
 			for ( int i = 0; i < 300; i++ ) printf(" %02x", mem[i]);
 			printf("\n");
 			break;
+
 
 		default: return 1;
 
