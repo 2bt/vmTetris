@@ -1,6 +1,4 @@
-A small virtual machine. Work in progress...
+Tetris in a small virtual machine.
 
-
-	$ ./assembler.py < tetris.txt
-	$ make
-	$ ./vm code
+Use the cursor keys to move and `x` to rotate.
+Press `q` or `esc` to quit.

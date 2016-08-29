@@ -1,45 +1,38 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
-
-# TODO: auto drop
-
-
 	# memory addresses
-	define	POS_	0
+	define	POS_		5
+	define	ROT_		6
+	define	ROT2_		7
+	define	STONE_		8
+	define	DOWN_		9
+	define	DELAY_		10
+	define	SPEED_		11
 
-	define	ROT_	1
-	define	ROT2_	2
+	define	PREGRID_	22
+	define	GRID_		44
 
-	define	STONE_	4
-
-
-	define	DOWN_	3
-	define	LINES_	5
-
-
-	define	PREGRID_ 22
-	define	GRID_	44
-	define	START	26
-
+	define	STARTPOS	26
 
 	# colors
-	define	FRAME	7
-	define	STONE	4
-	define	FILL	5
+	define	FRAME		7
+	define	STONE		4
+	define	FILL		5
+
+	# registers
+	define	A		r0
+	define	B		r1
+	define	C		r2
+	define	D		r3
+	define	S		r4
+	define	T		r5
+	define	X		r6
+	define	POS		r7
 
 
-
-	define	A	r0
-	define	B	r1
-	define	C	r2
-	define	D	r3
-	define	S	r4
-	define	T	r5
-	define	X	r6
-	define	POS	r7
-
-
-
+	mov	C	DELAY_
+	inc	[C]
+	mov	[C]	30
 
 
 	# load stone data
@@ -254,8 +247,7 @@ mainloop:
 	# save position and rotation
 	mov	C	POS_
 	mov	[C]	POS
-
-	mov	C	ROT_
+	#mov	C	ROT_
 	mov	D	ROT2_
 	mov	[D]	[C]
 
@@ -264,7 +256,10 @@ mainloop:
 	# clear down flag
 	mov	C	DOWN_
 	mov	[C]	0
-
+	# auto drop
+#	mov	C	DELAY_
+	dec	[C]
+	jz	down
 
 
 	# input
@@ -290,11 +285,16 @@ read:
 		mov	C	47
 		add	A	C
 		jnz	nodown
+	down:
 		mov	C	11
 		add	POS	C
 		# remember that we're moving down
 		mov	C	DOWN_
 		inc	[C]
+		# reset delay
+		mov	B	SPEED_
+		mov	C	DELAY_
+		mov	[C]	[B]
 	nodown:
 		dec	A
 		jnz	noleft
@@ -320,9 +320,11 @@ read:
 
 
 
-	# update grid:
+	# update grid
 	mov	B	STONE
-	updategrid:
+
+updategrid:
+
 		mov	X	PREGRID_
 		mov	T	2
 	update1:
@@ -340,8 +342,6 @@ read:
 		mov	[X]	A
 		dec	X
 	update3:
-
-
 
 		# check if the 4 stone cells occupy the current cell
 		mov	C	STONE_
@@ -370,16 +370,23 @@ read:
 		sub	C	X
 		jnz	nooccupy
 
-
 	occupy:
-
 		mov	A	A
 		jz	nocollision
 
+
 			# break endless loop
-			mov	C	FILL
-			sub	C	B
-			jz	nocollision
+			# check if stone is at spawn position
+			mov	C	STARTPOS
+			sub	C	POS
+			jnz	nospawn
+			mov	C	ROT_
+			mov	C	[C]
+			mov	B	ROT2_
+			sub	C	[B]
+			jz	gameover
+		nospawn:
+
 
 			# enable cell write only when moving downward
 			mov	C	DOWN_
@@ -401,8 +408,8 @@ read:
 
 
 	nocollision:
-       		# write cell
-       		mov	[X]	B
+		# write cell
+		mov	[X]	B
 		dec	X
 
 	nooccupy:
@@ -433,7 +440,7 @@ read:
 start:
 
 	# reset position on collision
-	mov	POS	START
+	mov	POS	STARTPOS
 
 	# select new random stone
 	mov	D	7
@@ -454,16 +461,18 @@ start:
 
 
 	# check for gameover
+check_gameover:
 	mov	X	PREGRID_
 	mov	T	X
 	mov	C	FILL
-check_gameover:
+check1:
 	mov	A	[X]
 	inc	X
 	sub	A	C
 	jz	gameover
 	dec	T
-	jnz	check_gameover
+	jnz	check1
+
 
 
 
@@ -488,9 +497,24 @@ check_gameover:
 		mov	A	A
 		jnz	full4
 
-		# the line is full
-		mov	C	LINES_
-		inc	[C]
+		# line is full
+		# increase line count
+		mov	S	0
+		digit1:
+			inc	[S]
+			dec	S
+			mov	C	10
+			sub	C	[S]
+			jnz	digit2
+			mov	[S]	0
+			jmp	digit1
+		digit2:
+
+
+		# increae speed
+		mov	B	SPEED_
+		dec	[B]
+
 
 		# shift all upper lines down
 		mov	S	X
@@ -622,37 +646,9 @@ gameover:
 	mov	C	32
 	put
 
-	mov	A	LINES_
-	mov	A	[A]
-	mov	X	0
-	mov	[X]	0	# clear digit buffer
-	mov	[X]	0
-	mov	[X]	0
-	mov	[X]	0
-
-
-	# decode digits
-n_start:
-	mov	X	0
-	mov	A	A
-	jz	n_done
-	dec	A
-
-
-n_digit:
-	inc	[X]
-	dec	X
-	mov	C	10
-	sub	C	[X]
-	jnz	n_start
-	mov	[X]	0
-	jmp	n_digit
-
-
-n_done:
 
 	# print digits
-	mov	X	3
+	mov	X	4
 skip_zero:
 	mov	C	[X]
 	jnz	next_digit

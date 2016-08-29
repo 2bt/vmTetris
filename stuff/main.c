@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <assert.h>
 #include <time.h>
 #include <unistd.h>
+#include <assert.h>
 
 uint8_t b[1 << 12] = {
 	// TODO: code
@@ -36,7 +36,10 @@ int main(int argc, char** argv) {
 	fread(b, 1, sizeof(b), v);
 	fclose(v);
 
-	srand(time(0));
+//	srand(time(0));
+
+	srand(1472503431);
+
 	system("stty cbreak -echo min 0");
 	while ((o = f(1))) {
 		switch (o) {
@@ -54,7 +57,7 @@ int main(int argc, char** argv) {
 		case GET: *d() = getchar(); break;
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;
-		case SLP: usleep(50000);
+		case SLP: usleep(20000);
 //			printf("%03x:",c);
 //			for (x=0;x<8;x++)printf("|%d", r[x]);
 //			printf("\n");
