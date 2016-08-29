@@ -7,75 +7,54 @@
 
 enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, JMP, JZ, JNZ, GET, PUT, RND, SLP };
 
-uint8_t bin[1 << 12];
-uint16_t mem[1 << 12], reg[8], pc, *a;
+uint8_t b[1 << 12] = {
+	// TODO
+};
 
-uint16_t fetch(uint8_t len) {
-	uint16_t n = 0;
-	while (len--) {
-		n = n << 4 | bin[pc++];	// debug
-//		uint8_t c = bin[pc / 2];
-//		n = n << 4 | (c >> pc++ % 2 * 4 & 15);
-	}
-	return n;
+uint16_t m[1 << 12], r[8], c, *a, o, n, x;
+
+uint16_t f(uint8_t l) {
+	for (x = 0; l--; ++c) x = x << 4 | (b[c / 2] >> c % 2 * 4 & 15);
+	return x;
 }
 
-uint16_t* dst() {
-	uint8_t m = fetch(1);
-	if (m < 8) return a = reg + m;
-	return a = mem + reg[m % 8];
+uint16_t* d() {
+	x = f(1);
+	return a = x < 8 ? r + x : m + r[x % 8]++;
 }
 
-uint16_t src() {
-	uint8_t m = fetch(1);
-	if (m < 8) return reg[m];
-	return mem[reg[m % 8]];
+uint16_t s() {
+	x = f(1);
+	return x < 8 ? r[x] : m[r[x % 8]];
 }
 
 int main(int argc, char** argv) {
+
 	assert(argc == 2);
-	FILE* f = fopen(argv[1], "r");
-	assert(f);
-	fread(bin, 1, sizeof(bin), f);
-	fclose(f);
-	system("stty cbreak -echo min 0");
-	uint16_t op, n;
+	FILE* v = fopen(argv[1], "r");
+	assert(v);
+	fread(b, 1, sizeof(b), v);
+	fclose(v);
+
 	srand(time(0));
-	while ((op = fetch(1))) {
-		switch (op) {
+	system("stty cbreak -echo min 0");
+	while ((o = f(1))) {
+		switch (o) {
 		case LD1:
-		case LD2: dst(); *a = fetch(op); break;
-		case MOV: dst(); *a = src(); break;
-		case ADD: dst(); *a += src(); break;
-		case SUB: dst(); *a -= src(); break;
-		case MUL: dst(); *a *= src(); break;
-		case INC: ++*dst(); break;
-		case DEC: --*dst(); break;
+		case LD2: d(); *a = f(o); break;
+		case MOV: d(); *a = s(); break;
+		case ADD: d(); *a += s(); break;
+		case SUB: d(); *a -= s(); break;
+		case MUL: d(); *a *= s(); break;
+		case INC: ++*d(); break;
+		case DEC: --*d(); break;
 		case JMP:
 		case JZ:
-		case JNZ: n = fetch(3); if (op == JMP || !*a ^ (op > JZ)) pc = n; break;
-		case GET: *dst() = getchar(); break;
+		case JNZ: n = f(3); if (o == JMP || !*a ^ (o > JZ)) c = n; break;
+		case GET: *d() = getchar(); break;
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;
 		case SLP: usleep(50000); break;
-
-		// debugging
-		case 16:
-			puts("");
-			for ( int i = 0; i < 8; i++ ) printf(" %6d |", reg[i]);
-			printf(" %03x\n", pc - 1);
-			break;
-
-
-		case 17:
-			for ( int i = 0; i < 300; i++ ) printf(" %02x", mem[i]);
-			printf("\n");
-			break;
-
-
-		default: return 1;
-
-
 		}
 	}
 	system("stty sane");

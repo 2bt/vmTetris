@@ -111,7 +111,7 @@ while len(out) > 1:
 	x = out.pop(0)
 
 	# one nibble per byte for easy debugging
-#	x = x | out.pop(0) * 16
+	x = x | out.pop(0) * 16
 	code += chr(x)
 
 file("code", "w").write(code)

@@ -1,5 +1,6 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
+	# TODO: auto drop
 
 
 	# memory addresses
@@ -37,28 +38,7 @@
 	define	POS	r7
 
 
-	# set cursor position
-	mov	POS	START
 
-
-	# prepare grid
-	mov	X	PREGRID_
-	mov	T	22
-
-
-prep1:
-	mov	[X]	FRAME
-	mov	C	11
-	add	X	C
-	dec	T
-	jnz	prep1
-
-	mov	T	12
-prep2:
-	mov	[X]	FRAME
-	inc	X
-	dec	T
-	jnz	prep2
 
 
 
@@ -70,258 +50,174 @@ prep2:
 
 		# square
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 
 
 		# T
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 
 		# I
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 
 		# L
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	9
-		inc	X
 
 		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		mov	[X]	2
-		inc	X
 		mov	[X]	9
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 
 		# J
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 
 		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		# Z
 		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 
 		mov	[X]	2
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 
 		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 
 		mov	[X]	2
-		inc	X
 		mov	[X]	10
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	10
-		inc	X
 
 		# S
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	9
-		inc	X
 		inc	[X]
-		inc	X
 
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 
 		inc	[X]
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	9
-		inc	X
 		inc	[X]
-		inc	X
 
 		inc	[X]
-		inc	X
 		mov	[X]	11
-		inc	X
 		inc	[X]
-		inc	X
 		mov	[X]	11
+
+
+
+
+	# prepare grid
+	mov	X	PREGRID_
+	mov	T	22
+
+
+prep1:
+	mov	[X]	FRAME
+	mov	C	10
+	add	X	C
+	dec	T
+	jnz	prep1
+
+	mov	T	12
+prep2:
+	mov	[X]	FRAME
+	dec	T
+	jnz	prep2
+
+
 
 
 
@@ -335,13 +231,27 @@ prep2:
 	mov	C	74
 	put
 
+	# hide cursor
+	mov	C	27
+	put
+	mov	C	91
+	put
+	mov	C	63
+	put
+	mov	C	50
+	put
+	mov	C	53
+	put
+	mov	C	108
+	put
+
 
 	jmp	start
 
 mainloop:
 
 
-	# save cursor position and rotation
+	# save position and rotation
 	mov	C	POS_
 	mov	[C]	POS
 
@@ -403,6 +313,7 @@ read:
 		mov	D	12
 		sub	[C]	D
 		jz	norot
+		dec	C
 		mov	D	16
 		add	[C]	D
 	norot:
@@ -427,6 +338,7 @@ read:
 		jnz	update3
 		mov	A	0
 		mov	[X]	A
+		dec	X
 	update3:
 
 
@@ -472,7 +384,7 @@ read:
 			mov	B	FILL
 		nowrite:
 
-			# reset cursor position and rotation
+			# reset position and rotation
 			mov	C	POS_
 			mov	POS	[C]
 			inc	C
@@ -486,10 +398,10 @@ read:
 	nocollision:
        		# write cell
        		mov	[X]	B
+		dec	X
 		# TODO: check for gameover
 
 	nooccupy:
-
 
 		inc	X
 
@@ -516,7 +428,7 @@ read:
 
 start:
 
-	# reset cursor on collision
+	# reset position on collision
 	mov	POS	START
 
 	# select new random stone
@@ -531,8 +443,10 @@ start:
 	# random rotation
 	mov	D	3
 	rnd
-
-
+	mov	C	4
+	mul	D	C
+	mov	C	ROT_
+	mov	[C]	D
 
 
 	# check for full lines
@@ -568,6 +482,7 @@ start:
 		shift:
 			mov	[S]	[A]
 			dec	S
+			dec	S
 			dec	A
 			mov	B	A
 			mov	C	22
@@ -600,8 +515,6 @@ nodrop:
 	# draw grid
 	mov	X	GRID_
 	mov	T	4
-#	mov	X	11
-#	mov	T	1
 draw1:
 	mov	S	0
 
@@ -662,4 +575,19 @@ done:
 	put
 	mov	C	109
 	put
+
+	# show cursor
+	mov	C	27
+	put
+	mov	C	91
+	put
+	mov	C	63
+	put
+	mov	C	50
+	put
+	mov	C	53
+	put
+	mov	C	104
+	put
+
 
