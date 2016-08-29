@@ -1,7 +1,7 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
 
-	# TODO: auto drop
+# TODO: auto drop
 
 
 	# memory addresses
@@ -279,10 +279,10 @@ read:
 	# quit
 	mov	C	28
 	sub	A	C
-	jz	done
+	jz	gameover
 	mov	C	86
 	sub	A	C
-	jz	done
+	jz	gameover
 
 
 
@@ -323,8 +323,8 @@ read:
 	# update grid:
 	mov	B	STONE
 	updategrid:
-		mov	X	GRID_
-		mov	T	4
+		mov	X	PREGRID_
+		mov	T	2
 	update1:
 		mov	S	0
 
@@ -376,12 +376,17 @@ read:
 		mov	A	A
 		jz	nocollision
 
+			# break endless loop
+			mov	C	FILL
+			sub	C	B
+			jz	nocollision
 
 			# enable cell write only when moving downward
 			mov	C	DOWN_
 			mov	C	[C]
 			jz	nowrite
 			mov	B	FILL
+
 		nowrite:
 
 			# reset position and rotation
@@ -399,7 +404,6 @@ read:
        		# write cell
        		mov	[X]	B
 		dec	X
-		# TODO: check for gameover
 
 	nooccupy:
 
@@ -447,6 +451,20 @@ start:
 	mul	D	C
 	mov	C	ROT_
 	mov	[C]	D
+
+
+	# check for gameover
+	mov	X	PREGRID_
+	mov	T	X
+	mov	C	FILL
+check_gameover:
+	mov	A	[X]
+	inc	X
+	sub	A	C
+	jz	gameover
+	dec	T
+	jnz	check_gameover
+
 
 
 	# check for full lines
@@ -517,9 +535,7 @@ nodrop:
 	mov	T	4
 draw1:
 	mov	S	0
-
 draw2:
-
 	# pixel
 	mov	C	27
 	put
@@ -563,7 +579,7 @@ draw2:
 	slp
 	jmp	mainloop
 
-done:
+gameover:
 
 
 	# reset color

@@ -54,7 +54,11 @@ int main(int argc, char** argv) {
 		case GET: *d() = getchar(); break;
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;
-		case SLP: usleep(50000); break;
+		case SLP: usleep(50000);
+//			printf("%03x:",c);
+//			for (x=0;x<8;x++)printf("|%d", r[x]);
+//			printf("\n");
+			break;
 		}
 	}
 	system("stty sane");
