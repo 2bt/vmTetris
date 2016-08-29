@@ -1,5 +1,5 @@
-vm: main.c Makefile
-	gcc -Wall main.c -Os -s -o vm
+vmTetris: main.c Makefile
+	gcc -Wall main.c -Os -s -o vmTetris
 
 clean:
-	rm -f vm
+	rm -f vmTetris
