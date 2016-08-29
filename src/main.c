@@ -5,10 +5,8 @@
 #include <time.h>
 #include <unistd.h>
 
-enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, JMP, JZ, JNZ, GET, PUT, RND, SLP };
-
 uint8_t b[1 << 12] = {
-	// TODO
+	// TODO: code
 };
 
 uint16_t m[1 << 12], r[8], c, *a, o, n, x;
@@ -27,6 +25,8 @@ uint16_t s() {
 	x = f(1);
 	return x < 8 ? r[x] : m[r[x % 8]];
 }
+
+enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, JMP, JPZ, JNZ, GET, PUT, RND, SLP };
 
 int main(int argc, char** argv) {
 
@@ -49,8 +49,8 @@ int main(int argc, char** argv) {
 		case INC: ++*d(); break;
 		case DEC: --*d(); break;
 		case JMP:
-		case JZ:
-		case JNZ: n = f(3); if (o == JMP || !*a ^ (o > JZ)) c = n; break;
+		case JPZ:
+		case JNZ: n = f(3); if (o == JMP || !*a ^ (o > JPZ)) c = n; break;
 		case GET: *d() = getchar(); break;
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;

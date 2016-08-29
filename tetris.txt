@@ -1,5 +1,6 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
+
 	# TODO: auto drop
 
 
@@ -18,7 +19,7 @@
 
 	define	PREGRID_ 22
 	define	GRID_	44
-	define	START	27
+	define	START	26
 
 
 	# colors
@@ -41,7 +42,6 @@
 
 
 
-
 	# load stone data
 		mov	X	32
 		mov	C	10
@@ -49,22 +49,22 @@
 
 
 		# square
-		mov	[X]	11
+		mov	[X]	12
 		inc	[X]
 		mov	[X]	10
 		inc	[X]
 
-		mov	[X]	11
+		mov	[X]	12
 		inc	[X]
 		mov	[X]	10
 		inc	[X]
 
-		mov	[X]	11
+		mov	[X]	12
 		inc	[X]
 		mov	[X]	10
 		inc	[X]
 
-		mov	[X]	11
+		mov	[X]	12
 		inc	[X]
 		mov	[X]	10
 		inc	[X]
@@ -92,22 +92,22 @@
 		mov	[X]	10
 
 		# I
-		inc	[X]
+		mov	[X]	1
 		mov	[X]	11
 		mov	[X]	11
 		mov	[X]	11
 
-		mov	[X]	10
+		mov	[X]	11
 		inc	[X]
 		inc	[X]
 		inc	[X]
 
-		inc	[X]
+		mov	[X]	1
 		mov	[X]	11
 		mov	[X]	11
 		mov	[X]	11
 
-		mov	[X]	10
+		mov	[X]	11
 		inc	[X]
 		inc	[X]
 		inc	[X]
@@ -590,4 +590,68 @@ done:
 	mov	C	104
 	put
 
+	# print number of cleared lines
+	mov	C	76 # L
+	put
+	mov	C	105 # i
+	put
+	mov	C	110 # n
+	put
+	mov	C	101 # e
+	put
+	mov	C	115 # s
+	put
+	mov	C	58 # :
+	put
+	mov	C	32
+	put
+
+	mov	A	LINES_
+	mov	A	[A]
+	mov	X	0
+	mov	[X]	0	# clear digit buffer
+	mov	[X]	0
+	mov	[X]	0
+	mov	[X]	0
+
+
+	# decode digits
+n_start:
+	mov	X	0
+	mov	A	A
+	jz	n_done
+	dec	A
+
+
+n_digit:
+	inc	[X]
+	dec	X
+	mov	C	10
+	sub	C	[X]
+	jnz	n_start
+	mov	[X]	0
+	jmp	n_digit
+
+
+n_done:
+
+	# print digits
+	mov	X	3
+skip_zero:
+	mov	C	[X]
+	jnz	next_digit
+	dec	X
+	jnz	skip_zero
+next_digit:
+	mov	A	[X]
+	mov	C	48
+	add	C	A
+	put
+	dec	X
+	mov	B	X
+	inc	B
+	jnz	next_digit
+
+	mov	C	10
+	put
 
