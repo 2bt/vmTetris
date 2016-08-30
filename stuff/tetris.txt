@@ -1,13 +1,16 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
+# TODO: increase speed only for every 10 cleared lines
+
 	# memory addresses
 	define	POS_		5
 	define	ROT_		6
-	define	ROT2_		7
-	define	STONE_		8
-	define	DOWN_		9
-	define	DELAY_		10
-	define	SPEED_		11
+	define	DOWN_		7
+	define	DELAY_		8
+	define	SPEED_		9
+	define	ROT2_		10
+	define	STONE_		11
+
 
 	define	PREGRID_	22
 	define	GRID_		44
@@ -195,8 +198,6 @@
 	# prepare grid
 	mov	X	PREGRID_
 	mov	T	22
-
-
 prep1:
 	mov	[X]	FRAME
 	mov	C	10
@@ -250,11 +251,8 @@ mainloop:
 	#mov	C	ROT_
 	mov	D	ROT2_
 	mov	[D]	[C]
-
-
-
 	# clear down flag
-	mov	C	DOWN_
+	inc	C
 	mov	[C]	0
 	# auto drop
 #	mov	C	DELAY_
@@ -292,8 +290,8 @@ read:
 		mov	C	DOWN_
 		inc	[C]
 		# reset delay
+#		mov	C	DELAY_
 		mov	B	SPEED_
-		mov	C	DELAY_
 		mov	[C]	[B]
 	nodown:
 		dec	A
@@ -326,9 +324,9 @@ read:
 updategrid:
 
 		mov	X	PREGRID_
-		mov	T	2
+		mov	T	23
 	update1:
-		mov	S	0
+		mov	S	12
 
 	update2:
 		mov	A	[X]
@@ -400,8 +398,7 @@ updategrid:
 			mov	C	POS_
 			mov	POS	[C]
 			inc	C
-			mov	D	C
-			inc	D
+			mov	D	ROT2_
 			mov	[C]	[D]
 
 			jmp	updategrid
@@ -413,19 +410,14 @@ updategrid:
 		dec	X
 
 	nooccupy:
-
 		inc	X
 
-		inc	S
-		mov	C	12
-		sub	C	S
+		dec	S
 		jnz	update2
 
 		dec	X
 
-		inc	T
-		mov	C	25
-		sub	C	T
+		dec	T
 		jnz	update1
 	# end update grid
 
@@ -478,7 +470,7 @@ check1:
 
 	# check for full lines
 	mov	X	GRID_
-	mov	T	4
+	mov	T	21
 	full1:
 		inc	X
 		mov	S	10
@@ -532,9 +524,7 @@ check1:
 			jnz	shift
 
 	full4:
-		inc	T
-		mov	C	25
-		sub	C	T
+		dec	T
 		jnz	full1
 
 
@@ -556,9 +546,9 @@ nodrop:
 
 	# draw grid
 	mov	X	GRID_
-	mov	T	4
+	mov	T	21
 draw1:
-	mov	S	0
+	mov	S	12
 draw2:
 	# pixel
 	mov	C	27
@@ -569,8 +559,8 @@ draw2:
 	put
 
 	mov	A	[X]
-	mov	C	48
-	add	A	C
+	mov	D	48
+	add	A	D
 	put
 
 	mov	C	109
@@ -582,9 +572,7 @@ draw2:
 
 	# next cell
 	inc	X
-	inc	S
-	mov	C	12
-	sub	C	S
+	dec	S
 	jnz	draw2
 
 
@@ -593,9 +581,7 @@ draw2:
 	mov	C	10
 	put
 
-	inc	T
-	mov	C	25
-	sub	C	T
+	dec	T
 	jnz	draw1
 
 
@@ -607,19 +593,19 @@ gameover:
 
 
 	# reset color
-	mov	C	27
+	mov	A	27
 	put
-	mov	C	91
+	mov	B	91
 	put
-	mov	C	48
+	mov	D	48
 	put
 	mov	C	109
 	put
 
 	# show cursor
-	mov	C	27
+	mov	A	A
 	put
-	mov	C	91
+	mov	B	B
 	put
 	mov	C	63
 	put
@@ -631,17 +617,17 @@ gameover:
 	put
 
 	# print number of cleared lines
-	mov	C	76 # L
+	mov	C	76	# L
 	put
-	mov	C	105 # i
+	mov	C	105	# i
 	put
-	mov	C	110 # n
+	mov	C	110	# n
 	put
-	mov	C	101 # e
+	mov	C	101	# e
 	put
-	mov	C	115 # s
+	mov	C	115	# s
 	put
-	mov	C	58 # :
+	mov	C	58	# :
 	put
 	mov	C	32
 	put
@@ -656,7 +642,7 @@ skip_zero:
 	jnz	skip_zero
 next_digit:
 	mov	A	[X]
-	mov	C	48
+	mov	C	D
 	add	C	A
 	put
 	dec	X
@@ -666,4 +652,3 @@ next_digit:
 
 	mov	C	10
 	put
-

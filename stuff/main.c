@@ -37,6 +37,7 @@ int main(int argc, char** argv) {
 	fclose(v);
 
 //	srand(time(0));
+	uint32_t i = 0;
 
 	srand(1472503431);
 
@@ -58,9 +59,9 @@ int main(int argc, char** argv) {
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;
 		case SLP: usleep(20000);
-//			printf("%03x:",c);
-//			for (x=0;x<8;x++)printf("|%d", r[x]);
-//			printf("\n");
+			printf("%4d) %03x:", i++, c);
+			for (x=0;x<8;x++)printf("|%d", r[x]);
+			printf("\n");
 			break;
 		}
 	}
