@@ -50,12 +50,12 @@ uint16_t f(uint8_t l) {
 
 uint16_t* d() {
 	x = f(1);
-	return a = x < 8 ? r + x : m + r[x % 8]++;
+	return a = x < 8 ? r + x : m + r[x - 8]++;
 }
 
 uint16_t s() {
 	x = f(1);
-	return x < 8 ? r[x] : m[r[x % 8]];
+	return x < 8 ? r[x] : m[r[x - 8]];
 }
 
 int main(int argc, char** argv) {
