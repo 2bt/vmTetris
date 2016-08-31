@@ -58,7 +58,7 @@ uint16_t s() {
 	return x < 8 ? r[x] : m[r[x - 8]];
 }
 
-int main(int argc, char** argv) {
+int main() {
 	srand(time(0));
 	system("stty cbreak -echo min 0");
 	while ((o = f(1))) {
