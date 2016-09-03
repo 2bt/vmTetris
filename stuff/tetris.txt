@@ -39,159 +39,130 @@
 
 
 	# load stone data
-		mov	X	32
+		mov	X	36
 		mov	C	10
 		mul	X	C
 
 
 		# square
-		mov	[X]	12
-		inc	[X]
+		mov	[X]	13
 		mov	[X]	10
 		inc	[X]
 
-		mov	[X]	12
-		inc	[X]
+		mov	[X]	13
 		mov	[X]	10
 		inc	[X]
 
-		mov	[X]	12
-		inc	[X]
+		mov	[X]	13
 		mov	[X]	10
 		inc	[X]
 
-		mov	[X]	12
-		inc	[X]
+		mov	[X]	13
 		mov	[X]	10
 		inc	[X]
 
 
 		# T
 		mov	[X]	11
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 		mov	[X]	10
 
 		inc	[X]
 		mov	[X]	10
-		inc	[X]
-		mov	[X]	11
+		mov	[X]	12
 
 		inc	[X]
 		mov	[X]	10
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 
 		inc	[X]
-		mov	[X]	11
-		inc	[X]
+		mov	[X]	12
 		mov	[X]	10
 
 		# I
 		mov	[X]	1
-		mov	[X]	11
-		mov	[X]	11
+		mov	[X]	22
 		mov	[X]	11
 
 		mov	[X]	11
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 		inc	[X]
 
 		mov	[X]	1
-		mov	[X]	11
-		mov	[X]	11
+		mov	[X]	22
 		mov	[X]	11
 
 		mov	[X]	11
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 		inc	[X]
 
 		# L
 		inc	[X]
-		mov	[X]	11
-		mov	[X]	11
+		mov	[X]	22
 		inc	[X]
 
 		mov	[X]	11
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 		mov	[X]	9
 
 		inc	X
 		inc	[X]
-		mov	[X]	11
-		mov	[X]	11
+		mov	[X]	22
 
 		mov	[X]	2
 		mov	[X]	9
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 
 		# J
 		inc	[X]
-		mov	[X]	11
-		mov	[X]	10
+		mov	[X]	21
 		inc	[X]
 
 		inc	X
 		mov	[X]	11
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 
 		inc	[X]
 		inc	[X]
-		mov	[X]	10
-		mov	[X]	11
+		mov	[X]	21
 
 		mov	[X]	11
-		inc	[X]
-		inc	[X]
+		mov	[X]	2
 		mov	[X]	11
 
 		# Z
 		inc	X
 		inc	[X]
-		mov	[X]	11
-		inc	[X]
+		mov	[X]	12
 
 		mov	[X]	2
-		mov	[X]	10
-		inc	[X]
+		mov	[X]	11
 		mov	[X]	10
 
 		inc	X
 		inc	[X]
-		mov	[X]	11
-		inc	[X]
+		mov	[X]	12
 
 		mov	[X]	2
-		mov	[X]	10
-		inc	[X]
+		mov	[X]	11
 		mov	[X]	10
 
 		# S
 		inc	[X]
 		inc	[X]
 		mov	[X]	9
-		inc	[X]
 
 		inc	[X]
-		mov	[X]	11
-		inc	[X]
+		mov	[X]	12
 		mov	[X]	11
 
 		inc	[X]
 		inc	[X]
 		mov	[X]	9
-		inc	[X]
 
 		inc	[X]
+		mov	[X]	12
 		mov	[X]	11
-		inc	[X]
-		mov	[X]	11
-
 
 
 
@@ -308,11 +279,11 @@ read:
 		sub	A	C
 		jnz	norot
 		mov	C	ROT_
-		mov	D	12
+		mov	D	9
 		sub	[C]	D
 		jz	norot
 		dec	C
-		mov	D	16
+		mov	D	12
 		add	[C]	D
 	norot:
 
@@ -342,6 +313,12 @@ updategrid:
 	update3:
 
 		# check if the 4 stone cells occupy the current cell
+		mov	C	POS
+		mov	D	12
+		add	C	D
+		sub	C	X
+		jz	occupy
+
 		mov	C	STONE_
 		mov	D	[C]
 		mov	C	ROT_
@@ -349,11 +326,6 @@ updategrid:
 
 		mov	C	POS
 
-		add	C	[D]
-		sub	C	X
-		jz	occupy
-		add	C	X
-		inc	D
 		add	C	[D]
 		sub	C	X
 		jz	occupy
@@ -437,16 +409,16 @@ start:
 	# select new random stone
 	mov	D	7
 	rnd
-	mov	C	20
+	mov	C	30
 	add	D	C
-	mov	C	16
+	mov	C	12
 	mul	D	C
 	mov	C	STONE_
 	mov	[C]	D
 	# random rotation
 	mov	D	3
 	rnd
-	mov	C	4
+	mov	C	3
 	mul	D	C
 	mov	C	ROT_
 	mov	[C]	D
