@@ -609,18 +609,16 @@ gameover:
 	mov	X	4
 skip_zero:
 	mov	C	[X]
-	jnz	next_digit
+	jnz	skip_done
 	dec	X
 	jnz	skip_zero
+skip_done:
+	inc	X
 next_digit:
-	mov	A	[X]
-	mov	C	D
-	add	C	A
+	dec	X
+	add	[X]	D
 	put
 	dec	X
-	mov	B	X
-	inc	B
 	jnz	next_digit
-
 	mov	C	10
 	put
