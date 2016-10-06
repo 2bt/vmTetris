@@ -9,24 +9,18 @@ uint8_t b[1 << 12] = {
 	// TODO: code
 };
 
-uint16_t m[1 << 12], r[8], c, *a, o, n, x;
+uint16_t m[1 << 12], r[8], c, *a, o, x;
 
 uint16_t f(uint8_t l) {
 	for (x = 0; l--; ++c) x = x << 4 | (b[c / 2] >> c % 2 * 4 & 15);
 	return x;
 }
 
-uint16_t* d() {
-	x = f(1);
-	return a = x < 8 ? r + x : m + r[x % 8]++;
-}
+uint16_t* d() { return a = (x = f(1)) < 8 ? r + x : m + r[x - 8]++; }
 
-uint16_t s() {
-	x = f(1);
-	return x < 8 ? r[x] : m[r[x % 8]];
-}
+uint16_t s() { return (x = f(1)) < 8 ? r[x] : m[r[x - 8]]; }
 
-enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, JMP, JPZ, JNZ, GET, PUT, RND, SLP };
+enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
 
 int main(int argc, char** argv) {
 
@@ -52,9 +46,6 @@ int main(int argc, char** argv) {
 		case MUL: d(); *a *= s(); break;
 		case INC: ++*d(); break;
 		case DEC: --*d(); break;
-		case JMP:
-		case JPZ:
-		case JNZ: n = f(3); if (o == JMP || !*a ^ (o > JPZ)) c = n; break;
 		case GET: *d() = getchar(); break;
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;
@@ -63,6 +54,9 @@ int main(int argc, char** argv) {
 			for (x=0;x<8;x++)printf("|%d", r[x]);
 			printf("\n");
 			break;
+		case JMP:
+		case JPZ:
+		case JNZ: f(3); if (o == JMP || !*a ^ (o > JPZ)) c = x; break;
 		}
 	}
 	system("stty sane");

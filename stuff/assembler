@@ -76,11 +76,13 @@ for l in sys.stdin:
 			bin_cmd = [ 3, a, R.index(b) ]
 	elif op in bin_ops: bin_cmd = [ bin_ops.index(op) + 4, R.index(subst(w[1])), R.index(subst(w[2])) ]
 	elif op in mon_ops: bin_cmd = [ mon_ops.index(op) + 7, R.index(subst(w[1])) ]
-	elif op in jmp_ops: bin_cmd = [ jmp_ops.index(op) + 9, 0, 0, w[1] ]
-	elif op == "get": bin_cmd = [ 12, R.index(subst(w[1])) ]
-	elif op == "put": bin_cmd = [ 13 ]
-	elif op == "rnd": bin_cmd = [ 14 ]
-	elif op == "slp": bin_cmd = [ 15 ]
+
+	elif op in jmp_ops: bin_cmd = [ jmp_ops.index(op) + 13, 0, 0, w[1] ]
+
+	elif op == "get": bin_cmd = [ 9, R.index(subst(w[1])) ]
+	elif op == "put": bin_cmd = [ 10 ]
+	elif op == "rnd": bin_cmd = [ 11 ]
+	elif op == "slp": bin_cmd = [ 12 ]
 	else:
 		print "WOOT"
 		bin_cmd = [ int(op) ]
