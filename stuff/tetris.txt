@@ -504,7 +504,7 @@ check1:
 nodrop:
 
 	# move cursor to corner
-	mov	C	27
+	mov	B	27
 	put
 	mov	C	91
 	put
@@ -523,7 +523,7 @@ draw1:
 	mov	S	12
 draw2:
 	# pixel
-	mov	C	27
+	mov	B	B
 	put
 	mov	C	91
 	put
@@ -565,7 +565,7 @@ gameover:
 
 
 	# reset color
-	mov	A	27
+	mov	A	B
 	put
 	mov	B	91
 	put
