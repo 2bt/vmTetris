@@ -5,20 +5,18 @@
 #include <unistd.h>
 #include <assert.h>
 
-uint8_t b[1 << 12] = {
-	// TODO: code
-};
+uint8_t b[1 << 12] = {};
 
-uint16_t m[1 << 12], r[8], c, *a, o, x;
+uint16_t m[512], r[8], c, *a, o, x;
 
 uint16_t f(uint8_t l) {
 	for (x = 0; l--; ++c) x = x << 4 | (b[c / 2] >> c % 2 * 4 & 15);
 	return x;
 }
 
-uint16_t* d() { return a = (x = f(1)) < 8 ? r + x : m + r[x - 8]++; }
+uint16_t* d() { return a = f(1) < 8 ? r + x : m + r[x - 8]++; }
 
-uint16_t s() { return (x = f(1)) < 8 ? r[x] : m[r[x - 8]]; }
+uint16_t s() { return f(1) < 8 ? r[x] : m[r[x - 8]]; }
 
 enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
 
@@ -50,9 +48,9 @@ int main(int argc, char** argv) {
 		case PUT: putchar(*a); break;
 		case RND: *a = rand() % *a; break;
 		case SLP: usleep(20000);
-			printf("%4d) %03x:", i++, c);
-			for (x=0;x<8;x++)printf("|%d", r[x]);
-			printf("\n");
+//			printf("%4d) %03x:", i++, c);
+//			for (x=0;x<8;x++)printf("|%d", r[x]);
+//			printf("\n");
 			break;
 		case JMP:
 		case JPZ:

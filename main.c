@@ -39,9 +39,9 @@ uint16_t f(uint8_t l) {
 	return x;
 }
 
-uint16_t* d() { return a = (x = f(1)) < 8 ? r + x : m + r[x - 8]++; }
+uint16_t* d() { return a = f(1) < 8 ? r + x : m + r[x - 8]++; }
 
-uint16_t s() { return (x = f(1)) < 8 ? r[x] : m[r[x - 8]]; }
+uint16_t s() { return f(1) < 8 ? r[x] : m[r[x - 8]]; }
 
 int main() {
 	srand(time(0));
@@ -59,7 +59,7 @@ int main() {
 		case 10: putchar(*a); break;
 		case 11: *a = rand() % *a; break;
 		case 12: usleep(20000); break;
-		default: f(3); if (o == 12 || !*a ^ (o > 13)) c = x; break;
+		default: f(3); if (o == 13 || !*a ^ (o > 14)) c = x; break;
 		}
 	}
 	system("stty sane");
