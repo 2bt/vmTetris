@@ -565,7 +565,7 @@ gameover:
 
 
 	# reset color
-	mov	A	B
+	mov	A	27
 	put
 	mov	B	91
 	put

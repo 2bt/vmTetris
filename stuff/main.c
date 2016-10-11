@@ -5,12 +5,12 @@
 #include <unistd.h>
 #include <assert.h>
 
-uint8_t b[1 << 12] = {};
+char b[1 << 12] = {};
 
 uint16_t m[512], r[8], c, *a, o, x;
 
 uint16_t f(uint8_t l) {
-	for (x = 0; l--; ++c) x = x << 4 | (b[c / 2] >> c % 2 * 4 & 15);
+	for (x = 0; l--;) x = x * 56 + (b[c++] - 35);
 	return x;
 }
 
@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 			break;
 		case JMP:
 		case JPZ:
-		case JNZ: f(3); if (o == JMP || !*a ^ (o > JPZ)) c = x; break;
+		case JNZ: f(2); if (o == JMP || !*a ^ (o > JPZ)) c = x; break;
 		}
 	}
 	system("stty sane");
