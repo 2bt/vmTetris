@@ -9,13 +9,8 @@ char b[1 << 12] = {};
 
 uint16_t m[512], r[8], c, *a, o, x;
 
-uint16_t f(uint8_t l) {
-	for (x = 0; l--;) x = x * 56 + (b[c++] - 35);
-	return x;
-}
-
+uint16_t f(int l) { for (x = 0; l--;) x = x * 56 + (b[c++] - 35); return x; }
 uint16_t* d() { return a = f(1) < 8 ? r + x : m + r[x - 8]++; }
-
 uint16_t s() { return f(1) < 8 ? r[x] : m[r[x - 8]]; }
 
 enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
