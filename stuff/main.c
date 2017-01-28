@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <time.h>
 #include <unistd.h>
 #include <assert.h>
@@ -8,11 +7,11 @@
 char b[1 << 12] = {};
 
 enum { R = 20 };
-uint16_t m[512], c, *a, o, x;
+int m[512], c, *a, o, x;
 
-uint16_t f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 47; return x; }
-uint16_t* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
-uint16_t s() { return f(1) < R ? m[x] : m[m[x - R]]; }
+int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 47; return x; }
+int* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
+int s() { return f(1) < R ? m[x] : m[m[x - R]]; }
 
 enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
 
@@ -25,7 +24,7 @@ int main(int argc, char** argv) {
 	fclose(v);
 
 //	srand(time(0));
-	uint32_t i = 0;
+	int i = 0;
 
 	srand(1472503431);
 

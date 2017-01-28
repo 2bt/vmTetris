@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -17,11 +16,11 @@ char* b = "6A0@M1:3W0N<0N96N0N<0N96N0N<0N96N0N<0N96N0N:0N10N96N0N90N;6N0N90N16N"
 "924N07_3479160L906O996:78>8U7:069979>8R;<2u04J9150:907_9160L92449255906n906a90"
 "6d9160G906{9160H9160M9160D9160R906i906O90:326N>:E7:>::6:7:3N797:>:G0699/";
 
-uint16_t m[512], c, *a, o, x;
+int m[512], c, *a, o, x;
 
-uint16_t f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] -47; return x; }
-uint16_t* d() { return a = f(1) < 20 ? m + x : m + m[x - 20]++; }
-uint16_t s() { return f(1) < 20 ? m[x] : m[m[x - 20]]; }
+int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] -47; return x; }
+int* d() { return a = f(1) < 20 ? m + x : m + m[x - 20]++; }
+int s() { return f(1) < 20 ? m[x] : m[m[x - 20]]; }
 
 int main() {
 	srand(time(0));
