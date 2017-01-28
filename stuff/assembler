@@ -1,6 +1,12 @@
 #!/usr/bin/python
 
-M = 56 # ord("[") - ord("#")
+
+# code word range
+M = 80
+
+# number of registers
+# can be M / 2
+R = 20
 
 import sys
 
@@ -28,7 +34,7 @@ def num_to_code(n):
 	return c
 
 
-R = ["r%d" % x for x in range(8)]
+R = ["r%d" % x for x in range(R)]
 R += ["[%s]" % r for r in R]
 
 
@@ -110,6 +116,7 @@ for txt, c in zip(txt_cmds, bin_cmds):
 out += [0]
 
 print out
-code = "".join(chr(x + ord("#")) for x in out)
+code = "".join(chr(111 - x) for x in out)
 print code
+print len(code)
 file("code", "w").write(code)

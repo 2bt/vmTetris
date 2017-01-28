@@ -3,24 +3,15 @@
 # TODO: increase speed only for every 10 cleared lines
 
 	# memory addresses
-	define	POS_		5
-	define	ROT_		6
-	define	DOWN_		7
-	define	DELAY_		8
-	define	SPEED_		9
-	define	ROT2_		10
-	define	STONE_		11
-
-
-	define	PREGRID_	22
-	define	GRID_		44
+	define	PREGRID		22
+	define	GRID		44
 
 	define	STARTPOS	26
 
 	# colors
-	define	FRAME		7
-	define	STONE		4
-	define	FILL		5
+	define	COLOR_FRAME	7
+	define	COLOR_STONE	4
+	define	COLOR_FILL	5
 
 	# registers
 	define	A		r0
@@ -31,146 +22,150 @@
 	define	T		r5
 	define	X		r6
 	define	POS		r7
+	define	POS2		r8
+	define	ROT		r9
+	define	ROT2		r10
+	define	STONE		r11
+	define	SPEED		r12
+	define	DELAY		r13
+	define	DOWN		r14
 
 
-	mov	C	DELAY_
-	inc	[C]
-	mov	[C]	30
+	inc	DELAY
+	mov	SPEED	30
 
 
 	# load stone data
-		mov	X	36
-		mov	C	10
-		mul	X	C
+	mov	X	360
 
 
-		# square
-		mov	[X]	13
-		mov	[X]	10
-		inc	[X]
+	# square
+	mov	[X]	13
+	mov	[X]	10
+	inc	[X]
 
-		mov	[X]	13
-		mov	[X]	10
-		inc	[X]
+	mov	[X]	13
+	mov	[X]	10
+	inc	[X]
 
-		mov	[X]	13
-		mov	[X]	10
-		inc	[X]
+	mov	[X]	13
+	mov	[X]	10
+	inc	[X]
 
-		mov	[X]	13
-		mov	[X]	10
-		inc	[X]
+	mov	[X]	13
+	mov	[X]	10
+	inc	[X]
 
 
-		# T
-		mov	[X]	11
-		mov	[X]	2
-		mov	[X]	10
+	# T
+	mov	[X]	11
+	mov	[X]	2
+	mov	[X]	10
 
-		inc	[X]
-		mov	[X]	10
-		mov	[X]	12
+	inc	[X]
+	mov	[X]	10
+	mov	[X]	12
 
-		inc	[X]
-		mov	[X]	10
-		mov	[X]	2
+	inc	[X]
+	mov	[X]	10
+	mov	[X]	2
 
-		inc	[X]
-		mov	[X]	12
-		mov	[X]	10
+	inc	[X]
+	mov	[X]	12
+	mov	[X]	10
 
-		# I
-		mov	[X]	1
-		mov	[X]	22
-		mov	[X]	11
+	# I
+	mov	[X]	1
+	mov	[X]	22
+	mov	[X]	11
 
-		mov	[X]	11
-		mov	[X]	2
-		inc	[X]
+	mov	[X]	11
+	mov	[X]	2
+	inc	[X]
 
-		mov	[X]	1
-		mov	[X]	22
-		mov	[X]	11
+	mov	[X]	1
+	mov	[X]	22
+	mov	[X]	11
 
-		mov	[X]	11
-		mov	[X]	2
-		inc	[X]
+	mov	[X]	11
+	mov	[X]	2
+	inc	[X]
 
-		# L
-		inc	[X]
-		mov	[X]	22
-		inc	[X]
+	# L
+	inc	[X]
+	mov	[X]	22
+	inc	[X]
 
-		mov	[X]	11
-		mov	[X]	2
-		mov	[X]	9
+	mov	[X]	11
+	mov	[X]	2
+	mov	[X]	9
 
-		inc	X
-		inc	[X]
-		mov	[X]	22
+	inc	X
+	inc	[X]
+	mov	[X]	22
 
-		mov	[X]	2
-		mov	[X]	9
-		mov	[X]	2
+	mov	[X]	2
+	mov	[X]	9
+	mov	[X]	2
 
-		# J
-		inc	[X]
-		mov	[X]	21
-		inc	[X]
+	# J
+	inc	[X]
+	mov	[X]	21
+	inc	[X]
 
-		inc	X
-		mov	[X]	11
-		mov	[X]	2
+	inc	X
+	mov	[X]	11
+	mov	[X]	2
 
-		inc	[X]
-		inc	[X]
-		mov	[X]	21
+	inc	[X]
+	inc	[X]
+	mov	[X]	21
 
-		mov	[X]	11
-		mov	[X]	2
-		mov	[X]	11
+	mov	[X]	11
+	mov	[X]	2
+	mov	[X]	11
 
-		# Z
-		inc	X
-		inc	[X]
-		mov	[X]	12
+	# Z
+	inc	X
+	inc	[X]
+	mov	[X]	12
 
-		mov	[X]	2
-		mov	[X]	11
-		mov	[X]	10
+	mov	[X]	2
+	mov	[X]	11
+	mov	[X]	10
 
-		inc	X
-		inc	[X]
-		mov	[X]	12
+	inc	X
+	inc	[X]
+	mov	[X]	12
 
-		mov	[X]	2
-		mov	[X]	11
-		mov	[X]	10
+	mov	[X]	2
+	mov	[X]	11
+	mov	[X]	10
 
-		# S
-		inc	[X]
-		inc	[X]
-		mov	[X]	9
+	# S
+	inc	[X]
+	inc	[X]
+	mov	[X]	9
 
-		inc	[X]
-		mov	[X]	12
-		mov	[X]	11
+	inc	[X]
+	mov	[X]	12
+	mov	[X]	11
 
-		inc	[X]
-		inc	[X]
-		mov	[X]	9
+	inc	[X]
+	inc	[X]
+	mov	[X]	9
 
-		inc	[X]
-		mov	[X]	12
-		mov	[X]	11
+	inc	[X]
+	mov	[X]	12
+	mov	[X]	11
 
 
 
 	# prepare grid
-	mov	X	PREGRID_
+	mov	X	PREGRID
 	mov	T	22
 prep1:
-	mov	[X]	FRAME
+	mov	[X]	COLOR_FRAME
 	mov	C	10
 	add	X	C
 	dec	T
@@ -178,7 +173,7 @@ prep1:
 
 	mov	T	12
 prep2:
-	mov	[X]	FRAME
+	mov	[X]	COLOR_FRAME
 	dec	T
 	jnz	prep2
 
@@ -217,17 +212,11 @@ mainloop:
 
 
 	# save position and rotation
-	mov	C	POS_
-	mov	[C]	POS
-	#mov	C	ROT_
-	mov	D	ROT2_
-	mov	[D]	[C]
-	# clear down flag
-	inc	C
-	mov	[C]	0
+	mov	POS2	POS
+	mov	ROT2	ROT
+	mov	DOWN	0
 	# auto drop
-#	mov	C	DELAY_
-	dec	[C]
+	dec	DELAY
 	jz	down
 
 
@@ -258,12 +247,9 @@ read:
 		mov	C	11
 		add	POS	C
 		# remember that we're moving down
-		mov	C	DOWN_
-		inc	[C]
+		inc	DOWN
 		# reset delay
-#		mov	C	DELAY_
-		mov	B	SPEED_
-		mov	[C]	[B]
+		mov	DELAY	SPEED
 	nodown:
 		dec	A
 		jnz	noleft
@@ -278,23 +264,21 @@ read:
 		mov	C	52
 		sub	A	C
 		jnz	norot
-		mov	C	ROT_
 		mov	D	9
-		sub	[C]	D
+		sub	ROT	D
 		jz	norot
-		dec	C
 		mov	D	12
-		add	[C]	D
+		add	ROT	D
 	norot:
 
 
 
 	# update grid
-	mov	B	STONE
+	mov	B	COLOR_STONE
 
 updategrid:
 
-		mov	X	PREGRID_
+		mov	X	PREGRID
 		mov	T	23
 	update1:
 		mov	S	12
@@ -304,7 +288,7 @@ updategrid:
 
 
 		# clear old entries
-		mov	C	STONE
+		mov	C	COLOR_STONE
 		sub	C	A
 		jnz	update3
 		mov	A	0
@@ -319,10 +303,8 @@ updategrid:
 		sub	C	X
 		jz	occupy
 
-		mov	C	STONE_
-		mov	D	[C]
-		mov	C	ROT_
-		add	D	[C]
+		mov	D	STONE
+		add	D	ROT
 
 		mov	C	POS
 
@@ -350,28 +332,22 @@ updategrid:
 			mov	C	STARTPOS
 			sub	C	POS
 			jnz	nospawn
-			mov	C	ROT_
-			mov	C	[C]
-			mov	B	ROT2_
-			sub	C	[B]
+			mov	C	ROT
+			sub	C	ROT2
 			jz	gameover
 		nospawn:
 
 
 			# enable cell write only when moving downward
-			mov	C	DOWN_
-			mov	C	[C]
+			mov	DOWN	DOWN
 			jz	nowrite
-			mov	B	FILL
+			mov	B	COLOR_FILL
 
 		nowrite:
 
 			# reset position and rotation
-			mov	C	POS_
-			mov	POS	[C]
-			inc	C
-			mov	D	ROT2_
-			mov	[C]	[D]
+			mov	POS	POS2
+			mov	ROT	ROT2
 
 			jmp	updategrid
 
@@ -396,7 +372,7 @@ updategrid:
 
 
 	# check if stone was dropped
-	mov	C	FILL
+	mov	C	COLOR_FILL
 	sub	B	C
 	jnz	nodrop
 
@@ -407,28 +383,24 @@ start:
 	mov	POS	STARTPOS
 
 	# select new random stone
-	mov	D	7
+	mov	STONE	7
 	rnd
 	mov	C	30
-	add	D	C
+	add	STONE	C
 	mov	C	12
-	mul	D	C
-	mov	C	STONE_
-	mov	[C]	D
+	mul	STONE	C
 	# random rotation
-	mov	D	3
+	mov	ROT	3
 	rnd
 	mov	C	3
-	mul	D	C
-	mov	C	ROT_
-	mov	[C]	D
+	mul	ROT	C
 
 
 	# check for gameover
 check_gameover:
-	mov	X	PREGRID_
+	mov	X	PREGRID
 	mov	T	X
-	mov	C	FILL
+	mov	C	COLOR_FILL
 check1:
 	mov	A	[X]
 	inc	X
@@ -441,7 +413,7 @@ check1:
 
 
 	# check for full lines
-	mov	X	GRID_
+	mov	X	GRID
 	mov	T	21
 	full1:
 		inc	X
@@ -449,7 +421,7 @@ check1:
 		mov	A	10
 
 		full2:
-			mov	C	FILL
+			mov	C	COLOR_FILL
 			sub	C	[X]
 			jnz	full3
 			dec	A
@@ -476,8 +448,7 @@ check1:
 
 
 		# increae speed
-		mov	B	SPEED_
-		dec	[B]
+		dec	SPEED
 
 
 		# shift all upper lines down
@@ -517,7 +488,7 @@ nodrop:
 
 
 	# draw grid
-	mov	X	GRID_
+	mov	X	GRID
 	mov	T	21
 draw1:
 	mov	S	12

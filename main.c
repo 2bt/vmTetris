@@ -4,25 +4,24 @@
 #include <time.h>
 #include <unistd.h>
 
-char b[] = "$%+*-$-A$)G$%-))%$10$1-*1$10$1-*1$10$1-*1$10$1-*1$1.$1%$1-*1$1-$1/*"
-"1$1-$1%*1$1/$1-$1$$19$1.$1.$1%*1$1$$19$1.$1.$1%*1*1$19*1$1.$1%$1,*)*1$19$1%$1,"
-"$1%*1$18*1*)$1.$1%*1*1$18$1.$1%$1.*)*1$1/$1%$1.$1-*)*1$1/$1%$1.$1-*1*1$1,*1$1/"
-"$1.*1*1$1,*1$1/$1.$)9$(9$1*$%-')%+(2':$(/$1*+(2'K$%>-%%$F-$%U-%%$5-$%>-%%$F-%%"
-"$*-$%U-$%X-%%$W-0.-$%(&-*$&-&.-*%$-#+-1)O&#(,(*(2))$%?(#%12M%%$A(#%12M$%R'#%2*"
-"($%.'*%$%**-$$,&-,+#2*/**+#2*6+*$%W(#%2*S$%)$&,(-&1*S+%$&/'-&$$'$)9$(:$'/&#1$%"
-"'(%#2+;$##&1#+)&%*$&/'%&(%)1,F$%.&&-$%)'&-&%*'%.(%)1,F'%)*&'%.(%)1,F'%)*&'%.(%"
-")2-N&##1-I$%=(%*2-,$%)&%-$$-(%,12M$%*&%-1-8$$($%(&*-*%$&-&-.0*V&1$+)*)+'2+'+)+"
-"(2+$$%(($%21.$*=$&*.$%A'&%$%/)&%$%.&-&$&&.$%&)&%$%)&-&$)9&()$%(&#1*)(#%12M+(2/"
-"'$)O$(8*)$'-$#-$%((%12/P+#*)+'2/E&##21)$'#*/+'$%-(%/20;$/#00($$,+,&')&#)$%.(#%"
-"&/++'+'+#&$#$%9($%20L+(2/=$$>-%%$F-$%T-%%$&-%%$3-$)O$(8$'/&$$-%%$F-$%W-&#1$&S'"
-"#&-%%$X-$%C--*)+'21N+)$%--+(21K/0(K$#>-%$$F-$&S-%%$X-&##-&$$-%%$*-$%U-$%X-%%$S"
-"-%%$7-%%$T-%%$Y-%%$P-%%%&-%%$%-$%C-$)'&%1249+)24.*)+)'1&-+)24;$%--#";
+char b[] = "hbncQmikGnUbnUehUnUbnUehUnUbnUehUnUbnUehUnUdnUmnUehUnUenUchUnUenUmh"
+"UnUcnUenUnnUYnUdnUdnUmhUnUnnUYnUdnUdnUmhUhUnUYhUnUdnUmnUfhihUnUYnUmnUfnUmhUnUZ"
+"hUhinUdnUmhUhUnUZnUdnUmnUdhihUnUcnUmnUdnUehihUnUcnUmnUdnUehUhUnUfhUnUcnUdhUhUn"
+"UfhUnUcnUdniYnjYnUhnmekimgj`m njcnUhgj`l_nmTemmndenm=enm%enmTemmndenm0enm=enm:"
+"emmnSebhalghlefnaogbakElojfjhj`kknmSjomaebmmnijomaebnm@kom`k:nmdkhmhalbcgo`k3h"
+"hgo`k,ghnm;jom`jdnlfjflajdnlckflnnkniYnjXnkcloUnmkjmo`jDnoolUogilmhnlckmljmiai"
+"WlldklflmhkmXjmiaiWkmihlkmXjmiaiWkmihlkmXjmi`i(looai-nmUjmh`i?lmfjmeaeblaaai6n"
+"njlhglfebjalUngihigk`jXgigj`j[nmjjnm`fgnhUndhdnmQkdmnmcidmnfldnmlifmniYljinmjl"
+"oUhijomaebgj`h;niCnjZhinkenoenmjjmU`gbgohigk`gmloo`flnkohWgknmejmW`g?nWobgRgcl"
+"kiloinmdjomlW[gkgkgolnonmYjnm`g1gj`h%nnTemmndenm>enm4enm'eniCnjZnkclnnemmndenm"
+";eloUnl?kolemmnRenmOeehigk`fIginmeegj`fLcbl)noTemnndenl?emmnRelooelnnenm0enm=e"
+"nm:emmnWenm#emmnVemmnQemmnZemmnLenm5enmOeniklmU`dYgi`ddhigikUlegi`dWnmeeo";
 
-uint16_t m[512], r[8], c, *a, o, x;
+uint16_t m[512], r[20], c, *a, o, x;
 
-uint16_t f(int l) { for (x = 0; l--;) x = x * 56 + (b[c++] - 35); return x; }
-uint16_t* d() { return a = f(1) < 8 ? r + x : m + r[x - 8]++; }
-uint16_t s() { return f(1) < 8 ? r[x] : m[r[x - 8]]; }
+uint16_t f(int l) { for (x = 0; l--;) x = x * 80 + (111 - b[c++]); return x; }
+uint16_t* d() { return a = f(1) < 20 ? r + x : m + r[x - 20]++; }
+uint16_t s() { return f(1) < 20 ? r[x] : m[r[x - 20]]; }
 
 int main() {
 	srand(time(0));
