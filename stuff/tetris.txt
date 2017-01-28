@@ -3,7 +3,7 @@
 # TODO: increase speed only for every 10 cleared lines
 
 	# memory addresses
-	define	PREGRID		22
+	define	PREGRID	22
 	define	GRID		44
 
 	define	STARTPOS	26
@@ -14,21 +14,21 @@
 	define	COLOR_FILL	5
 
 	# registers
-	define	A		r0
-	define	B		r1
-	define	C		r2
-	define	D		r3
-	define	S		r4
-	define	T		r5
-	define	X		r6
-	define	POS		r7
-	define	POS2		r8
-	define	ROT		r9
-	define	ROT2		r10
-	define	STONE		r11
-	define	SPEED		r12
-	define	DELAY		r13
-	define	DOWN		r14
+	define	A		r5
+	define	B		r6
+	define	C		r7
+	define	D		r8
+	define	S		r9
+	define	T		r10
+	define	X		r11
+	define	POS		r12
+	define	POS2		r13
+	define	ROT		r14
+	define	ROT2		r15
+	define	STONE		r16
+	define	SPEED		r17
+	define	DELAY		r18
+	define	DOWN		r19
 
 
 	inc	DELAY

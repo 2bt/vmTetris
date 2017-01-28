@@ -8,11 +8,11 @@
 char b[1 << 12] = {};
 
 enum { R = 20 };
-uint16_t m[512], r[R], c, *a, o, x;
+uint16_t m[512], c, *a, o, x;
 
-uint16_t f(int l) { for (x = 0; l--;) x = x * 80 + (111 - b[c++]); return x; }
-uint16_t* d() { return a = f(1) < R ? r + x : m + r[x - R]++; }
-uint16_t s() { return f(1) < R ? r[x] : m[r[x - R]]; }
+uint16_t f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 47; return x; }
+uint16_t* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
+uint16_t s() { return f(1) < R ? m[x] : m[m[x - R]]; }
 
 enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
 
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 		case RND: *a = rand() % *a; break;
 		case SLP: usleep(20000);
 //			printf("%4d) %03x:", i++, c);
-//			for (x=0;x<R;x++)printf("|%d", r[x]);
+//			for (x=0;x<R;x++)printf("|%d", m[x]);
 //			printf("\n");
 			break;
 		case JMP:
