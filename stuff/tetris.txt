@@ -1,9 +1,7 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
-# TODO: increase speed only for every 10 cleared lines
-
 	# memory addresses
-	define	PREGRID	22
+	define	PREGRID		22
 	define	GRID		44
 
 	define	STARTPOS	26
@@ -448,7 +446,10 @@ check1:
 
 
 		# increae speed
+		mov	r0	r0
+		jnz	notfaster
 		dec	SPEED
+	notfaster:
 
 
 		# shift all upper lines down
