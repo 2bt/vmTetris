@@ -116,7 +116,7 @@ for txt, c in zip(txt_cmds, bin_cmds):
 out += [0]
 
 print out
-code = "".join(chr(47 + x) for x in out)
+code = "".join(chr(46 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)

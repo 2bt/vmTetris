@@ -12,6 +12,7 @@
 	define	COLOR_FILL	5
 
 	# registers
+	define	Q		r4
 	define	A		r5
 	define	B		r6
 	define	C		r7
@@ -306,19 +307,18 @@ updategrid:
 
 		mov	C	POS
 
+
+		mov	Q	3
+	occupycheck:
 		add	C	[D]
 		sub	C	X
 		jz	occupy
 		add	C	X
 		inc	D
-		add	C	[D]
-		sub	C	X
-		jz	occupy
-		add	C	X
-		inc	D
-		add	C	[D]
-		sub	C	X
-		jnz	nooccupy
+		dec	Q
+		jnz	occupycheck
+		jmp	nooccupy
+
 
 	occupy:
 		mov	A	A

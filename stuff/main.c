@@ -9,7 +9,7 @@ char b[1 << 12] = {};
 enum { R = 20 };
 int m[512], c, *a, o, x;
 
-int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 47; return x; }
+int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 46; return x; }
 int* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
 int s() { return f(1) < R ? m[x] : m[m[x - R]]; }
 
