@@ -19,8 +19,8 @@ char* b = "5@/?L092V/M;/M85M/M;/M85M/M;/M85M/M;/M85M/M9/M0/M85M/M8/M:5M/M8/M05M"
 int m[512], c, *a, o, x;
 
 int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 46; return x; }
-int* d() { return a = f(1) < 20 ? m + x : m + m[x - 20]++; }
-int s() { return f(1) < 20 ? m[x] : m[m[x - 20]]; }
+int* d() { return a = m + (f(1) < 20 ? x : m[x - 20]++); }
+int s() { return m[f(1) < 20 ? x : m[x - 20]]; }
 
 int main() {
 	srand(time(0));
