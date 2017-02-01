@@ -73,7 +73,7 @@
 	mov	[X]	10
 
 	# I
-	mov	[X]	1
+	inc	[X]
 	mov	[X]	22
 	mov	[X]	11
 
@@ -81,7 +81,7 @@
 	mov	[X]	2
 	inc	[X]
 
-	mov	[X]	1
+	inc	[X]
 	mov	[X]	22
 	mov	[X]	11
 
