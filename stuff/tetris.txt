@@ -218,15 +218,10 @@ read:
 	mov	C	28
 	sub	A	C
 	jz	gameover
-	mov	C	86
-	sub	A	C
-	jz	gameover
-
-
 
 		# move
-		mov	C	47
-		add	A	C
+		mov	C	39
+		sub	A	C
 		jnz	nodown
 	down:
 		mov	C	11
@@ -519,7 +514,8 @@ gameover:
 	# reset color
 	put	27
 	put	'['
-	put	'0'
+	mov	D	'0'
+	put
 	put	'm'
 
 	# show cursor
@@ -541,7 +537,7 @@ gameover:
 
 
 	# print digits
-	mov	X	4
+	mov	X	3
 skip_zero:
 	mov	C	[X]
 	jnz	skip_done
