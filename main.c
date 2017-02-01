@@ -25,16 +25,14 @@ int main() {
 	srand(time(0));
 	system("stty cbreak -echo min 0");
 	while ((o = f(1))) {
-		switch (o) {
-		case 1: case 2: case 3: d(); *a = o > 1 ? f(o - 1) : s(); break;
-		case 4: case 5: d(); *a += o > 4 ? -s() : s(); break;
-		case 6: case 7: *d() += 7 - o ?: -1; break;
-		case 8: *d() = getchar(); break;
-		case 9: case 10: case 11: putchar(f(o - 9) ?: *a); break;
-		case 12: *a = rand() % *a; break;
-		case 13: usleep(20000); break;
-		default: f(2); if (o == 14 || !*a ^ (o > 15)) c = x; break;
-		}
+		if (o < 4) { d(); *a = o > 1 ? f(o - 1) : s(); }
+		else if (o < 6) { d(); *a += o > 4 ? -s() : s(); }
+		else if (o < 8) *d() += 7 - o ?: -1;
+		else if (o < 9) *d() = getchar();
+		else if (o < 12) putchar(f(o - 9) ?: *a);
+		else if (o < 13) *a = rand() % *a;
+		else if (o < 14) usleep(20000);
+		else { f(2); if (o == 14 || !*a ^ (o > 15)) c = x; }
 	}
 	system("stty sane");
 	return 0;
