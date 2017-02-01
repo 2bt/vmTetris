@@ -15,6 +15,9 @@ defines = {}
 
 
 def subst(o):
+	if len(o) == 3 and o[0] == o[2] == "'":
+		print str(ord(o[1]))
+		return str(ord(o[1]))
 	while 1:
 		if o in defines:
 			o = defines[o]
@@ -54,7 +57,7 @@ for l in sys.stdin:
 
 	l = l.strip()
 	c = l.find("#")
-	if c >= 0: l = l[:c]
+	if c >= 0: l = l[:c].strip()
 	if l == "": continue
 
 	w = l.split()
@@ -78,18 +81,25 @@ for l in sys.stdin:
 		if b.isdigit():
 			c = num_to_code(int(b))
 			assert len(c) < 3
-			bin_cmd = [ len(c), a ] + c
+			bin_cmd = [ 1 + len(c), a ] + c
 		else:
-			bin_cmd = [ 3, a, R.index(b) ]
-	elif op in bin_ops: bin_cmd = [ bin_ops.index(op) + 4, R.index(subst(w[1])), R.index(subst(w[2])) ]
-	elif op in mon_ops: bin_cmd = [ mon_ops.index(op) + 6, R.index(subst(w[1])) ]
-
-	elif op in jmp_ops: bin_cmd = [ jmp_ops.index(op) + 12, 0, w[1] ]
-
+			bin_cmd = [ 1, a, R.index(b) ]
+	elif op in bin_ops: bin_cmd = [ 4 + bin_ops.index(op), R.index(subst(w[1])), R.index(subst(w[2])) ]
+	elif op in mon_ops: bin_cmd = [ 6 + mon_ops.index(op), R.index(subst(w[1])) ]
 	elif op == "get": bin_cmd = [ 8, R.index(subst(w[1])) ]
-	elif op == "put": bin_cmd = [ 9 ]
-	elif op == "rnd": bin_cmd = [ 10 ]
-	elif op == "slp": bin_cmd = [ 11 ]
+	elif op == "put":
+		if len(w) == 1:
+			bin_cmd = [ 9 ]
+		else:
+			b = subst(w[1])
+			assert b.isdigit()
+			c = num_to_code(int(b))
+			assert len(c) < 3
+			bin_cmd = [ 9 + len(c) ] + c
+
+	elif op == "rnd": bin_cmd = [ 12 ]
+	elif op == "slp": bin_cmd = [ 13 ]
+	elif op in jmp_ops: bin_cmd = [ 14 + jmp_ops.index(op), 0, w[1] ]
 	else:
 		print "WOOT"
 		bin_cmd = [ int(op) ]
@@ -120,3 +130,7 @@ code = "".join(chr(46 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)
+
+
+for i in range(20): print "%2d" % i, "".join(chr(i + 32 + x) for x in sorted(set(out)))
+

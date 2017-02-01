@@ -55,7 +55,6 @@
 	mov	[X]	10
 	inc	[X]
 
-
 	# T
 	mov	[X]	11
 	mov	[X]	2
@@ -177,33 +176,19 @@ prep2:
 	jnz	prep2
 
 
-
-
-
 	# clear screen
-	mov	C	27
-	put
-	mov	C	91
-	put
-	mov	C	50
-	put
-	mov	C	74
-	put
+	put	27
+	put	'['
+	put	'2'
+	put	'J'
 
 	# hide cursor
-	mov	C	27
-	put
-	mov	C	91
-	put
-	mov	C	63
-	put
-	mov	C	50
-	put
-	mov	C	53
-	put
-	mov	C	108
-	put
-
+	put	27
+	put	'['
+	put	'?'
+	put	'2'
+	put	'5'
+	put	'l'
 
 	jmp	start
 
@@ -213,7 +198,8 @@ mainloop:
 	# save position and rotation
 	mov	POS2	POS
 	mov	ROT2	ROT
-	mov	DOWN	0
+	sub	DOWN	DOWN
+
 	# auto drop
 	dec	DELAY
 	jz	down
@@ -290,7 +276,7 @@ updategrid:
 		mov	C	COLOR_STONE
 		sub	C	A
 		jnz	update3
-		mov	A	0
+		sub	A	A
 		mov	[X]	A
 		dec	X
 	update3:
@@ -388,10 +374,10 @@ start:
 	# multiply by 12
 	mov	C	11
 	mov	STONE	Q
-stoneloop:
-	add	STONE	Q
-	dec	C
-	jnz	stoneloop
+	stoneloop:
+		add	STONE	Q
+		dec	C
+		jnz	stoneloop
 
 	# random rotation
 	mov	ROT	3
@@ -439,7 +425,7 @@ check1:
 
 		# line is full
 		# increase line count
-		mov	S	0
+		sub	S	S
 		digit1:
 			inc	[S]
 			dec	S
@@ -468,6 +454,7 @@ check1:
 			dec	S
 			dec	S
 			dec	A
+			# are we there yet?
 			mov	B	A
 			mov	C	22
 			sub	B	C
@@ -482,16 +469,11 @@ check1:
 nodrop:
 
 	# move cursor to corner
-	mov	B	27
-	put
-	mov	C	91
-	put
-	mov	C	49
-	put
-	mov	C	59
-	put
-	mov	C	72
-	put
+	put	27
+	put	'['
+	put	'1'
+	put	';'
+	put	'H'
 
 
 	# draw grid
@@ -501,23 +483,18 @@ draw1:
 	mov	S	12
 draw2:
 	# pixel
-	mov	B	B
-	put
-	mov	C	91
-	put
-	mov	C	52
-	put
+	put	27
+	put	'['
+	put	'4'
 
 	mov	A	[X]
-	mov	D	48
+	mov	D	'0'
 	add	A	D
 	put
 
-	mov	C	109
-	put
-	mov	C	32
-	put
-	put
+	put	'm'
+	put	32
+	put	32
 
 
 	# next cell
@@ -528,8 +505,7 @@ draw2:
 
 	# next row
 	dec	X
-	mov	C	10
-	put
+	put	10
 
 	dec	T
 	jnz	draw1
@@ -543,44 +519,27 @@ gameover:
 
 
 	# reset color
-	mov	A	27
-	put
-	mov	B	91
-	put
-	mov	D	48
-	put
-	mov	C	109
-	put
+	put	27
+	put	'['
+	put	'0'
+	put	'm'
 
 	# show cursor
-	mov	A	A
-	put
-	mov	B	B
-	put
-	mov	C	63
-	put
-	mov	C	50
-	put
-	mov	C	53
-	put
-	mov	C	104
-	put
+	put	27
+	put	'['
+	put	'?'
+	put	'2'
+	put	'5'
+	put	'h'
 
 	# print number of cleared lines
-	mov	C	76	# L
-	put
-	mov	C	105	# i
-	put
-	mov	C	110	# n
-	put
-	mov	C	101	# e
-	put
-	mov	C	115	# s
-	put
-	mov	C	58	# :
-	put
-	mov	C	32
-	put
+	put	'L'
+	put	'i'
+	put	'n'
+	put	'e'
+	put	's'
+	put	':'
+	put	32
 
 
 	# print digits
@@ -598,5 +557,4 @@ next_digit:
 	put
 	dec	X
 	jnz	next_digit
-	mov	C	10
-	put
+	put	10
