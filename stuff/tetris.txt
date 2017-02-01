@@ -381,18 +381,24 @@ start:
 	mov	POS	STARTPOS
 
 	# select new random stone
-	mov	STONE	7
+	mov	Q	7
 	rnd
 	mov	C	30
-	add	STONE	C
-	mov	C	12
-	mul	STONE	C
+	add	Q	C
+	# multiply by 12
+	mov	C	11
+	mov	STONE	Q
+stoneloop:
+	add	STONE	Q
+	dec	C
+	jnz	stoneloop
+
 	# random rotation
 	mov	ROT	3
 	rnd
-	mov	C	3
-	mul	ROT	C
-
+	mov	C	ROT
+	add	ROT	ROT
+	add	ROT	C
 
 	# check for gameover
 check_gameover:

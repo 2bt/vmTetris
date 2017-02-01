@@ -13,7 +13,7 @@ int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 46; return x; }
 int* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
 int s() { return f(1) < R ? m[x] : m[m[x - R]]; }
 
-enum { END, LD1, LD2, MOV, ADD, SUB, MUL, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
+enum { END, LD1, LD2, MOV, ADD, SUB, INC, DEC, GET, PUT, RND, SLP, JMP, JPZ, JNZ };
 
 int main(int argc, char** argv) {
 
@@ -36,7 +36,6 @@ int main(int argc, char** argv) {
 		case MOV: d(); *a = s(); break;
 		case ADD: d(); *a += s(); break;
 		case SUB: d(); *a -= s(); break;
-		case MUL: d(); *a *= s(); break;
 		case INC: ++*d(); break;
 		case DEC: --*d(); break;
 		case GET: *d() = getchar(); break;
