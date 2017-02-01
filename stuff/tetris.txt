@@ -443,21 +443,19 @@ check1:
 		dec	SPEED
 	notfaster:
 
-
 		# shift all upper lines down
 		mov	S	X
+		mov	C	33
 		mov	A	X
-		mov	C	11
 		sub	A	C
 		shift:
-			mov	[S]	[A]
+			mov	C	22
+			add	C	A
+			mov	[S]	[C]
 			dec	S
 			dec	S
 			dec	A
 			# are we there yet?
-			mov	B	A
-			mov	C	22
-			sub	B	C
 			jnz	shift
 
 	full4:
