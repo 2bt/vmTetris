@@ -13,7 +13,7 @@ int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 46; return x; }
 int* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
 int s() { return f(1) < R ? m[x] : m[m[x - R]]; }
 
-enum { END, MOV, LD1, LD2, ADD, SUB, INC, DEC, GET, PUT, PUT2, PUT3, RND, SLP, JMP, JPZ, JNZ };
+enum { END, MOV, LD1, LD2, ADD, SUB, INC, DEC, GET, PUT, PT1, PT2, RND, SLP, JMP, JNZ, JZ };
 
 int main(int argc, char** argv) {
 
@@ -37,13 +37,13 @@ int main(int argc, char** argv) {
 		case DEC: --*d(); break;
 		case GET: *d() = getchar(); break;
 		case PUT:
-		case PUT2:
-		case PUT3: putchar(f(o - PUT) ?: *a); break;
+		case PT1:
+		case PT2: putchar(f(o - PUT) ?: *a); break;
 		case RND: *a = rand() % *a; break;
 		case SLP: usleep(20000); break;
 		case JMP:
-		case JPZ:
-		case JNZ: f(2); if (o == JMP || !*a ^ (o > JPZ)) c = x; break;
+		case JZ:
+		case JNZ: f(2); if (o == JMP || !*a ^ (o < JZ)) c = x; break;
 		}
 	}
 	system("stty sane");

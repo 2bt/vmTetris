@@ -43,7 +43,7 @@ R += ["[%s]" % r for r in R]
 
 bin_ops = "add", "sub"
 mon_ops = "inc", "dec"
-jmp_ops = "jmp", "jz", "jnz"
+jmp_ops = "jmp", "jnz", "jz"
 
 
 counter		= 0
