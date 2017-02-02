@@ -15,7 +15,7 @@ char* b = "4@0?L192V0M;0M84M0M;0M84M0M;0M84M0M;0M84M0M90M00M84M0M80M:4M0M80M04M"
 "Q58=5W8I9/98_8i8v09Z08C07:8I9/98b/3M06^23679/K8N8N4957=6|598858=6y;<1^8I9/906^"
 "79/K8I9/98m8`8c9/F8z9/G9/L9/C9/Q8h8N091/5M=8B59=8749592M6759=8D88.";
 
-int m[512], c, *a, o, x;
+int m[444], c, *a, o, x;
 
 int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 46; return x; }
 int* d() { return a = &m[f(1) < 20 ? x : m[x - 20]++]; }
