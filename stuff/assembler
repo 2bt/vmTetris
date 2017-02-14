@@ -86,20 +86,20 @@ for l in sys.stdin:
 			bin_cmd = [ 1, a, R.index(b) ]
 	elif op in bin_ops: bin_cmd = [ 4 + bin_ops.index(op), R.index(subst(w[1])), R.index(subst(w[2])) ]
 	elif op in mon_ops: bin_cmd = [ 6 + mon_ops.index(op), R.index(subst(w[1])) ]
-	elif op == "get": bin_cmd = [ 8, R.index(subst(w[1])) ]
+	elif op in jmp_ops: bin_cmd = [ 8 + jmp_ops.index(op), 0, w[1] ]
+	elif op == "get": bin_cmd = [ 11, R.index(subst(w[1])) ]
 	elif op == "put":
 		if len(w) == 1:
-			bin_cmd = [ 9 ]
+			bin_cmd = [ 12 ]
 		else:
 			b = subst(w[1])
 			assert b.isdigit()
 			c = num_to_code(int(b))
 			assert len(c) < 3
-			bin_cmd = [ 9 + len(c) ] + c
+			bin_cmd = [ 12 + len(c) ] + c
 
-	elif op == "rnd": bin_cmd = [ 12 ]
-	elif op == "slp": bin_cmd = [ 13 ]
-	elif op in jmp_ops: bin_cmd = [ 14 + jmp_ops.index(op), 0, w[1] ]
+	elif op == "rnd": bin_cmd = [ 15 ]
+	elif op == "slp": bin_cmd = [ 16 ]
 	else:
 		print "WOOT"
 		bin_cmd = [ int(op) ]
