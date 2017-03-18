@@ -11,6 +11,6 @@ m[444],c,*a,o,x;f(l){for(x=0;l--;)x=x*80+"4@0?L192V0M;0M84M0M;0M84M0M;0M84M0M;0"
 "N;N495776|59;85876y>61^;I</906^:</K;I</9;m;`;c</F;z</G</L</C</Q;h;N091/5M78B59"
 "78749592M6:5978D;8."[c++]-46;return x;}s(){return m[f(1)<20?x:m[x-20]];}*d(){//
 return a=&m[f(1)<20?x:m[x-20]++];}main(){system("stty cbreak -echo min 0");srand
-(time(0));while((o=f(1)))o<4?d(),*a=--o?f(o):s():o<6?d(),*a+=o>4?-s():s():o<8?*d
-()-=o-7?:1:o<11?f(2),c=o<9||!*a^o%2?x:c:o<12?*d()=getchar():o<15?putchar(f(o-12)
-?:*a):o<16?*a=rand()%*a:usleep(20000);system("stty sane");return 0;}//twobit2017
+(time(0));while(o=f(1))o<4?d(),*a=--o?f(o):s():o<6?d(),*a+=o>4?-s():s():o<8?*d()
+-=o-7?:1:o<11?f(2),c=o<9||!*a^o%2?x:c:o<12?*d()=getchar():o<15?putchar(f(o-12)?:
+*a):o<16?*a=rand()%*a:usleep(20000);system("stty sane");return 0;}// twobit 2017
