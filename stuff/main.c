@@ -13,12 +13,11 @@ int f(int l) { for (x = 0; l--;) x = x * 80 + b[c++] - 46; return x; }
 int* d() { return a = f(1) < R ? m + x : m + m[x - R]++; }
 int s() { return f(1) < R ? m[x] : m[m[x - R]]; }
 
-enum { END, MOV, LD1, LD2, ADD, SUB, INC, DEC, JMP, JNZ, JZ, GET, PUT, PT1, PT2, RND, SLP, };
+enum { END, MOV, LD1, LD2, SUB, ADD, DEC, INC, JMP, JNZ, JZ, GET, PUT, PT1, PT2, RND, SLP, };
 
-int main(int argc, char** argv) {
+int main() {
 
-	assert(argc == 2);
-	FILE* v = fopen(argv[1], "r");
+	FILE* v = fopen("code", "r");
 	assert(v);
 	fread(b, 1, sizeof(b), v);
 	fclose(v);
@@ -31,10 +30,10 @@ int main(int argc, char** argv) {
 		case MOV:
       case LD1:
 		case LD2: d(); *a = o > 1 ? f(o - 1) : s(); break;
-		case ADD: d(); *a += s(); break;
 		case SUB: d(); *a -= s(); break;
-		case INC: ++*d(); break;
+		case ADD: d(); *a += s(); break;
 		case DEC: --*d(); break;
+		case INC: ++*d(); break;
 		case JMP:
 		case JZ:
 		case JNZ: f(2); if (o == JMP || !*a ^ (o < JZ)) c = x; break;

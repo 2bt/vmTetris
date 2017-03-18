@@ -41,8 +41,8 @@ R = ["r%d" % x for x in range(R)]
 R += ["[%s]" % r for r in R]
 
 
-bin_ops = "add", "sub"
-mon_ops = "inc", "dec"
+bin_ops = "sub", "add"
+mon_ops = "dec", "inc"
 jmp_ops = "jmp", "jnz", "jz"
 
 
@@ -52,7 +52,7 @@ txt_cmds	= []
 labels		= {}
 
 
-for l in sys.stdin:
+for l in open("tetris.txt"):
 	print l[:-1]
 
 	l = l.strip()
