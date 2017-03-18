@@ -9,8 +9,8 @@ m[444],c,*a,o,x;f(l){for(x=0;l--;)x=x*80+"4@0?L192V0M;0M84M0M;0M84M0M;0M84M0M;0"
 "933587X5875A09Z08C4907803805335M75j53495775_/3376c3774K5705835K76=0K.65z/..76E"
 "5?/7905O/3933505D253/KI57575376Q5875W;I</9;_;i;v09Z08C07:;I</9;b/3M06^236:</K;"
 "N;N495776|59;85876y>61^;I</906^:</K;I</9;m;`;c</F;z</G</L</C</Q;h;N091/5M78B59"
-"78749592M6:5978D;8."[c++]-46;return x;}s(){return m[f(1)<20?x:m[x-20]];}*d(){//
-return a=&m[f(1)<20?x:m[x-20]++];}main(){system("stty cbreak -echo min 0");srand
-(time(0));while(o=f(1))o<4?d(),*a=--o?f(o):s():o<6?d(),*a+=o>4?-s():s():o<8?*d()
+"78749592M6:5978D;8."[c++]-46;return x;}*d(){return a=&m[f(1)<20?x:m[x-20]++];}s
+(){return m[f(1)<20?x:m[x-20]];}main(){system("stty cbreak -echo min 0");for(///
+srand(time(0));o=f(1);)o<4?d(),*a=--o?f(o):s():o<6?d(),*a+=o>4?-s():s():o<8?*d()
 -=o-7?:1:o<11?f(2),c=o<9||!*a^o%2?x:c:o<12?*d()=getchar():o<15?putchar(f(o-12)?:
-*a):o<16?*a=rand()%*a:usleep(20000);system("stty sane");return 0;}// twobit 2017
+*a):o<16?*a=rand()%*a:usleep(20000);system("stty sane");}/////////// twobit 2017

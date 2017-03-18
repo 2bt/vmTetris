@@ -22,9 +22,8 @@ int* d() { return a = &m[f(1) < 20 ? x : m[x - 20]++]; }
 int s() { return m[f(1) < 20 ? x : m[x - 20]]; }
 
 int main() {
-	srand(time(0));
 	system("stty cbreak -echo min 0");
-	while ((o = f(1)))
+	for (srand(time(0)); o = f(1);)
 		o < 4 ? d(), *a = --o ? f(o) : s():
 		o < 6 ? d(), *a += o > 4 ? -s() : s():
 		o < 8 ? *d() -= o - 7 ?: 1:
@@ -34,5 +33,4 @@ int main() {
 		o < 16 ? *a = rand() % *a:
 		usleep(20000);
 	system("stty sane");
-	return 0;
 }
