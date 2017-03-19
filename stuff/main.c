@@ -16,7 +16,7 @@ int main(int o, int _) {
 	system("stty cbreak -echo min 0");
 	for (srand(_); o = f();)
 		--o < 24 ? a = &m[f() < 20 ? x : m[x - 20]++],
-			*a = !(o / 14) * *a + (o / 8 ? 1 : -1) * (
+			*a = !(o / 14) * *a + (o / 7 ? 1 : -1) * (
 			(x = o % 7) < 3 ? x:
 			x < 4 ? f():
 			x < 5 ? m[f() < 20 ? x : m[x - 20]]:
