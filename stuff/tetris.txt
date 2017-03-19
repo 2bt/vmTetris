@@ -44,21 +44,13 @@
 
 
 	# square
-	mov	[X]	13
-	mov	[X]	10
-	mov	[X]	1
-
-	mov	[X]	13
-	mov	[X]	10
-	mov	[X]	1
-
-	mov	[X]	13
-	mov	[X]	10
-	mov	[X]	1
-
-	mov	[X]	13
-	mov	[X]	10
-	mov	[X]	1
+	mov	A	4
+	squareloop:
+		mov	[X]	13
+		mov	[X]	10
+		mov	[X]	1
+		sub	A	1
+		jnz	squareloop
 
 	# T
 	mov	[X]	11
@@ -78,21 +70,16 @@
 	mov	[X]	10
 
 	# I
-	mov	[X]	1
-	mov	[X]	22
-	mov	[X]	11
-
-	mov	[X]	11
-	mov	[X]	2
-	mov	[X]	1
-
-	mov	[X]	1
-	mov	[X]	22
-	mov	[X]	11
-
-	mov	[X]	11
-	mov	[X]	2
-	mov	[X]	1
+	add	A	2
+	iloop:
+		mov	[X]	1
+		mov	[X]	22
+		mov	[X]	11
+		mov	[X]	11
+		mov	[X]	2
+		mov	[X]	1
+		sub	A	1
+		jnz	iloop
 
 	# L
 	mov	[X]	1
@@ -129,38 +116,28 @@
 	mov	[X]	11
 
 	# Z
-	add	X	1
-	mov	[X]	1
-	mov	[X]	12
-
-	mov	[X]	2
-	mov	[X]	11
-	mov	[X]	10
-
-	add	X	1
-	mov	[X]	1
-	mov	[X]	12
-
-	mov	[X]	2
-	mov	[X]	11
-	mov	[X]	10
+	mov	A	2
+	zloop:
+		add	X	1
+		mov	[X]	1
+		mov	[X]	12
+		mov	[X]	2
+		mov	[X]	11
+		mov	[X]	10
+		sub	A	1
+		jnz	zloop
 
 	# S
-	mov	[X]	1
-	mov	[X]	1
-	mov	[X]	9
-
-	mov	[X]	1
-	mov	[X]	12
-	mov	[X]	11
-
-	mov	[X]	1
-	mov	[X]	1
-	mov	[X]	9
-
-	mov	[X]	1
-	mov	[X]	12
-	mov	[X]	11
+	mov	A	2
+	sloop:
+		mov	[X]	1
+		mov	[X]	1
+		mov	[X]	9
+		mov	[X]	1
+		mov	[X]	12
+		mov	[X]	11
+		sub	A	1
+		jnz	sloop
 
 	# prepare grid
 	mov	X	PREGRID
