@@ -162,12 +162,12 @@ prep2:
 	put	'J'
 
 	# hide cursor
-	put	27
-	put	'['
-	put	'?'
-	put	'2'
-	put	'5'
-	put	'l'
+#	put	27
+#	put	'['
+#	put	'?'
+#	put	'2'
+#	put	'5'
+#	put	'l'
 
 	jmp	start
 
@@ -190,7 +190,6 @@ read:
 	get	T
 	add	T	1
 	jnz	read
-
 
 
 	# quit
@@ -461,7 +460,6 @@ draw2:
 	sub	T	1
 	jnz	draw1
 
-
 	# sleep and loop
 	slp
 	jmp	mainloop
@@ -475,13 +473,13 @@ gameover:
 	put	'0'
 	put	'm'
 
-	# show cursor
-	put	27
-	put	'['
-	put	'?'
-	put	'2'
-	put	'5'
-	put	'h'
+#	# show cursor
+#	put	27
+#	put	'['
+#	put	'?'
+#	put	'2'
+#	put	'5'
+#	put	'h'
 
 	# print number of cleared lines
 	put	'L'
