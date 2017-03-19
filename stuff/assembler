@@ -2,7 +2,7 @@
 
 
 # code word range
-M = 80
+M = 70
 
 # number of registers
 # can be M / 2
@@ -138,14 +138,16 @@ for txt, c in zip(txt_cmds, bin_cmds):
 
 out += [0]
 
+for i in range(20):
+	print "%2d" % i, "".join(chr(i + 32 + x) for x in sorted(set(out))),
+	c = "".join(chr(i + 32 + x) for x in out)
+	print c.count("\\")
+
 print out
-code = "".join(chr(46 + x) for x in out)
+code = "".join(chr(49 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)
-
-
-for i in range(20): print "%2d" % i, "".join(chr(i + 32 + x) for x in sorted(set(out)))
 
 
 print 'char* b = "%s"' % code[:68]; code = code[68:]
