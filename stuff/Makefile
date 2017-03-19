@@ -5,7 +5,7 @@ vm: main.c Makefile
 	gcc main.c -g -o vm
 
 
-code: test.txt tetris.txt assembler
+code: tetris.txt assembler
 	./assembler
 
 

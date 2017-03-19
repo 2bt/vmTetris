@@ -7,7 +7,7 @@ char b[1000];
 
 int m[444], c, x;
 
-int f() { return x = b[c++] - 49; }
+int f() { return x = b[c++] - 45; }
 
 int main(int o, int a) {
 	FILE* v = fopen("code", "r");
@@ -16,15 +16,16 @@ int main(int o, int a) {
 
 	system("stty cbreak -echo min 0");
 	for (srand(a); o = f();)
-		--o < 24 ? m[a = f() < 20 ? x : m[x - 20]++] *= o < 14,
-			a = m[a] += (o > 6 ?: -1) * (
-			(x = o % 7) < 3 ? x:
+		--o < 42 ? m[a = o % 2 ? f() < 20 ? x : m[x - 20]++ : m[ 4 ]++] *= o < 28,
+			a = m[a] += (o > 13 ?: -1) * (
+			(x = o / 2 % 7) < 3 ? x:
 			x < 4 ? f():
 			x < 5 ? m[f() < 20 ? x : m[x - 20]]:
 			x < 6 ? getchar():
 			rand() % f()):
-		o < 60 ? f(), c = o < 40 | !a ^ o / 50 ? x + o % 10 * 70 : c:
-		o < 63 ? putchar(o % 3 ? o % 2 * 70 + f() : a):
+
+		o < 45 ? putchar(o % 3 ? o % 2 * 74 + f() : a):
+		o < 72 ? f(), c = o < 54 | !a ^ o / 63 ? x + o % 9 * 74 : c:
 		usleep(20000);
 	system("stty sane");
 }

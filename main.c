@@ -1,14 +1,13 @@
-m[444],c,x;main(o,a){for(srand(a),system("stty cbreak -echo min 0");o=f();--o<24
-?m[a=f()<20?x:m[x-20]++]*=o<14,a=m[a]+=(o>6?:-1)*((x=o%7)<3?x:x<4?f():x<5?m[f()<
-20?x:m[x-20]]:x<6?getchar():rand()%f()):o<60?f(),c=o<40|!a^o/50?x+o%10*70:c:o<63
-?putchar(o%3?o%2*70+f():a):usleep(20000));system("stty sane");}f(){return x=c++[
-"ACCBOC6U<<;36d9CP>CP;APCP>CP;APCP>CP;APCP>CP;APCP<BPCP;APCP;CP=APCP;BPAPCP=CP;"
-"APCPGCP<CP<BPAPAPCPGCP<CP<BPAPAPCPGAPCP<BPCP::<APCPGBPCP:BPAPCPFAP:<CP<BPAPAPC"
-"PFCP<BPCP<:<APCP=BPCP<CP;:<APCP=BPCP<CP;APAPCP:APCP=CP<APAPCP:APCP=CP<C<GC;GCP"
-"8<<;3;gGC;=CP83;gTpLoFpco5pLoFpppcpfoWVbD>=D@?@D3C^JD6;E;:;h756McF56XhR<=<ADDC"
-"B36hX:=36h^3=56ehk5?:^k<?=C75C<GC;HC:=D6PC85686iB@6@P3<D8=<8=68<_lD9A=9?D8=C54"
-"=8M68<_l=8<:935iYVN96`IC8K68=j:D8?68@cF9D`AC76D=>D?@TnDP73<:<3:i13<3;htC86678l"
-"UC=KF58<5OC8<DA5=A538jqF?4D8?=?8=?8C<GC;GD6P:<566cF3;kDC<]C;F:<C:;C6;C8668Pkj3"
-"6:<3:k`96lQ5J:at36<J;91l>3BD:<D6:56<DNJ4:56HlA3;kXpLoFpbplo3C<]C;FC:=pLoFpeD6P"
-"<6anoXpQpQ:<3:lh3<p;3;leqSqpLoFpaoXpLoFpppcpfoSo7oToYoPo^pkpQC<4D8Pmt3<mk:<3<<"
-"Pan3<mvp;1"]-49;}////////////////////////////////////////////////////////twobit
+m[444],c,x;main(o,a){for(system("stty cbreak -echo min 0"),srand(a);o=f();--o<42
+?m[a=o%2?f()<20?x:m[x-20]++:m[4]++]*=o<28,a=m[a]+=(o>13?:-1)*((x=o/2%7)<3?x:x<4?
+f():x<5?m[f()<20?x:m[x-20]]:x<6?getchar():rand()%f()):o<45?putchar(o%3?o%2*74+f(
+):a):o<72?f(),c=o<54|!a^o/63?x+o%9*74:c:usleep(20000);)system("stty sane");}f(){
+return x=c++["M?Q>KQ3QC1713m5P:P7LP:P7LP:P7LP:P7LP8NP7LP7P9LP7NLP9P7LPCP8P8NLLP"
+"CP8P8NLLPCLP8NP6?1LPCNP6NLPBL?1P8NLLPBP8NP8?1LP9NP8P7?1LP9NP8P7LLP6LP9P8LLP6LP"
+"9P8Q1CQ8CP4C1718o1Q89P418o=ZHY>Z_Y-ZHY>ZlZ_ZbYO`<S:9S<;K@1?g.S38U8?8oe53Ik^53T"
+"p6C98M@S?>13p<?913pB1953apO5;6gOC;9Q41Q1CQ8DQ79S3EQ51753pkK3J11S59C59751hKS6=E"
+"6;S59Q20E5J751hKE51?612q8_r=3hnQ5G759q_S5;75<k^=@hfQ42S9:S;<^RR411?117p[1118pX"
+"Q52745sqQ9GW24C2KQ58S=2E=215rKW;0S5;E;5E;5Q1CQ8CS3E?1532k^18rdQ1YQ8B?1Q77Q37Q5"
+"275Es@13?117s6=3sm5G6jJ13CG7=-sZ1>S71S37538SKG3753Ds]18s.ZHY>Z^ZhZuQ1YQ8BQ79ZH"
+"Y>ZaS3EC3]XYPZMZM?117t:11Z718t7v]YZHY>Z]YPZHY>ZlZ_ZbYKY/YLYQYHYVZgZMQ10S5EuB11"
+"u9?111B]X11uDZ7-"]-45;}/////////////////////twobit

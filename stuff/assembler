@@ -2,7 +2,7 @@
 
 
 # code word range
-M = 70
+M = 74
 
 # number of registers
 # can be M / 2
@@ -16,7 +16,6 @@ defines = {}
 
 def subst(o):
 	if len(o) == 3 and o[0] == o[2] == "'":
-		print str(ord(o[1]))
 		return str(ord(o[1]))
 	while 1:
 		if o in defines:
@@ -52,7 +51,6 @@ labels		= {}
 
 
 for l in open("tetris.txt"):
-#for l in open("test.txt"):
 	print l[:-1]
 
 	l = l.strip()
@@ -77,6 +75,7 @@ for l in open("tetris.txt"):
 	op = w[0]
 	if op in bin_ops:
 		i = 1 + bin_ops.index(op) * 7
+		special = subst(w[1]) == "[r4]" # [r4] is special
 		a = R.index(subst(w[1]))
 		b = subst(w[2])
 		if b.isdigit():
@@ -90,27 +89,35 @@ for l in open("tetris.txt"):
 		else:
 			i += 4
 			c = [R.index(b)]
-		bin_cmd = [ i, a ] + c
+		if special:
+			bin_cmd = [ i * 2 - 1 ] + c
+		else:
+			bin_cmd = [ i * 2, a ] + c
 
-	elif op == "get": bin_cmd = [ 20, R.index(subst(w[1])) ]
+	elif op == "get": bin_cmd = [ 40, R.index(subst(w[1])) ]
+
 	elif op == "rnd":
 		b = subst(w[2])
 		assert b.isdigit()
 		c = num_to_code(int(b))
 		assert len(c) == 1
-		bin_cmd = [ 21, R.index(subst(w[1])) ] + c
-	elif op in jmp_ops: bin_cmd = [ 31 + jmp_ops.index(op) * 10, w[1] ]
+		bin_cmd = [ 42, R.index(subst(w[1])) ] + c
+
 	elif op == "put":
 		if len(w) == 1:
-			bin_cmd = [ 61 ]
+			bin_cmd = [ 43 ]
 		else:
 			b = subst(w[1])
 			assert b.isdigit()
 			c = num_to_code(int(b))
 			assert len(c) < 3
 			if len(c) == 2: assert c[0] == 1
-			bin_cmd = [64 - len(c)] + c[-1:]
-	elif op == "slp": bin_cmd = [ 64 ]
+			bin_cmd = [ 46 - len(c), c[-1] ]
+
+	elif op in jmp_ops: bin_cmd = [ 46 + jmp_ops.index(op) * 9, w[1] ]
+
+	elif op == "slp": bin_cmd = [ 73 ]
+
 	else:
 		print "WOOT"
 		bin_cmd = [ int(op) ]
@@ -129,7 +136,7 @@ out = []
 for txt, c in zip(txt_cmds, bin_cmds):
 	if c[-1] in labels:
 		l = ([0, 0] + num_to_code(labels[c[-1]]))[-2:]
-		assert l[0] < 10 # label must be small enough
+		assert l[0] < 9 # label must be small enough
 		c[0] += l[0]
 		c[1] = l[1]
 	print txt, "| %03x:" % counter, " ".join("%x" % c for c in c)
@@ -138,13 +145,13 @@ for txt, c in zip(txt_cmds, bin_cmds):
 
 out += [0]
 
-for i in range(20):
-	print "%2d" % i, "".join(chr(i + 32 + x) for x in sorted(set(out))),
-	c = "".join(chr(i + 32 + x) for x in out)
+for i in range(32, 52):
+	print "%2d" % i, "".join(chr(i + x) for x in sorted(set(out))),
+	c = "".join(chr(i + x) for x in out)
 	print c.count("\\")
 
 print out
-code = "".join(chr(49 + x) for x in out)
+code = "".join(chr(45 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)

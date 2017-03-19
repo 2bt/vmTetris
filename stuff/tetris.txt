@@ -12,14 +12,14 @@
 	define	COLOR_FILL	5
 
 	# registers
-	define	Q		r4
-	define	A		r5
-	define	B		r6
-	define	C		r7
-	define	D		r8
-	define	S		r9
-	define	T		r10
-	define	X		r11
+	define	X		r4
+	define	Q		r5
+	define	A		r6
+	define	B		r7
+	define	C		r8
+	define	D		r9
+	define	S		r10
+	define	T		r11
 	define	POS		r12
 	define	POS2		r13
 	define	ROT		r14
