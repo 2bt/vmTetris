@@ -426,15 +426,12 @@ check1:
 
 		# shift all upper lines down
 		mov	S	X
-		mov	A	X
-		sub	A	33
 		shift:
-			mov	C	22
-			add	C	A
-			mov	[S]	[C]
-			sub	S	1
-			sub	S	1
-			sub	A	1
+			mov	A	S
+			sub	A	11
+			mov	[S]	[A]
+			sub	S	2
+			sub	A	23
 			# are we there yet?
 			jnz	shift
 
