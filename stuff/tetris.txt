@@ -30,7 +30,7 @@
 	define	DOWN		r19
 
 
-	inc	DELAY
+	mov	DELAY	1
 	mov	SPEED	30
 
 
@@ -41,65 +41,65 @@
 	# square
 	mov	[X]	13
 	mov	[X]	10
-	inc	[X]
+	mov	[X]	1
 
 	mov	[X]	13
 	mov	[X]	10
-	inc	[X]
+	mov	[X]	1
 
 	mov	[X]	13
 	mov	[X]	10
-	inc	[X]
+	mov	[X]	1
 
 	mov	[X]	13
 	mov	[X]	10
-	inc	[X]
+	mov	[X]	1
 
 	# T
 	mov	[X]	11
 	mov	[X]	2
 	mov	[X]	10
 
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	10
 	mov	[X]	12
 
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	10
 	mov	[X]	2
 
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	12
 	mov	[X]	10
 
 	# I
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	22
 	mov	[X]	11
 
 	mov	[X]	11
 	mov	[X]	2
-	inc	[X]
+	mov	[X]	1
 
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	22
 	mov	[X]	11
 
 	mov	[X]	11
 	mov	[X]	2
-	inc	[X]
+	mov	[X]	1
 
 	# L
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	22
-	inc	[X]
+	mov	[X]	1
 
 	mov	[X]	11
 	mov	[X]	2
 	mov	[X]	9
 
-	inc	X
-	inc	[X]
+	add	X	1
+	mov	[X]	1
 	mov	[X]	22
 
 	mov	[X]	2
@@ -107,16 +107,16 @@
 	mov	[X]	2
 
 	# J
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	21
-	inc	[X]
+	mov	[X]	1
 
-	inc	X
+	add	X	1
 	mov	[X]	11
 	mov	[X]	2
 
-	inc	[X]
-	inc	[X]
+	mov	[X]	1
+	mov	[X]	1
 	mov	[X]	21
 
 	mov	[X]	11
@@ -124,16 +124,16 @@
 	mov	[X]	11
 
 	# Z
-	inc	X
-	inc	[X]
+	add	X	1
+	mov	[X]	1
 	mov	[X]	12
 
 	mov	[X]	2
 	mov	[X]	11
 	mov	[X]	10
 
-	inc	X
-	inc	[X]
+	add	X	1
+	mov	[X]	1
 	mov	[X]	12
 
 	mov	[X]	2
@@ -141,38 +141,35 @@
 	mov	[X]	10
 
 	# S
-	inc	[X]
-	inc	[X]
+	mov	[X]	1
+	mov	[X]	1
 	mov	[X]	9
 
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	12
 	mov	[X]	11
 
-	inc	[X]
-	inc	[X]
+	mov	[X]	1
+	mov	[X]	1
 	mov	[X]	9
 
-	inc	[X]
+	mov	[X]	1
 	mov	[X]	12
 	mov	[X]	11
-
-
 
 	# prepare grid
 	mov	X	PREGRID
 	mov	T	22
 prep1:
 	mov	[X]	COLOR_FRAME
-	mov	C	10
-	add	X	C
-	dec	T
+	add	X	10
+	sub	T	1
 	jnz	prep1
 
 	mov	T	12
 prep2:
 	mov	[X]	COLOR_FRAME
-	dec	T
+	sub	T	1
 	jnz	prep2
 
 
@@ -198,10 +195,10 @@ mainloop:
 	# save position and rotation
 	mov	POS2	POS
 	mov	ROT2	ROT
-	sub	DOWN	DOWN
+	mov	DOWN	0
 
 	# auto drop
-	dec	DELAY
+	sub	DELAY	1
 	jz	down
 
 
@@ -209,46 +206,40 @@ mainloop:
 read:
 	mov	A	T
 	get	T
-	inc	T
+	add	T	1
 	jnz	read
 
 
 
 	# quit
-	mov	C	28
-	sub	A	C
+	sub	A	28
 	jz	gameover
 
 		# move
-		mov	C	39
-		sub	A	C
+		sub	A	39
 		jnz	nodown
 	down:
-		mov	C	11
-		add	POS	C
+		add	POS	11
 		# remember that we're moving down
-		inc	DOWN
+		mov	DOWN	1
 		# reset delay
 		mov	DELAY	SPEED
 	nodown:
-		dec	A
+		sub	A	1
 		jnz	noleft
-		inc	POS
+		add	POS	1
 	noleft:
-		dec	A
+		sub	A	1
 		jnz	noright
-		dec	POS
+		sub	POS	1
 	noright:
 
 		# rotate
-		mov	C	52
-		sub	A	C
+		sub	A	52
 		jnz	norot
-		mov	D	9
-		sub	ROT	D
+		sub	ROT	9
 		jz	norot
-		mov	D	12
-		add	ROT	D
+		add	ROT	12
 	norot:
 
 
@@ -271,15 +262,14 @@ updategrid:
 		mov	C	COLOR_STONE
 		sub	C	A
 		jnz	update3
-		sub	A	A
+		mov	A	0
 		mov	[X]	A
-		dec	X
+		sub	X	1
 	update3:
 
 		# check if the 4 stone cells occupy the current cell
 		mov	C	POS
-		mov	D	12
-		add	C	D
+		add	C	12
 		sub	C	X
 		jz	occupy
 
@@ -295,8 +285,8 @@ updategrid:
 		sub	C	X
 		jz	occupy
 		add	C	X
-		inc	D
-		dec	Q
+		add	D	1
+		sub	Q	1
 		jnz	occupycheck
 		jmp	nooccupy
 
@@ -334,17 +324,17 @@ updategrid:
 	nocollision:
 		# write cell
 		mov	[X]	B
-		dec	X
+		sub	X	1
 
 	nooccupy:
-		inc	X
+		add	X	1
 
-		dec	S
+		sub	S	1
 		jnz	update2
 
-		dec	X
+		sub	X	1
 
-		dec	T
+		sub	T	1
 		jnz	update1
 	# end update grid
 
@@ -362,36 +352,32 @@ start:
 	mov	POS	STARTPOS
 
 	# select new random stone
-	mov	Q	7
-	rnd
-	mov	C	30
-	add	Q	C
+	rnd	Q	7
+	add	Q	30
 	# multiply by 12
 	mov	C	11
 	mov	STONE	Q
 	stoneloop:
 		add	STONE	Q
-		dec	C
+		sub	C	1
 		jnz	stoneloop
 
 	# random rotation
-	mov	ROT	3
-	rnd
+	rnd	ROT	3
 	mov	C	ROT
-	add	ROT	ROT
+	add	ROT	C
 	add	ROT	C
 
 	# check for gameover
 check_gameover:
 	mov	X	PREGRID
 	mov	T	X
-	mov	C	COLOR_FILL
 check1:
 	mov	A	[X]
-	inc	X
-	sub	A	C
+	add	X	1
+	sub	A	COLOR_FILL
 	jz	gameover
-	dec	T
+	sub	T	1
 	jnz	check1
 
 
@@ -401,7 +387,7 @@ check1:
 	mov	X	GRID
 	mov	T	21
 	full1:
-		inc	X
+		add	X	1
 		mov	S	10
 		mov	A	10
 
@@ -409,10 +395,10 @@ check1:
 			mov	C	COLOR_FILL
 			sub	C	[X]
 			jnz	full3
-			dec	A
+			sub	A	1
 		full3:
-			inc	X
-			dec	S
+			add	X	1
+			sub	S	1
 			jnz	full2
 
 		mov	A	A
@@ -420,10 +406,10 @@ check1:
 
 		# line is full
 		# increase line count
-		sub	S	S
+		mov	S	0
 		digit1:
-			inc	[S]
-			dec	S
+			add	[S]	1
+			sub	S	1
 			mov	C	10
 			sub	C	[S]
 			jnz	digit2
@@ -435,26 +421,25 @@ check1:
 		# increae speed
 		mov	r0	r0
 		jnz	notfaster
-		dec	SPEED
+		sub	SPEED	1
 	notfaster:
 
 		# shift all upper lines down
 		mov	S	X
-		mov	C	33
 		mov	A	X
-		sub	A	C
+		sub	A	33
 		shift:
 			mov	C	22
 			add	C	A
 			mov	[S]	[C]
-			dec	S
-			dec	S
-			dec	A
+			sub	S	1
+			sub	S	1
+			sub	A	1
 			# are we there yet?
 			jnz	shift
 
 	full4:
-		dec	T
+		sub	T	1
 		jnz	full1
 
 
@@ -481,8 +466,7 @@ draw2:
 	put	'4'
 
 	mov	A	[X]
-	mov	D	'0'
-	add	A	D
+	add	A	'0'
 	put
 
 	put	'm'
@@ -491,16 +475,16 @@ draw2:
 
 
 	# next cell
-	inc	X
-	dec	S
+	add	X	1
+	sub	S	1
 	jnz	draw2
 
 
 	# next row
-	dec	X
+	sub	X	1
 	put	10
 
-	dec	T
+	sub	T	1
 	jnz	draw1
 
 
@@ -541,14 +525,14 @@ gameover:
 skip_zero:
 	mov	C	[X]
 	jnz	skip_done
-	dec	X
+	sub	X	1
 	jnz	skip_zero
 skip_done:
-	inc	X
+	add	X	1
 next_digit:
-	dec	X
+	sub	X	1
 	add	[X]	D
 	put
-	dec	X
+	sub	X	1
 	jnz	next_digit
 	put	10

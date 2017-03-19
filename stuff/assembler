@@ -41,9 +41,8 @@ R = ["r%d" % x for x in range(R)]
 R += ["[%s]" % r for r in R]
 
 
-bin_ops = "sub", "add"
-mon_ops = "dec", "inc"
-jmp_ops = "jmp", "jnz", "jz"
+bin_ops = "sub", "add", "mov"
+jmp_ops = "jmp", "jz", "jnz"
 
 
 counter		= 0
@@ -53,6 +52,7 @@ labels		= {}
 
 
 for l in open("tetris.txt"):
+#for l in open("test.txt"):
 	print l[:-1]
 
 	l = l.strip()
@@ -75,31 +75,41 @@ for l in open("tetris.txt"):
 		continue
 
 	op = w[0]
-	if op == "mov":
+	if op in bin_ops:
+		i = 1 + bin_ops.index(op) * 7
 		a = R.index(subst(w[1]))
 		b = subst(w[2])
 		if b.isdigit():
 			c = num_to_code(int(b))
 			assert len(c) < 3
-			bin_cmd = [ 1 + len(c), a ] + c
+			if len(c) == 1 and c[0] in [1, 2]:
+				i += c[0]
+				c = []
+			else:
+				i += 2 + len(c)
 		else:
-			bin_cmd = [ 1, a, R.index(b) ]
-	elif op in bin_ops: bin_cmd = [ 4 + bin_ops.index(op), R.index(subst(w[1])), R.index(subst(w[2])) ]
-	elif op in mon_ops: bin_cmd = [ 6 + mon_ops.index(op), R.index(subst(w[1])) ]
-	elif op in jmp_ops: bin_cmd = [ 8 + jmp_ops.index(op), 0, w[1] ]
-	elif op == "get": bin_cmd = [ 11, R.index(subst(w[1])) ]
+			i += 5
+			c = [R.index(b)]
+		bin_cmd = [ i, a ] + c
+
+	elif op == "get": bin_cmd = [ 15, R.index(subst(w[1])) ]
+	elif op == "rnd":
+		b = subst(w[2])
+		assert b.isdigit()
+		c = num_to_code(int(b))
+		assert len(c) == 1
+		bin_cmd = [ 21, R.index(subst(w[1])) ] + c
+	elif op in jmp_ops: bin_cmd = [ 22 + jmp_ops.index(op), 0, w[1] ]
 	elif op == "put":
 		if len(w) == 1:
-			bin_cmd = [ 12 ]
+			bin_cmd = [ 25 ]
 		else:
 			b = subst(w[1])
 			assert b.isdigit()
 			c = num_to_code(int(b))
 			assert len(c) < 3
-			bin_cmd = [ 12 + len(c) ] + c
-
-	elif op == "rnd": bin_cmd = [ 15 ]
-	elif op == "slp": bin_cmd = [ 16 ]
+			bin_cmd = [ 25 + len(c) ] + c
+	elif op == "slp": bin_cmd = [ 28 ]
 	else:
 		print "WOOT"
 		bin_cmd = [ int(op) ]
@@ -133,4 +143,8 @@ file("code", "w").write(code)
 
 
 for i in range(20): print "%2d" % i, "".join(chr(i + 32 + x) for x in sorted(set(out)))
+
+
+print 'char* b = "%s"' % code[:68]; code = code[68:]
+while code: print '"%s"' % code[:78]; code = code[78:]
 
