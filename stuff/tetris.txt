@@ -35,7 +35,12 @@
 
 
 	# load stone data
-	mov	X	360
+	#mov	X	360
+	mov	A	36
+	xaddloop:
+		add	X	10
+		sub	A	1
+		jnz	xaddloop
 
 
 	# square
@@ -263,7 +268,7 @@ updategrid:
 		sub	C	A
 		jnz	update3
 		mov	A	0
-		mov	[X]	A
+		mov	[X]	0
 		sub	X	1
 	update3:
 
@@ -498,8 +503,7 @@ gameover:
 	# reset color
 	put	27
 	put	'['
-	mov	D	'0'
-	put
+	put	'0'
 	put	'm'
 
 	# show cursor
@@ -531,7 +535,7 @@ skip_done:
 	add	X	1
 next_digit:
 	sub	X	1
-	add	[X]	D
+	add	[X]	'0'
 	put
 	sub	X	1
 	jnz	next_digit

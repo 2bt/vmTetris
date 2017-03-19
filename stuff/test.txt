@@ -1,0 +1,8 @@
+# vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
+
+	define	A	r0
+
+	put	'A'
+	put	'a'
+	put	10
+
