@@ -9,6 +9,6 @@ m[444],c,*a,x;f(){return x="ACCBOC6U<<;36d9CP>CP;APCP>CP;APCP>CP;APCP>CP;APCP<B"
 "LoFpbplo3C<]C;FC:=pLoFpeD6P<6anoXpQpQ:<3:lh3<p;3;leqSqpLoFpaoXpLoFpppcpfoSo7oT"
 "oYoPo^pkpQC<4D8Pmt3<mk:<3<<Pan3<mvp;1"[c++]-49;}main(o,_){for(srand(_),system(
 "stty cbreak -echo min 0");o=f();)--o<24?a=&m[f()<20?x:m[x-20]++],*a=!(o/14)**a+
-(o/7?1:-1)*((x=o%7)<3?x:x<4?f():x<5?m[f()<20?x:m[x-20]]:x<6?getchar():rand()%f()
-):o<60?f(),c=o<40||!*a^o/50?x+o%10*70:c:o<63?putchar(o%3?o%2*70+f():*a):usleep(
+(o>6?:-1)*((x=o%7)<3?x:x<4?f():x<5?m[f()<20?x:m[x-20]]:x<6?getchar():rand()%f())
+:o<60?f(),c=o<40|!*a^o/50?x+o%10*70:c:o<63?putchar(o%3?o%2*70+f():*a):usleep(
 20000);system("stty sane");}/**********************twobit**********************/
