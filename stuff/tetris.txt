@@ -376,7 +376,7 @@ start:
 	# check for gameover
 check_gameover:
 	mov	X	PREGRID
-	mov	T	X
+	mov	T	PREGRID
 check1:
 	mov	A	[X]
 	add	X	1
@@ -411,16 +411,11 @@ check1:
 
 		# line is full
 		# increase line count
-		mov	S	0
-		digit1:
-			add	[S]	1
-			sub	S	1
-			mov	C	10
-			sub	C	[S]
-			jnz	digit2
-			mov	[S]	0
-			jmp	digit1
-		digit2:
+		digit:
+			sub	[A]	9
+			jz	digit
+		sub	A	1
+		add	[A]	10
 
 
 		# increae speed
