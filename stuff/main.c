@@ -15,15 +15,15 @@ int main(int o, int _) {
 	fclose(v);
 	system("stty cbreak -echo min 0");
 	for (srand(_); o = f(1);)
-		--o < 21 ? a = &m[f(1) < 20 ? x : m[x - 20]++],
-			*a = !(o / 14) * *a + (o / 7 ? 1 : -1) * (
-			!(x = o % 7) ? getchar():
-			x < 3 ? x:
+		--o < 24 ? a = &m[f(1) < 20 ? x : m[x - 20]++],
+			*a = !(o / 16) * *a + (o / 8 ? 1 : -1) * (
+			(x = o % 8) < 3 ? x:
 			x < 5 ? f(x - 2):
 			x < 6 ? m[f(1) < 20 ? x : m[x - 20]]:
+			x < 7 ? getchar():
 			rand() % f(1)):
-		o < 24 ? f(2), c = o < 22 || !*a ^ o % 2 ? x : c:
-		o < 27 ? putchar(f(o % 4) ?: *a):
+		o < 27 ? f(2), c = o < 25 || !*a ^ o % 2 ? x : c:
+		o < 30 ? putchar(f(o % 3) ?: *a):
 		usleep(20000);
 	system("stty sane");
 }
@@ -32,4 +32,4 @@ int main(int o, int _) {
 // a - x
 // a + x
 // 0 + x
-// getchar(), 1, 2, f(1), f(2), s(), rand() % f(1)
+// 0, 1, 2, f(1), f(2), s(), getchar(), rand() % f(1)

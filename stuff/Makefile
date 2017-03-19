@@ -2,10 +2,10 @@ all: vm code
 
 
 vm: main.c Makefile
-	gcc main.c -Os -s -o vm
+	gcc main.c -g -o vm
 
 
-code: tetris.txt assembler
+code: test.txt tetris.txt assembler
 	./assembler
 
 

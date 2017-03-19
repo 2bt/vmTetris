@@ -292,7 +292,7 @@ updategrid:
 
 
 	occupy:
-		mov	A	A
+		add	A	0
 		jz	nocollision
 
 
@@ -308,7 +308,7 @@ updategrid:
 
 
 			# enable cell write only when moving downward
-			mov	DOWN	DOWN
+			add	DOWN	0
 			jz	nowrite
 			mov	B	COLOR_FILL
 
@@ -401,7 +401,7 @@ check1:
 			sub	S	1
 			jnz	full2
 
-		mov	A	A
+		add	A	0
 		jnz	full4
 
 		# line is full
@@ -419,7 +419,7 @@ check1:
 
 
 		# increae speed
-		mov	r0	r0
+		add	r0	0
 		jnz	notfaster
 		sub	SPEED	1
 	notfaster:

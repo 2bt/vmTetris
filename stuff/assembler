@@ -42,7 +42,7 @@ R += ["[%s]" % r for r in R]
 
 
 bin_ops = "sub", "add", "mov"
-jmp_ops = "jmp", "jz", "jnz"
+jmp_ops = "jmp", "jnz", "jz"
 
 
 counter		= 0
@@ -76,13 +76,13 @@ for l in open("tetris.txt"):
 
 	op = w[0]
 	if op in bin_ops:
-		i = 1 + bin_ops.index(op) * 7
+		i = 1 + bin_ops.index(op) * 8
 		a = R.index(subst(w[1]))
 		b = subst(w[2])
 		if b.isdigit():
 			c = num_to_code(int(b))
 			assert len(c) < 3
-			if len(c) == 1 and c[0] in [1, 2]:
+			if len(c) == 1 and c[0] in [0, 1, 2]:
 				i += c[0]
 				c = []
 			else:
@@ -92,24 +92,24 @@ for l in open("tetris.txt"):
 			c = [R.index(b)]
 		bin_cmd = [ i, a ] + c
 
-	elif op == "get": bin_cmd = [ 15, R.index(subst(w[1])) ]
+	elif op == "get": bin_cmd = [ 23, R.index(subst(w[1])) ]
 	elif op == "rnd":
 		b = subst(w[2])
 		assert b.isdigit()
 		c = num_to_code(int(b))
 		assert len(c) == 1
-		bin_cmd = [ 21, R.index(subst(w[1])) ] + c
-	elif op in jmp_ops: bin_cmd = [ 22 + jmp_ops.index(op), 0, w[1] ]
+		bin_cmd = [ 24, R.index(subst(w[1])) ] + c
+	elif op in jmp_ops: bin_cmd = [ 25 + jmp_ops.index(op), 0, w[1] ]
 	elif op == "put":
 		if len(w) == 1:
-			bin_cmd = [ 25 ]
+			bin_cmd = [ 28 ]
 		else:
 			b = subst(w[1])
 			assert b.isdigit()
 			c = num_to_code(int(b))
 			assert len(c) < 3
-			bin_cmd = [ 25 + len(c) ] + c
-	elif op == "slp": bin_cmd = [ 28 ]
+			bin_cmd = [ 28 + len(c) ] + c
+	elif op == "slp": bin_cmd = [ 31 ]
 	else:
 		print "WOOT"
 		bin_cmd = [ int(op) ]
@@ -128,8 +128,7 @@ out = []
 for txt, c in zip(txt_cmds, bin_cmds):
 	if c[-1] in labels:
 		c = [c[0]] + ([0, 0] + num_to_code(labels[c[-1]]))[-2:]
-
-	print txt, "| %03x:" % counter, " ".join("%x" % c for c in c)
+#	print txt, "| %03x:" % counter, " ".join("%x" % c for c in c)
 	counter += len(c)
 	out += c
 
