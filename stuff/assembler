@@ -2,11 +2,11 @@
 
 
 # code word range
-M = 74
+M = 75
 
 # number of registers
 # can be M / 2
-R = 20
+NR = 20
 
 import sys
 
@@ -36,7 +36,7 @@ def num_to_code(n):
 	return c
 
 
-R = ["r%d" % x for x in range(R)]
+R = ["r%d" % x for x in range(NR)]
 R += ["[%s]" % r for r in R]
 
 
@@ -75,8 +75,7 @@ for l in open("tetris.txt"):
 	op = w[0]
 	if op in bin_ops:
 		i = bin_ops.index(op) * 7
-		special = subst(w[1]) == "[r4]" # [r4] is special
-		a = R.index(subst(w[1]))
+		a = subst(w[1])
 		b = subst(w[2])
 		if b.isdigit():
 			c = num_to_code(int(b))
@@ -89,9 +88,12 @@ for l in open("tetris.txt"):
 		else:
 			i += 4
 			c = [R.index(b)]
+		special = a == "[r4]" # [r4] is special
 		if special:
 			bin_cmd = [ i * 2 ] + c
 		else:
+			a = R.index(a)
+			assert a < NR
 			bin_cmd = [ i * 2 + 1, a ] + c
 
 	elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
