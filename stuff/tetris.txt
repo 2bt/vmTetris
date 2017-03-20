@@ -169,7 +169,7 @@ prep2:
 #	put	'5'
 #	put	'l'
 
-	jmp	start
+	jz	start
 
 mainloop:
 
@@ -269,7 +269,7 @@ updategrid:
 		add	D	1
 		sub	Q	1
 		jnz	occupycheck
-		jmp	nooccupy
+		jz	nooccupy
 
 
 	occupy:
@@ -296,10 +296,10 @@ updategrid:
 		nowrite:
 
 			# reset position and rotation
-			mov	POS	POS2
 			mov	ROT	ROT2
+			mov	POS	POS2
 
-			jmp	updategrid
+			jnz	updategrid
 
 
 	nocollision:
@@ -462,7 +462,7 @@ draw2:
 
 	# sleep and loop
 	slp
-	jmp	mainloop
+	jz	mainloop
 
 gameover:
 

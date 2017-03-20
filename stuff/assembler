@@ -41,7 +41,7 @@ R += ["[%s]" % r for r in R]
 
 
 bin_ops = "sub", "add", "mov"
-jmp_ops = "jmp", "jz", "jnz"
+jmp_ops = "jz", "jnz"
 
 
 counter		= 0
@@ -51,7 +51,7 @@ labels		= {}
 
 
 for l in open("tetris.txt"):
-	print l[:-1]
+#	print l[:-1]
 
 	l = l.strip()
 	c = l.find("#")
@@ -74,7 +74,7 @@ for l in open("tetris.txt"):
 
 	op = w[0]
 	if op in bin_ops:
-		i = 1 + bin_ops.index(op) * 7
+		i = bin_ops.index(op) * 7
 		special = subst(w[1]) == "[r4]" # [r4] is special
 		a = R.index(subst(w[1]))
 		b = subst(w[2])
@@ -90,33 +90,33 @@ for l in open("tetris.txt"):
 			i += 4
 			c = [R.index(b)]
 		if special:
-			bin_cmd = [ i * 2 - 1 ] + c
+			bin_cmd = [ i * 2 ] + c
 		else:
-			bin_cmd = [ i * 2, a ] + c
+			bin_cmd = [ i * 2 + 1, a ] + c
 
-	elif op == "get": bin_cmd = [ 40, R.index(subst(w[1])) ]
+	elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
 
 	elif op == "rnd":
 		b = subst(w[2])
 		assert b.isdigit()
 		c = num_to_code(int(b))
 		assert len(c) == 1
-		bin_cmd = [ 42, R.index(subst(w[1])) ] + c
+		bin_cmd = [ 41, R.index(subst(w[1])) ] + c
 
 	elif op == "put":
 		if len(w) == 1:
-			bin_cmd = [ 43 ]
+			bin_cmd = [ 42 ]
 		else:
 			b = subst(w[1])
 			assert b.isdigit()
 			c = num_to_code(int(b))
 			assert len(c) < 3
 			if len(c) == 2: assert c[0] == 1
-			bin_cmd = [ 46 - len(c), c[-1] ]
+			bin_cmd = [ 45 - len(c), c[-1] ]
 
-	elif op in jmp_ops: bin_cmd = [ 46 + jmp_ops.index(op) * 9, w[1] ]
+	elif op in jmp_ops: bin_cmd = [ 45 + jmp_ops.index(op) * 9, w[1] ]
 
-	elif op == "slp": bin_cmd = [ 73 ]
+	elif op == "slp": bin_cmd = [ 63 ]
 
 	else:
 		print "WOOT"
@@ -124,7 +124,7 @@ for l in open("tetris.txt"):
 
 	counter += len(bin_cmd)
 	bin_cmds += [ bin_cmd ]
-	txt_cmds += [ "%-20s" % " ".join("%-5s" % x for x in w) ]
+	txt_cmds += [ "%-28s" % " ".join("%-5s" % x for x in w) ]
 
 
 
@@ -139,7 +139,7 @@ for txt, c in zip(txt_cmds, bin_cmds):
 		assert l[0] < 9 # label must be small enough
 		c[0] += l[0]
 		c[1] = l[1]
-	print txt, "| %03x:" % counter, " ".join("%x" % c for c in c)
+	print txt, "| % 4d:" % counter, " ".join(map(str, c))
 	counter += len(c)
 	out += c
 
@@ -151,12 +151,7 @@ for i in range(32, 52):
 	print c.count("\\")
 
 print out
-code = "".join(chr(45 + x) for x in out)
+code = "".join(chr(46 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)
-
-
-print 'char* b = "%s"' % code[:68]; code = code[68:]
-while code: print '"%s"' % code[:78]; code = code[78:]
-
