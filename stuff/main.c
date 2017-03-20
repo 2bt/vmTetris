@@ -2,18 +2,13 @@
 #include <stdio.h>
 #include <time.h>
 #include <unistd.h>
-
 char b[1000];
-
 int m[444], c, x;
-
 int f() { return x = b[c++] - 46; }
-
 int main(int o, int a) {
 	FILE* v = fopen("code", "r");
 	fread(b, 1, sizeof(b), v);
 	fclose(v);
-
 	system("stty cbreak -echo min 0");
 	for (srand(a); o = f();)
 		o < 42 ? m[a = o % 2 ? f() : m[4]++] *= o < 28,
@@ -28,12 +23,3 @@ int main(int o, int a) {
 		usleep(20000);
 	system("stty sane");
 }
-
-// f(), m[4]++, 5
-// 7*3*3
-
-// a - x
-// a + x
-// 0 + x
-
-// 0, 1, 2, f(), s(), getchar(), rand()%f()
