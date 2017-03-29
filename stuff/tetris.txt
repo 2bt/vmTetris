@@ -425,7 +425,6 @@ nodrop:
 	# move cursor to corner
 	put	27
 	put	'['
-	put	'1'
 	put	';'
 	put	'H'
 
@@ -473,7 +472,6 @@ gameover:
 	# reset color
 	put	27
 	put	'['
-	put	'0'
 	put	'm'
 
 #	# show cursor
