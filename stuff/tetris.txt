@@ -240,10 +240,9 @@ updategrid:
 
 
 		# clear old entries
-		mov	C	COLOR_STONE
-		sub	C	A
+		sub	A	COLOR_STONE
 		jnz	update3
-		mov	A	0
+		sub	A	COLOR_STONE
 		mov	[X]	0
 		sub	X	1
 	update3:
@@ -273,7 +272,7 @@ updategrid:
 
 
 	occupy:
-		add	A	0
+		add	A	COLOR_STONE
 		jz	nocollision
 
 
