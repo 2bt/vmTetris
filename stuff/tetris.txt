@@ -8,8 +8,8 @@
 
 	# colors
 	define	COLOR_FRAME	7
-	define	COLOR_STONE	4
-	define	COLOR_FILL	5
+	define	COLOR_STONE	2
+	define	COLOR_FILL	1
 
 	# registers
 	define	X		r4
