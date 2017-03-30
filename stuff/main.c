@@ -4,7 +4,7 @@
 #include <unistd.h>
 char b[1000];
 int m[444], c, x;
-int f() { return x = b[c++] - 47; }
+int f() { return x = b[c++] - 46; }
 int main(int o, int a) {
 	FILE* v = fopen("code", "r");
 	fread(b, 1, sizeof(b), v);
