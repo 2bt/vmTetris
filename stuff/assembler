@@ -6,7 +6,7 @@ M = 75
 
 # number of registers
 # can be M / 2
-NR = 20
+NR = 23
 
 import sys
 
@@ -88,7 +88,7 @@ for l in open("tetris.txt"):
 		else:
 			i += 4
 			c = [R.index(b)]
-		special = a == "[r4]" # [r4] is special
+		special = a == "[r6]" # [r6] is special
 		if special:
 			bin_cmd = [ i * 2 ] + c
 		else:
@@ -153,7 +153,7 @@ for i in range(32, 52):
 	print c.count("\\")
 
 print out
-code = "".join(chr(46 + x) for x in out)
+code = "".join(chr(47 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)

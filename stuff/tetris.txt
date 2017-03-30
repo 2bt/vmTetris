@@ -12,37 +12,35 @@
 	define	COLOR_FILL	1
 
 	# registers
-	define	X		r4
-	define	Q		r5
-	define	A		r6
-	define	B		r7
-	define	C		r8
-	define	D		r9
-	define	S		r10
-	define	T		r11
-	define	POS		r12
-	define	POS2		r13
-	define	ROT		r14
-	define	ROT2		r15
-	define	STONE		r16
-	define	SPEED		r17
-	define	DELAY		r18
-	define	DOWN		r19
+	define	X		r6
+	define	Q		r7
+	define	A		r8
+	define	B		r9
+	define	C		r10
+	define	D		r11
+	define	S		r12
+	define	T		r13
+	define	POS		r14
+	define	POS2		r15
+	define	ROT		r16
+	define	ROT2		r17
+	define	STONE		r18
+	define	SPEED		r19
+	define	DELAY		r20
+	define	DOWN		r21
 
 
+	# init vars
 	mov	DELAY	1
-	mov	SPEED	30
-
-
-	# load stone data
-	#mov	X	360
-	mov	A	36
+	mov	A	30
 	xaddloop:
-		add	X	10
+		add	SPEED	1
+		add	X	12
 		sub	A	1
 		jnz	xaddloop
 
 
+	# load stone data
 	# square
 	mov	A	4
 	squareloop:
@@ -275,16 +273,11 @@ updategrid:
 		add	A	COLOR_STONE
 		jz	nocollision
 
-
 			# break endless loop
 			# check if stone is at spawn position
 			mov	C	STARTPOS
 			sub	C	POS
-			jnz	nospawn
-			mov	C	ROT
-			sub	C	ROT2
 			jz	gameover
-		nospawn:
 
 
 			# enable cell write only when moving downward
@@ -321,8 +314,7 @@ updategrid:
 
 
 	# check if stone was dropped
-	mov	C	COLOR_FILL
-	sub	B	C
+	sub	B	COLOR_FILL
 	jnz	nodrop
 
 
@@ -492,7 +484,7 @@ gameover:
 
 
 	# print digits
-	mov	X	3
+	mov	X	4
 skip_zero:
 	mov	C	[X]
 	jnz	skip_done
