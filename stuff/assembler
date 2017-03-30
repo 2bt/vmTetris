@@ -94,7 +94,7 @@ for l in open("tetris.txt"):
 		else:
 			a = R.index(a)
 			assert a < NR
-			bin_cmd = [ i * 2 + 1, a ] + c
+			bin_cmd = [ i * 2 + 1 ] + c + [ a ]
 
 	elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
 
@@ -103,7 +103,7 @@ for l in open("tetris.txt"):
 		assert b.isdigit()
 		c = num_to_code(int(b))
 		assert len(c) == 1
-		bin_cmd = [ 41, R.index(subst(w[1])) ] + c
+		bin_cmd = [ 41 ] + c + [ R.index(subst(w[1])) ]
 
 	elif op == "put":
 		if len(w) == 1:
