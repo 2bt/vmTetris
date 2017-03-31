@@ -50,8 +50,8 @@ txt_cmds	= []
 labels		= {}
 
 
-for l in open("tetris.txt"):
-#	print l[:-1]
+for l in open(sys.argv[1]):
+	print l[:-1]
 
 	l = l.strip()
 	c = l.find("#")
@@ -141,7 +141,7 @@ for txt, c in zip(txt_cmds, bin_cmds):
 		assert l[0] < 9 # label must be small enough
 		c[0] += l[0]
 		c[1] = l[1]
-	print txt, "| % 4d:" % counter, " ".join(map(str, c))
+	print txt, "%4d:" % counter, " ".join("%2d" % x for x in c)
 	counter += len(c)
 	out += c
 
@@ -152,7 +152,6 @@ for i in range(32, 52):
 	print "%2d" % i, "".join(sorted(set(c))),
 	print c.count("\\")
 
-print out
 code = "".join(chr(46 + x) for x in out)
 print code
 print len(code)

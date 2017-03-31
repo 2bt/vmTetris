@@ -1,0 +1,247 @@
+# vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
+
+	# memory addresses
+	define	COLOR_FRAME	7
+	define	COLOR_STONE	2
+	define	COLOR_FILL	1
+
+	# registers
+	define	X		r6
+	define	Q		r7
+	define	A		r8
+	define	B		r9
+	define	C		r10
+	define	D		r11
+	define	S		r12
+	define	T		r13
+
+	define	POS		r14
+	define	DIR		r15
+	define	LEN		r16
+
+	define	NOGRID		r17
+
+	define	GRID		20
+	define	GRIDp1		21
+
+	define	HEIGHT		20
+	define	HEIGHTm1	19
+	define	HEIGHTm2	18
+	define	WIDTH		38
+	define	WIDTHp1		39
+	define	WIDTHm1		37
+
+
+	# init grid
+	mov	X	GRID
+grid0:
+	mov	A	WIDTH
+grid1:
+	sub	[X]	2
+	sub	A	1
+	jnz	grid1
+	mov	A	HEIGHTm2
+grid2:
+	mov	NOGRID	X
+	sub	[X]	2
+	add	X	WIDTHm1
+	add	B	0
+	jnz	grid3
+	sub	A	1
+	jnz	grid2
+	add	B	1
+	jnz	grid0
+grid3:
+
+
+	# init pos
+	mov	A	27
+initpos:
+	add	POS	10
+	sub	A	1
+	jnz	initpos
+
+
+	mov	LEN	20
+
+
+	# clear screen
+	put	27
+	put	'['
+	put	'2'
+	put	'J'
+
+
+mainloop:
+
+
+	# input
+read:
+	mov	A	T
+	get	T
+	add	T	1
+	jnz	read
+
+	# quit
+	sub	A	28
+	jz	exit
+
+	# move
+	sub	A	38
+	jnz	noup
+	mov	DIR	0
+	sub	DIR	WIDTH
+noup:
+	sub	A	1
+	jnz	nodown
+	mov	DIR	WIDTH
+nodown:
+	sub	A	1
+	jnz	noright
+	mov	DIR	1
+noright:
+	sub	A	1
+	jnz	noleft
+	mov	DIR	0
+	sub	DIR	1
+noleft:
+
+
+	# insert cell
+	# TODO: collision
+	add	POS	DIR
+	mov	X	POS
+	mov	[X]	LEN
+
+
+	# update grid
+	mov	X	GRID
+	update:
+
+		mov	A	[X]
+		jz	writeback
+		mov	C	[X]
+		add	C	2
+		jz	writeback
+		sub	A	2
+		jz	writeback
+		add	A	1
+
+	writeback:
+
+
+		# next cell
+		mov	[X]	A
+		sub	X	NOGRID
+		jz	update_done
+		add	X	NOGRID
+		jnz	update
+	update_done:
+
+
+
+	# move cursor to corner
+	put	27
+	put	'['
+	put	';'
+	put	'H'
+
+
+	# draw grid
+	mov	X	GRIDp1
+	mov	T	HEIGHTm1
+draw1:
+	mov	S	WIDTH
+draw2:
+
+
+	# vertical line
+	mov	A	[X]
+	sub	X	1
+	sub	A	[X]
+	jz	vert1
+	sub	A	1
+	jz	vert1
+	add	A	2
+	jz	vert1
+	put	'|'
+	jnz	vert2
+vert1:
+	# TODO: consider putting '_' to make it smooth
+#	print "".join(
+#		("|"*(abs(x - y) > 1) or
+#			" _"[	abs(y - x) < 2 > abs(a - z)
+#				and abs(x - a) > 1 < abs(y - z)]
+#		)
+#		+ "_ "[abs(y - z) < 2]
+#		for x, y, z, a in zip([0] + p, p + [0], r + [0], [0] + r))[:-1]
+	# xy
+	# az
+
+
+	put	32
+vert2:
+	add	[X]	0
+
+	# horizontal line
+	mov	A	[X]
+	add	X	WIDTH
+	sub	A	[X]
+	jz	horiz1
+	sub	A	1
+	jz	horiz1
+	add	A	2
+	jz	horiz1
+	put	'_'
+	jnz	horiz2
+horiz1:
+	put	32
+horiz2:
+	sub	X	WIDTH
+
+
+
+	# next cell
+	add	[X]	0
+	sub	S	1
+	jnz	draw2
+
+
+	# next row
+	put	10
+
+	sub	T	1
+	jnz	draw1
+
+
+
+	# print digits
+	mov	X	4
+skip_zero:
+	mov	C	[X]
+	jnz	skip_done
+	sub	X	1
+	jnz	skip_zero
+	add	X	1
+skip_done:
+next_digit:
+	mov	C	[X]
+	add	C	'0'
+	put
+	sub	X	1
+	jnz	next_digit
+	put	10
+
+
+	# sleep and loop
+	mov	A	8
+sleeploop:
+	slp
+	sub	A	1
+	jnz	sleeploop
+
+
+	jz	mainloop
+
+
+exit:

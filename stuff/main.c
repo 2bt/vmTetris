@@ -3,7 +3,7 @@
 #include <time.h>
 #include <unistd.h>
 char b[1000];
-int m[444], c, x;
+int m[999], c, x;
 int f() { return x = b[c++] - 46; }
 int main(int o, int a) {
 	FILE* v = fopen("code", "r");
