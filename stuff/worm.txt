@@ -20,14 +20,13 @@
 	define	NOGRID		r15
 
 	define	GRID		20
-	define	GRIDp1		21
 
-	define	HEIGHT		20
-	define	HEIGHTm1	19
-	define	HEIGHTm2	18
-	define	WIDTH		38
-	define	WIDTHp1		39
-	define	WIDTHm1		37
+	define	HEIGHT		19
+	define	HEIGHTm1	18
+	define	HEIGHTm2	17
+	define	WIDTH		34
+	define	WIDTHp1		35
+	define	WIDTHm1		33
 
 
 	# init grid
@@ -53,14 +52,14 @@ grid3:
 
 
 	# init pos
-	mov	A	27
+	mov	A	33
 initpos:
 	add	POS	10
 	sub	A	1
 	jnz	initpos
 
 
-	mov	LEN	20
+	mov	LEN	4
 	mov	DIR	1
 
 
@@ -151,18 +150,38 @@ noleft:
 
 
 	# draw grid
-	mov	X	GRIDp1
+	mov	X	GRID
 	mov	T	HEIGHTm1
 draw1:
 	mov	S	WIDTH
 draw2:
+
+
+	# horizontal line
+	mov	A	[X]
+	add	X	WIDTH
+	sub	A	[X]
+	jz	horiz1
+	sub	A	1
+	jz	horiz1
+	add	A	2
+	jz	horiz1
+	put	'_'
+	jnz	horiz2
+horiz1:
+	put	32
+horiz2:
+	sub	X	WIDTH
+
+
+
 
 	# remember X
 	mov	B	X
 
 	# vertical line
 	mov	A	[X]
-	sub	X	1
+	add	[X]	0
 	sub	A	[X]
 	jz	vert1
 	sub	A	1
@@ -182,7 +201,7 @@ vert1:
 	add	A	2
 	jz	vert11
 
-	add	X	1
+	sub	X	1
 	mov	A	[X]
 	sub	X	WIDTH
 	sub	A	[X]
@@ -202,22 +221,6 @@ vert11:
 	put	32
 vert2:
 	mov	X	B
-
-	# horizontal line
-	mov	A	[X]
-	add	X	WIDTH
-	sub	A	[X]
-	jz	horiz1
-	sub	A	1
-	jz	horiz1
-	add	A	2
-	jz	horiz1
-	put	'_'
-	jnz	horiz2
-horiz1:
-	put	32
-horiz2:
-	sub	X	WIDTH
 
 
 
