@@ -7,19 +7,17 @@
 
 	# registers
 	define	X		r6
-	define	Q		r7
-	define	A		r8
-	define	B		r9
-	define	C		r10
-	define	D		r11
-	define	S		r12
-	define	T		r13
+	define	A		r7
+	define	B		r8
+	define	C		r9
+	define	S		r10
+	define	T		r11
 
-	define	POS		r14
-	define	DIR		r15
-	define	LEN		r16
+	define	POS		r12
+	define	DIR		r13
+	define	LEN		r14
 
-	define	NOGRID		r17
+	define	NOGRID		r15
 
 	define	GRID		20
 	define	GRIDp1		21
@@ -63,6 +61,7 @@ initpos:
 
 
 	mov	LEN	20
+	mov	DIR	1
 
 
 	# clear screen
@@ -107,9 +106,13 @@ noright:
 noleft:
 
 
-	# insert cell
-	# TODO: collision
+	# move
 	add	POS	DIR
+	# collision
+	mov	A	[POS]
+	jnz	exit
+
+	# insert cell
 	mov	X	POS
 	mov	[X]	LEN
 
@@ -154,6 +157,8 @@ draw1:
 	mov	S	WIDTH
 draw2:
 
+	# remember X
+	mov	B	X
 
 	# vertical line
 	mov	A	[X]
@@ -167,21 +172,36 @@ draw2:
 	put	'|'
 	jnz	vert2
 vert1:
-	# TODO: consider putting '_' to make it smooth
-#	print "".join(
-#		("|"*(abs(x - y) > 1) or
-#			" _"[	abs(y - x) < 2 > abs(a - z)
-#				and abs(x - a) > 1 < abs(y - z)]
-#		)
-#		+ "_ "[abs(y - z) < 2]
-#		for x, y, z, a in zip([0] + p, p + [0], r + [0], [0] + r))[:-1]
-	# xy
-	# az
+	# TODO: use a loop to make this shorter?
+	mov	A	[X]
+	add	X	WIDTH
+	sub	A	[X]
+	jz	vert11
+	sub	A	1
+	jz	vert11
+	add	A	2
+	jz	vert11
+
+	add	X	1
+	mov	A	[X]
+	sub	X	WIDTH
+	sub	A	[X]
+	jz	vert11
+	sub	A	1
+	jz	vert11
+	add	A	2
+	jz	vert11
+
+
+	put	'_'
+	jnz	vert2
+
+vert11:
 
 
 	put	32
 vert2:
-	add	[X]	0
+	mov	X	B
 
 	# horizontal line
 	mov	A	[X]
@@ -234,7 +254,7 @@ next_digit:
 
 
 	# sleep and loop
-	mov	A	8
+	mov	A	5
 sleeploop:
 	slp
 	sub	A	1
@@ -242,6 +262,5 @@ sleeploop:
 
 
 	jz	mainloop
-
 
 exit:
