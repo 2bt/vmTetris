@@ -1,26 +1,20 @@
 # vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
 
-	# memory addresses
-	define	COLOR_FRAME	7
-	define	COLOR_STONE	2
-	define	COLOR_FILL	1
-
 	# registers
 	define	X		r6
 	define	A		r7
 	define	B		r8
-	define	C		r9
-	define	S		r10
-	define	T		r11
+	define	S		r9
+	define	T		r10
+	define	POS		r11
+	define	DIR		r12
+	define	LEN		r13
+	define	NOGRID		r14
 
-	define	POS		r12
-	define	DIR		r13
-	define	LEN		r14
-
-	define	NOGRID		r15
-
+	# grid start address
 	define	GRID		20
 
+	# grid size
 	define	HEIGHT		19
 	define	HEIGHTm1	18
 	define	HEIGHTm2	17
@@ -29,7 +23,7 @@
 	define	WIDTHm1		33
 
 
-	# init grid
+	# init grid walls
 	mov	X	GRID
 grid0:
 	mov	A	WIDTH
@@ -51,14 +45,6 @@ grid2:
 grid3:
 
 
-	# FIXME: place some food
-	sub	X	66
-	sub	X	66
-	sub	X	66
-	sub	X	66
-	sub	[X]	4
-
-
 	# init pos
 	mov	A	33
 initpos:
@@ -78,9 +64,12 @@ initpos:
 	put	'J'
 
 
+	# make food and start loop
+	jnz	newfood
+
+
+
 mainloop:
-
-
 	# input
 read:
 	mov	A	T
@@ -135,20 +124,16 @@ noleft:
 		mov	X	S
 
 		# generate new food
-		mov	C	42
-	tryfind:
-		sub	C	1
-		jz	found
+	newfood:
 		mov	X	NOGRID
 		sub	X	GRID
 		rnd	X
 		add	X	GRID
 		mov	A	[X]
-		jnz	tryfind
-	found:
-		mov	A	0
-		sub	A	4
-		mov	[X]	A
+		jnz	newfood
+
+		sub	T	4
+		mov	[X]	T
 
 		mov	S	1
 nocolli:
@@ -172,15 +157,15 @@ update0:
 	update:
 
 		mov	A	[X]
+		jz	writeback	# empty cell
+		mov	B	[X]
+		add	B	2	# -2 -> wall
 		jz	writeback
-		mov	C	[X]
-		add	C	2	# -2 -> wall
+		add	B	2	# -4 -> food
 		jz	writeback
-		add	C	2	# -4 -> food
+		sub	A	2	# worm end cell
 		jz	writeback
-		sub	A	2
-		jz	writeback
-		add	A	1
+		add	A	1	# worm
 
 	writeback:
 
@@ -225,8 +210,6 @@ horiz1:
 	put	32
 horiz2:
 	sub	X	WIDTH
-
-
 
 
 	# remember X
@@ -301,29 +284,25 @@ vert2:
 	put	32
 	mov	X	4
 skip_zero:
-	mov	C	[X]
+	mov	B	[X]
 	jnz	skip_done
 	sub	X	1
 	jnz	skip_zero
-	add	X	1
+	add	[X]	0
 skip_done:
 next_digit:
-	mov	C	[X]
-	add	C	'0'
+	mov	B	[X]
+	add	B	'0'
 	put
 	sub	X	1
 	jnz	next_digit
 	put	10
 
-
-	# sleep and loop
-	mov	A	5
-sleeploop:
 	slp
-	sub	A	1
-	jnz	sleeploop
-
-
+	slp
+	slp
+	slp
+	slp
 	jz	mainloop
 
 exit:
