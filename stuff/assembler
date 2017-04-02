@@ -99,11 +99,7 @@ for l in open(sys.argv[1]):
 	elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
 
 	elif op == "rnd":
-		b = subst(w[2])
-		assert b.isdigit()
-		c = num_to_code(int(b))
-		assert len(c) == 1
-		bin_cmd = [ 41 ] + c + [ R.index(subst(w[1])) ]
+		bin_cmd = [ 41, R.index(subst(w[1])) ]
 
 	elif op == "put":
 		if len(w) == 1:
