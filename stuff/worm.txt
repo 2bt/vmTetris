@@ -4,12 +4,13 @@
 	define	X		r6
 	define	A		r7
 	define	B		r8
-	define	S		r9
-	define	T		r10
-	define	POS		r11
-	define	DIR		r12
-	define	LEN		r13
-	define	NOGRID		r14
+	define	C		r9
+	define	S		r10
+	define	T		r11
+	define	POS		r12
+	define	DIR		r13
+	define	LEN		r14
+	define	NOGRID		r15
 
 	# grid start address
 	define	GRID		20
@@ -138,17 +139,19 @@ noleft:
 		mov	S	1
 nocolli:
 
+
 	# insert cell
 	mov	X	POS
 	mov	[X]	LEN
 
 
+
+	# update only when no food was eaten
 	add	S	0
 	jz	update0
 	sub	X	1
 	sub	[X]	1
 	jnz	update_done
-
 
 update0:
 
@@ -227,29 +230,25 @@ horiz2:
 	put	'|'
 	jnz	vert2
 vert1:
-	# TODO: use a loop to make this shorter?
-	mov	A	[X]
-	add	X	WIDTH
-	sub	A	[X]
-	jz	vert11
-	sub	A	1
-	jz	vert11
-	add	A	2
-	jz	vert11
 
-	sub	X	1
-	mov	A	[X]
-	sub	X	WIDTH
-	sub	A	[X]
-	jz	vert11
-	sub	A	1
-	jz	vert11
-	add	A	2
-	jz	vert11
+	# fancy check to fill gaps with '_'
+	mov	C	2
+	vert10:
+		mov	A	[X]
+		add	X	WIDTH
+		sub	A	[X]
+		jz	vert11
+		sub	A	1
+		jz	vert11
+		add	A	2
+		jz	vert11
+		sub	X	WIDTHp1
 
+		sub	C	1
+		jnz	vert10
 
 	put	'_'
-	jnz	vert2
+	jz	vert2
 
 vert11:
 
