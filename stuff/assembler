@@ -15,25 +15,25 @@ defines = {}
 
 
 def subst(o):
-	while 1:
-		if len(o) == 3 and o[0] == o[2] == "'":
-			o = str(ord(o[1]))
-		if o in defines:
-			o = defines[o]
-			continue
-		if o[0] == "[" and o[-1] == "]" and o[1:-1] in defines:
-			o = "[" + defines[o[1:-1]] + "]"
-			continue
-		return o
+    while 1:
+        if len(o) == 3 and o[0] == o[2] == "'":
+            o = str(ord(o[1]))
+        if o in defines:
+            o = defines[o]
+            continue
+        if o[0] == "[" and o[-1] == "]" and o[1:-1] in defines:
+            o = "[" + defines[o[1:-1]] + "]"
+            continue
+        return o
 
 
 def num_to_code(n):
-	c = []
-	while 1:
-		c = [n % M] + c
-		n /= M
-		if n == 0: break
-	return c
+    c = []
+    while 1:
+        c = [n % M] + c
+        n /= M
+        if n == 0: break
+    return c
 
 
 R = ["r%d" % x for x in range(NR)]
@@ -44,85 +44,90 @@ bin_ops = "sub", "add", "mov"
 jmp_ops = "jz", "jnz"
 
 
-counter		= 0
-bin_cmds	= []
-txt_cmds	= []
-labels		= {}
+counter        = 0
+bin_cmds    = []
+txt_cmds    = []
+labels        = {}
 
 
 for l in open(sys.argv[1]):
-	print l[:-1]
+    print l[:-1]
 
-	l = l.strip()
-	c = l.find("#")
-	if c >= 0: l = l[:c].strip()
-	if l == "": continue
+    l = l.strip()
+    c = l.find("#")
+    if c >= 0: l = l[:c].strip()
+    if l == "": continue
 
-	w = l.split()
+    w = l.split()
 
-	# label
-	if w[0][-1] == ":":
-		labels[w[0][:-1]] = counter
-		w.pop(0)
-		if not w: continue
+    # label
+    if w[0][-1] == ":":
+        labels[w[0][:-1]] = counter
+        w.pop(0)
+        if not w: continue
 
-	# define
-	if w[0] == "define":
-		assert w[1][0].isalnum()
-		defines[w[1]] = w[2]
-		continue
+    # define
+    if w[0] == "define":
+        assert w[1][0].isalnum()
+        defines[w[1]] = w[2]
+        continue
 
-	op = w[0]
-	if op in bin_ops:
-		i = bin_ops.index(op) * 7
-		a = subst(w[1])
-		b = subst(w[2])
-		if b.isdigit():
-			c = num_to_code(int(b))
-			assert len(c) == 1
-			if c[0] in [0, 1, 2]:
-				i += c[0]
-				c = []
-			else:
-				i += 3
-		else:
-			i += 4
-			c = [R.index(b)]
-		special = a == "[r6]" # [r6] is special
-		if special:
-			bin_cmd = [ i * 2 ] + c
-		else:
-			a = R.index(a)
-			assert a < NR
-			bin_cmd = [ i * 2 + 1 ] + c + [ a ]
+    op = w[0]
+    if op in bin_ops:
+        i = bin_ops.index(op) * 7
+        a = subst(w[1])
+        b = subst(w[2])
+        if b.isdigit():
+            c = num_to_code(int(b))
+            assert len(c) == 1
+            if c[0] in [0, 1, 2]:
+                i += c[0]
+                c = []
+            else:
+                i += 3
+        else:
+            i += 4
+            c = [R.index(b)]
+        special = a == "[r6]" # [r6] is special
+        if special:
+            bin_cmd = [ i * 2 ] + c
+        else:
+            a = R.index(a)
+            assert a < NR
+            bin_cmd = [ i * 2 + 1 ] + c + [ a ]
 
-	elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
+    elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
 
-	elif op == "rnd":
-		bin_cmd = [ 41, R.index(subst(w[1])) ]
+#    elif op == "rnd":
+#        bin_cmd = [ 41, R.index(subst(w[1])) ]
+    elif op == "rnd":
+        b = subst(w[2])
+        assert b.isdigit()
+        c = num_to_code(int(b))
+        bin_cmd = [ 41 ] + c + [ R.index(subst(w[1])) ]
 
-	elif op == "put":
-		if len(w) == 1:
-			bin_cmd = [ 42 ]
-		else:
-			b = subst(w[1])
-			assert b.isdigit()
-			c = num_to_code(int(b))
-			assert len(c) < 3
-			if len(c) == 2: assert c[0] == 1
-			bin_cmd = [ 45 - len(c), c[-1] ]
+    elif op == "put":
+        if len(w) == 1:
+            bin_cmd = [ 42 ]
+        else:
+            b = subst(w[1])
+            assert b.isdigit()
+            c = num_to_code(int(b))
+            assert len(c) < 3
+            if len(c) == 2: assert c[0] == 1
+            bin_cmd = [ 45 - len(c), c[-1] ]
 
-	elif op in jmp_ops: bin_cmd = [ 45 + jmp_ops.index(op) * 9, w[1] ]
+    elif op in jmp_ops: bin_cmd = [ 45 + jmp_ops.index(op) * 9, w[1] ]
 
-	elif op == "slp": bin_cmd = [ 63 ]
+    elif op == "slp": bin_cmd = [ 63 ]
 
-	else:
-		print "WOOT"
-		bin_cmd = [ int(op) ]
+    else:
+        print "WOOT"
+        bin_cmd = [ int(op) ]
 
-	counter += len(bin_cmd)
-	bin_cmds += [ bin_cmd ]
-	txt_cmds += [ "%-28s" % " ".join("%-5s" % x for x in w) ]
+    counter += len(bin_cmd)
+    bin_cmds += [ bin_cmd ]
+    txt_cmds += [ "%-28s" % " ".join("%-5s" % x for x in w) ]
 
 
 
@@ -132,23 +137,23 @@ counter = 0
 out = []
 
 for txt, c in zip(txt_cmds, bin_cmds):
-	if c[-1] in labels:
-		l = ([0, 0] + num_to_code(labels[c[-1]]))[-2:]
-		assert l[0] < 9 # label must be small enough
-		c[0] += l[0]
-		c[1] = l[1]
-	print txt, "%4d:" % counter, " ".join("%2d" % x for x in c)
-	counter += len(c)
-	out += c
+    if c[-1] in labels:
+        l = ([0, 0] + num_to_code(labels[c[-1]]))[-2:]
+        assert l[0] < 9 # label must be small enough
+        c[0] += l[0]
+        c[1] = l[1]
+    print txt, "%4d:" % counter, " ".join("%2d" % x for x in c)
+    counter += len(c)
+    out += c
 
 out += [0]
 
 for i in range(32, 52):
-	c = "".join(chr(i + x) for x in out)
-	print "%2d" % i, "".join(sorted(set(c))),
-	print c.count("\\")
+    c = "".join(chr(i + x) for x in out)
+    print "%2d" % i, "".join(sorted(set(c))),
+    print c.count("\\")
 
-code = "".join(chr(46 + x) for x in out)
+code = "".join(chr(47 + x) for x in out)
 print code
 print len(code)
 file("code", "w").write(code)

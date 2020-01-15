@@ -194,8 +194,17 @@ read:
 	sub	A	28
 	jz	gameover
 
+	rot:
+		# rotate
+		sub	A	38
+		jnz	norot
+		sub	ROT	9
+		jz	norot
+		add	ROT	12
+	norot:
+
 		# move
-		sub	A	39
+		sub	A	1
 		jnz	nodown
 	down:
 		add	POS	11
@@ -213,13 +222,6 @@ read:
 		sub	POS	1
 	noright:
 
-		# rotate
-		sub	A	52
-		jnz	norot
-		sub	ROT	9
-		jz	norot
-		add	ROT	12
-	norot:
 
 
 
@@ -324,8 +326,9 @@ start:
 	mov	POS	STARTPOS
 
 	# select new random stone
-	mov	Q	7
-	rnd	Q
+#	mov	Q	7
+#	rnd	Q
+	rnd	Q	7
 	add	Q	30
 	# multiply by 12
 	mov	C	11
@@ -336,8 +339,9 @@ start:
 		jnz	stoneloop
 
 	# random rotation
-	mov	ROT	3
-	rnd	ROT
+#	mov	ROT	3
+#	rnd	ROT
+	rnd	ROT	3
 	mov	C	ROT
 	add	ROT	C
 	add	ROT	C

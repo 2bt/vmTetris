@@ -1,5 +1,5 @@
 # vmTetris
 
 Tetris in a small virtual machine.
-Use the cursor keys to move and `x` to rotate.
+Use the cursor keys.
 Press `esc` to quit.
