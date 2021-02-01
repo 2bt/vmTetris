@@ -4,8 +4,6 @@ Tetris in a small virtual machine.
 Use the cursor keys.
 Press `esc` to quit.
 
-![image](tetris.png)
-
 ```c
 m[444],c,x;main(o,a){for(system("stty cbreak -echo min 0"),srand(a);o=f();o<42?a
 =(x=o/2%7)<3?x:x<4?f():x<5?m[f()<23?x:m[x-23]]:x<6?read(0,m,1):rand()%f(),m[x=o%
@@ -20,9 +18,9 @@ h028k7RI=X66DM6R:9T6AF6A29iZX2?T?9F9?F9?RE5RE<TL7=27bk2<isR[5RD<=R9;R97N98L9jJ2\
 cTL7D_7YZQ[O[O=2;kH25[92<kEn^7[JZ?ZQR35TL9l225kt=25C_Y25l3[9/"]-47;}/**********/
 ```
 
-Snake in the same virtual machine.
+![image](tetris.png)
 
-![image](snake.png)
+Snake in the same virtual machine.
 
 ```c
 m[444],c,x;main(o,a){for(system("stty cbreak -echo min 0"),srand(a);o=f();o<42?a
@@ -35,3 +33,5 @@ N9T;5S=>9^M251grRC5TL6^fTL7B7^fB7^f46^f@6S68>5^rF>5gP[JZ?[j[wRC5RA:RQ9TL6DQ58L6\
 _O26_OB6_OZChQ[O6Q5T57TL6=8L6_l26_lB6_lZ`iCP8TL6DQ58L6`A26`AB6`A6R528hnZC`C[OT7\
 5=29h8[92:h5Z7ZGZSZVZI[i[OR35TL7il25ib=TL7D_7Y25il[9nnnnn\\i/"]-47;}/**********/
 ```
+
+![image](snake.png)
