@@ -1,4 +1,4 @@
-all: vm snake-code
+all: vm tetris-code
 
 
 vm: main.c Makefile

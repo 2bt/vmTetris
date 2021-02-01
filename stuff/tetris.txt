@@ -381,7 +381,7 @@ check1:
 		# line is full
 		# increase line count
 		mov	S	X
-		mov	X	0
+		mov	X	1
 		digit:
 			sub	[X]	9
 			jz	digit
@@ -455,12 +455,6 @@ draw2:
 	sub	T	1
 	jnz	draw1
 
-	# sleep and loop
-	slp
-	jz	mainloop
-
-gameover:
-
 
 	# reset color
 	put	27
@@ -484,20 +478,25 @@ gameover:
 #	put	':'
 #	put	32
 
-
 	# print digits
-	mov	X	4
+	mov	X	5
 skip_zero:
 	mov	C	[X]
 	jnz	skip_done
 	sub	X	1
 	jnz	skip_zero
-skip_done:
 	add	[X]	0
+skip_done:
 next_digit:
-	sub	X	1
-	add	[X]	'0'
+	mov	C	[X]
+	add	C	'0'
 	put
 	sub	X	1
 	jnz	next_digit
 	put	10
+
+	# sleep and loop
+	slp
+	jz	mainloop
+
+gameover:
