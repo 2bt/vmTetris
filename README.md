@@ -4,6 +4,8 @@ Tetris in a small virtual machine.
 Use the cursor keys.
 Press `esc` to quit.
 
+![image](tetris.png)
+
 ```c
 m[444],c,x;main(o,a){for(system("stty cbreak -echo min 0"),srand(a);o=f();o<42?a
 =(x=o/2%7)<3?x:x<4?f():x<5?m[f()<23?x:m[x-23]]:x<6?read(0,m,1):rand()%f(),m[x=o%
@@ -19,6 +21,8 @@ cTL7D_7YZQ[O[O=2;kH25[92<kEn^7[JZ?ZQR35TL9l225kt=25C_Y25l3[9/"]-47;}/**********/
 ```
 
 Snake in the same virtual machine.
+
+![image](snake.png)
 
 ```c
 m[444],c,x;main(o,a){for(system("stty cbreak -echo min 0"),srand(a);o=f();o<42?a
