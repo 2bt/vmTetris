@@ -1,6 +1,7 @@
-# vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
+# vim: tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab syntax=python
 
 	# registers
+	define	I		r0
 	define	X		r6
 	define	A		r7
 	define	B		r8
@@ -72,31 +73,30 @@ initpos:
 
 mainloop:
 	# input
+	mov	I	0
 read:
-	mov	A	T
 	get	T
-	add	T	1
 	jnz	read
 
 	# quit
-	sub	A	28
+	sub	I	27
 	jz	exit
 
 	# move
-	sub	A	38
+	sub	I	38
 	jnz	noup
 	mov	DIR	0
 	sub	DIR	WIDTH
 noup:
-	sub	A	1
+	sub	I	1
 	jnz	nodown
 	mov	DIR	WIDTH
 nodown:
-	sub	A	1
+	sub	I	1
 	jnz	noright
 	mov	DIR	1
 noright:
-	sub	A	1
+	sub	I	1
 	jnz	noleft
 	mov	DIR	0
 	sub	DIR	1
@@ -124,12 +124,18 @@ noleft:
 		add	[X]	10
 		mov	X	S
 
-		# generate new food
 	newfood:
-		mov	X	NOGRID
-		sub	X	GRID
-		rnd	X
-		add	X	GRID
+		# generate new food
+		mov	X	40
+		addrnd	X       74
+		addrnd	X       74
+		addrnd	X       74
+		addrnd	X       74
+		addrnd	X       74
+		addrnd	X       74
+		addrnd	X       74
+		addrnd	X       74
+
 		mov	A	[X]
 		jnz	newfood
 
@@ -166,9 +172,9 @@ update0:
 		jz	writeback
 		add	B	2	# -4 -> food
 		jz	writeback
-		sub	A	2	# worm end cell
+		sub	A	2	# snake end cell
 		jz	writeback
-		add	A	1	# worm
+		add	A	1	# snake
 
 	writeback:
 

@@ -1,15 +1,16 @@
-all: vm code
+all: vm snake-code
 
 
 vm: main.c Makefile
 	gcc main.c -g -o vm
 
 
-code: assembler worm.txt
-	./assembler worm.txt
+snake-code: snake.txt assembler
+	./assembler $<
 
-#code: assembler tetris.txt
-#	./assembler tetris.txt
+
+tetris-code: tetris.txt assembler
+	./assembler $<
 
 
 clean:

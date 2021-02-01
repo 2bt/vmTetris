@@ -98,13 +98,12 @@ for l in open(sys.argv[1]):
 
     elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
 
-#    elif op == "rnd":
-#        bin_cmd = [ 41, R.index(subst(w[1])) ]
-    elif op == "rnd":
+    elif op in ["rnd", "addrnd"]:
         b = subst(w[2])
         assert b.isdigit()
         c = num_to_code(int(b))
-        bin_cmd = [ 41 ] + c + [ R.index(subst(w[1])) ]
+        assert len(c) == 1
+        bin_cmd = [ 41 if op == "rnd" else 27 ] + c + [ R.index(subst(w[1])) ]
 
     elif op == "put":
         if len(w) == 1:

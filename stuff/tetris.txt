@@ -1,4 +1,4 @@
-# vim: tabstop=8 shiftwidth=8 noexpandtab syntax=python
+# vim: tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab syntax=python
 
 	# memory addresses
 	define	PREGRID		22
@@ -12,6 +12,7 @@
 	define	COLOR_FILL	1
 
 	# registers
+	define	I		r0
 	define	X		r6
 	define	Q		r7
 	define	A		r8
@@ -183,20 +184,19 @@ mainloop:
 
 
 	# input
+	mov	I	0
 read:
-	mov	A	T
 	get	T
-	add	T	1
 	jnz	read
 
 
 	# quit
-	sub	A	28
+	sub	I	27
 	jz	gameover
 
 	rot:
 		# rotate
-		sub	A	38
+		sub	I	38
 		jnz	norot
 		sub	ROT	9
 		jz	norot
@@ -204,7 +204,7 @@ read:
 	norot:
 
 		# move
-		sub	A	1
+		sub	I	1
 		jnz	nodown
 	down:
 		add	POS	11
@@ -213,11 +213,11 @@ read:
 		# reset delay
 		mov	DELAY	SPEED
 	nodown:
-		sub	A	1
+		sub	I	1
 		jnz	noleft
 		add	POS	1
 	noleft:
-		sub	A	1
+		sub	I	1
 		jnz	noright
 		sub	POS	1
 	noright:
@@ -326,8 +326,6 @@ start:
 	mov	POS	STARTPOS
 
 	# select new random stone
-#	mov	Q	7
-#	rnd	Q
 	rnd	Q	7
 	add	Q	30
 	# multiply by 12
@@ -339,8 +337,6 @@ start:
 		jnz	stoneloop
 
 	# random rotation
-#	mov	ROT	3
-#	rnd	ROT
 	rnd	ROT	3
 	mov	C	ROT
 	add	ROT	C
