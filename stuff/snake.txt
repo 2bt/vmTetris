@@ -1,17 +1,17 @@
 # vim: tabstop=8 shiftwidth=8 softtabstop=8 noexpandtab syntax=python
 
 	# registers
-	define	I		r0
-	define	X		r6
-	define	A		r7
-	define	B		r8
-	define	C		r9
-	define	S		r10
-	define	T		r11
-	define	POS		r12
-	define	DIR		r13
-	define	LEN		r14
-	define	NOGRID		r15
+	define	I		[0]
+	define	X		[6]
+	define	A		[7]
+	define	B		[8]
+	define	C		[9]
+	define	S		[10]
+	define	T		[11]
+	define	POS		[12]
+	define	DIR		[13]
+	define	LEN		[14]
+	define	NOGRID		[15]
 
 	# grid start address
 	define	GRID		20
@@ -30,13 +30,13 @@
 grid0:
 	mov	A	WIDTH
 grid1:
-	sub	[X]	2
+	sub	[X++]	2
 	sub	A	1
 	jnz	grid1
 	mov	A	HEIGHTm2
 grid2:
 	mov	NOGRID	X
-	sub	[X]	2
+	sub	[X++]	2
 	add	X	WIDTHm1
 	add	B	0
 	jnz	grid3
@@ -75,7 +75,7 @@ mainloop:
 	# input
 	mov	I	0
 read:
-	get	T
+	mov	T	read
 	jnz	read
 
 	# quit
@@ -116,31 +116,31 @@ noleft:
 
 		# inc score
 		#mov	X	1
-		add	[X]	0
+		add	[X++]	0
 	incscore:
-		sub	[X]	9
+		sub	[X++]	9
 		jz	incscore
 		sub	X	1
-		add	[X]	10
+		add	[X++]	10
 		mov	X	S
 
 	newfood:
 		# generate new food
 		mov	X	40
-		addrnd	X       74
-		addrnd	X       74
-		addrnd	X       74
-		addrnd	X       74
-		addrnd	X       74
-		addrnd	X       74
-		addrnd	X       74
-		addrnd	X       74
+		add	X	rand	74
+		add	X	rand	74
+		add	X	rand	74
+		add	X	rand	74
+		add	X	rand	74
+		add	X	rand	74
+		add	X	rand	74
+		add	X	rand	74
 
 		mov	A	[X]
 		jnz	newfood
 
 		sub	T	4
-		mov	[X]	T
+		mov	[X++]	T
 
 		mov	S	1
 nocolli:
@@ -148,7 +148,7 @@ nocolli:
 
 	# insert cell
 	mov	X	POS
-	mov	[X]	LEN
+	mov	[X++]	LEN
 
 
 
@@ -156,7 +156,7 @@ nocolli:
 	add	S	0
 	jz	update0
 	sub	X	1
-	sub	[X]	1
+	sub	[X++]	1
 	jnz	update_done
 
 update0:
@@ -180,7 +180,7 @@ update0:
 
 
 		# next cell
-		mov	[X]	A
+		mov	[X++]	A
 		sub	X	NOGRID
 		jz	update_done
 		add	X	NOGRID
@@ -226,7 +226,7 @@ horiz2:
 
 	# vertical line
 	mov	A	[X]
-	add	[X]	0
+	add	[X++]	0
 	sub	A	[X]
 	jz	vert1
 	sub	A	1
@@ -266,7 +266,7 @@ vert2:
 
 
 	# next cell
-	add	[X]	0
+	add	[X++]	0
 	sub	S	1
 	jnz	draw2
 
@@ -293,7 +293,7 @@ skip_zero:
 	jnz	skip_done
 	sub	X	1
 	jnz	skip_zero
-	add	[X]	0
+	add	[X++]	0
 skip_done:
 next_digit:
 	mov	B	[X]

@@ -16,7 +16,6 @@ int main(int o, int a) {
                               x < 4 ? f():
                               x < 5 ? m[f() < 23 ? x : m[x - 23]]:
                               x < 6 ? read(0, m, 1):
-                              //rand() % a,
                               rand() % f(),
             m[x = o % 2 ? f() : m[6]++] *= o < 28,
             a = m[x] += o > 13 ? a : -a:

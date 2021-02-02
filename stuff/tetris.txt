@@ -12,23 +12,23 @@
 	define	COLOR_FILL	1
 
 	# registers
-	define	I		r0
-	define	X		r6
-	define	Q		r7
-	define	A		r8
-	define	B		r9
-	define	C		r10
-	define	D		r11
-	define	S		r12
-	define	T		r13
-	define	POS		r14
-	define	POS2		r15
-	define	ROT		r16
-	define	ROT2		r17
-	define	STONE		r18
-	define	SPEED		r19
-	define	DELAY		r20
-	define	DOWN		r21
+	define	I		[0]
+	define	X		[6]
+	define	Q		[7]
+	define	A		[8]
+	define	B		[9]
+	define	C		[10]
+	define	D		[11]
+	define	S		[12]
+	define	T		[13]
+	define	POS		[14]
+	define	POS2		[15]
+	define	ROT		[16]
+	define	ROT2		[17]
+	define	STONE		[18]
+	define	SPEED		[19]
+	define	DELAY		[20]
+	define	DOWN		[21]
 
 
 	# init vars
@@ -45,96 +45,96 @@
 	# square
 	mov	A	4
 	squareloop:
-		mov	[X]	13
-		mov	[X]	10
-		mov	[X]	1
+		mov	[X++]	13
+		mov	[X++]	10
+		mov	[X++]	1
 		sub	A	1
 		jnz	squareloop
 
 	# T
-	mov	[X]	11
-	mov	[X]	2
-	mov	[X]	10
+	mov	[X++]	11
+	mov	[X++]	2
+	mov	[X++]	10
 
-	mov	[X]	1
-	mov	[X]	10
-	mov	[X]	12
+	mov	[X++]	1
+	mov	[X++]	10
+	mov	[X++]	12
 
-	mov	[X]	1
-	mov	[X]	10
-	mov	[X]	2
+	mov	[X++]	1
+	mov	[X++]	10
+	mov	[X++]	2
 
-	mov	[X]	1
-	mov	[X]	12
-	mov	[X]	10
+	mov	[X++]	1
+	mov	[X++]	12
+	mov	[X++]	10
 
 	# I
 	add	A	2
 	iloop:
-		mov	[X]	1
-		mov	[X]	22
-		mov	[X]	11
-		mov	[X]	11
-		mov	[X]	2
-		mov	[X]	1
+		mov	[X++]	1
+		mov	[X++]	22
+		mov	[X++]	11
+		mov	[X++]	11
+		mov	[X++]	2
+		mov	[X++]	1
 		sub	A	1
 		jnz	iloop
 
 	# L
-	mov	[X]	1
-	mov	[X]	22
-	mov	[X]	1
+	mov	[X++]	1
+	mov	[X++]	22
+	mov	[X++]	1
 
-	mov	[X]	11
-	mov	[X]	2
-	mov	[X]	9
+	mov	[X++]	11
+	mov	[X++]	2
+	mov	[X++]	9
 
-	mov	[X]	0
-	mov	[X]	1
-	mov	[X]	22
+	mov	[X++]	0
+	mov	[X++]	1
+	mov	[X++]	22
 
-	mov	[X]	2
-	mov	[X]	9
-	mov	[X]	2
+	mov	[X++]	2
+	mov	[X++]	9
+	mov	[X++]	2
 
 	# J
-	mov	[X]	1
-	mov	[X]	21
-	mov	[X]	1
+	mov	[X++]	1
+	mov	[X++]	21
+	mov	[X++]	1
 
-	mov	[X]	0
-	mov	[X]	11
-	mov	[X]	2
+	mov	[X++]	0
+	mov	[X++]	11
+	mov	[X++]	2
 
-	mov	[X]	1
-	mov	[X]	1
-	mov	[X]	21
+	mov	[X++]	1
+	mov	[X++]	1
+	mov	[X++]	21
 
-	mov	[X]	11
-	mov	[X]	2
-	mov	[X]	11
+	mov	[X++]	11
+	mov	[X++]	2
+	mov	[X++]	11
 
 	# Z
 	mov	A	2
 	zloop:
-		mov	[X]	0
-		mov	[X]	1
-		mov	[X]	12
-		mov	[X]	2
-		mov	[X]	11
-		mov	[X]	10
+		mov	[X++]	0
+		mov	[X++]	1
+		mov	[X++]	12
+		mov	[X++]	2
+		mov	[X++]	11
+		mov	[X++]	10
 		sub	A	1
 		jnz	zloop
 
 	# S
 	mov	A	2
 	sloop:
-		mov	[X]	1
-		mov	[X]	1
-		mov	[X]	9
-		mov	[X]	1
-		mov	[X]	12
-		mov	[X]	11
+		mov	[X++]	1
+		mov	[X++]	1
+		mov	[X++]	9
+		mov	[X++]	1
+		mov	[X++]	12
+		mov	[X++]	11
 		sub	A	1
 		jnz	sloop
 
@@ -142,14 +142,14 @@
 	mov	X	PREGRID
 	mov	T	22
 prep1:
-	mov	[X]	COLOR_FRAME
+	mov	[X++]	COLOR_FRAME
 	add	X	10
 	sub	T	1
 	jnz	prep1
 
 	mov	T	12
 prep2:
-	mov	[X]	COLOR_FRAME
+	mov	[X++]	COLOR_FRAME
 	sub	T	1
 	jnz	prep2
 
@@ -186,7 +186,7 @@ mainloop:
 	# input
 	mov	I	0
 read:
-	get	T
+	mov	T	read
 	jnz	read
 
 
@@ -243,7 +243,7 @@ updategrid:
 		sub	A	COLOR_STONE
 		jnz	update3
 		sub	A	COLOR_STONE
-		mov	[X]	0
+		mov	[X++]	0
 		sub	X	1
 	update3:
 
@@ -298,11 +298,11 @@ updategrid:
 
 	nocollision:
 		# write cell
-		mov	[X]	B
+		mov	[X++]	B
 		sub	X	1
 
 	nooccupy:
-		add	[X]	0
+		add	[X++]	0
 
 		sub	S	1
 		jnz	update2
@@ -326,7 +326,7 @@ start:
 	mov	POS	STARTPOS
 
 	# select new random stone
-	rnd	Q	7
+	mov	Q	rand	7
 	add	Q	30
 	# multiply by 12
 	mov	C	11
@@ -337,7 +337,7 @@ start:
 		jnz	stoneloop
 
 	# random rotation
-	rnd	ROT	3
+	mov	ROT	rand	3
 	mov	C	ROT
 	add	ROT	C
 	add	ROT	C
@@ -348,7 +348,7 @@ check_gameover:
 	mov	T	PREGRID
 check1:
 	mov	A	[X]
-	add	[X]	0
+	add	[X++]	0
 	sub	A	COLOR_FILL
 	jz	gameover
 	sub	T	1
@@ -361,7 +361,7 @@ check1:
 	mov	X	GRID
 	mov	T	21
 	full1:
-		add	[X]	0
+		add	[X++]	0
 		mov	S	10
 		mov	A	10
 
@@ -371,7 +371,7 @@ check1:
 			jnz	full3
 			sub	A	1
 		full3:
-			add	[X]	0
+			add	[X++]	0
 			sub	S	1
 			jnz	full2
 
@@ -383,14 +383,15 @@ check1:
 		mov	S	X
 		mov	X	1
 		digit:
-			sub	[X]	9
+			sub	[X++]	9
 			jz	digit
 		sub	X	1
-		add	[X]	10
+		add	[X++]	10
 		mov	X	S
 
 		# increae speed
-		add	r0	0
+		# XXX
+		add	[1]	0
 		jnz	notfaster
 		sub	SPEED	1
 	notfaster:
@@ -400,7 +401,7 @@ check1:
 		shift:
 			mov	A	X
 			sub	A	11
-			mov	[X]	[A]
+			mov	[X++]	[A]
 			sub	X	2
 			sub	A	23
 			# are we there yet?
@@ -443,7 +444,7 @@ draw2:
 
 
 	# next cell
-	add	[X]	0
+	add	[X++]	0
 	sub	S	1
 	jnz	draw2
 
@@ -485,7 +486,7 @@ skip_zero:
 	jnz	skip_done
 	sub	X	1
 	jnz	skip_zero
-	add	[X]	0
+	add	[X++]	0
 skip_done:
 next_digit:
 	mov	C	[X]

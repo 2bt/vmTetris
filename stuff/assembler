@@ -1,17 +1,41 @@
-#!/usr/bin/python
+#!/usr/bin/python3
+
+import argparse
+import sys
+import re
 
 
 # code word range
-M = 75
-
+M      = 75
+OFFSET = 47
 # number of registers
-# can be M / 2
-NR = 23
+# max is M / 2
+NR     = 23
 
-import sys
+R = ["[%d]" % x for x in range(NR)]
+R += ["[%s]" % r for r in R]
+BIN_OPS = {
+    "sub" : 0,
+    "add" : 7,
+    "mov" : 14,
+}
+JMP_OPS = {
+    "jz"  : 45,
+    "jnz" : 54,
+}
 
 
-defines = {}
+def num_to_code(n, length=None):
+    c = []
+    while 1:
+        c = [n % M] + c
+        n //= M
+        if n == 0: break
+    if length: assert len(c) == length
+    return c
+
+
+defines  = {}
 
 
 def subst(o):
@@ -24,135 +48,129 @@ def subst(o):
         if o[0] == "[" and o[-1] == "]" and o[1:-1] in defines:
             o = "[" + defines[o[1:-1]] + "]"
             continue
+        if o[0] == "[" and o[-3:] == "++]" and o[1:-3] in defines:
+            o = "[" + defines[o[1:-3]] + "++]"
+            continue
         return o
 
 
-def num_to_code(n):
-    c = []
-    while 1:
-        c = [n % M] + c
-        n /= M
-        if n == 0: break
-    return c
+def assemble(f):
+    counter = 0
 
+    bin_cmds = []
+    txt_cmds = []
+    labels   = {}
 
-R = ["r%d" % x for x in range(NR)]
-R += ["[%s]" % r for r in R]
-
-
-bin_ops = "sub", "add", "mov"
-jmp_ops = "jz", "jnz"
-
-
-counter        = 0
-bin_cmds    = []
-txt_cmds    = []
-labels        = {}
-
-
-for l in open(sys.argv[1]):
-    print l[:-1]
-
-    l = l.strip()
-    c = l.find("#")
-    if c >= 0: l = l[:c].strip()
-    if l == "": continue
-
-    w = l.split()
-
-    # label
-    if w[0][-1] == ":":
-        labels[w[0][:-1]] = counter
-        w.pop(0)
+    for nr, l in enumerate(f):
+        w = re.findall(r"#[^\n]*\n|'.'|[^\s]+", l)
+        if w and w[-1].startswith("#"): w.pop()
         if not w: continue
+        print(nr, w)
 
-    # define
-    if w[0] == "define":
-        assert w[1][0].isalnum()
-        defines[w[1]] = w[2]
-        continue
+        # label
+        if w[0].endswith(":"):
+            labels[w[0][:-1]] = counter
+            w.pop(0)
+            if not w: continue
 
-    op = w[0]
-    if op in bin_ops:
-        i = bin_ops.index(op) * 7
-        a = subst(w[1])
-        b = subst(w[2])
-        if b.isdigit():
-            c = num_to_code(int(b))
-            assert len(c) == 1
-            if c[0] in [0, 1, 2]:
-                i += c[0]
+        # define
+        if w[0] == "define":
+            assert len(w) == 3
+            defines[w[1]] = w[2]
+            continue
+
+        txt_cmds += [ "%-28s" % " ".join("%-5s" % x for x in w) ]
+
+        op = w.pop(0)
+        if op in BIN_OPS:
+            i = BIN_OPS[op]
+            a = subst(w.pop(0))
+            b = subst(w.pop(0))
+
+            if b.isdigit():
+                c = num_to_code(int(b), 1)
+                if c[0] < 3: i += c.pop()
+                else:           i += 3
+            elif b[0] == "[" and b[-1] == "]":
+                i += 4
+                c = [R.index(b)]
+            elif b == "read":
+                # read
+                i += 5
                 c = []
+            elif b == "rand":
+                # rand
+                i += 6
+                b = subst(w.pop(0))
+                c = num_to_code(int(b), 1)
             else:
-                i += 3
-        else:
-            i += 4
-            c = [R.index(b)]
-        special = a == "[r6]" # [r6] is special
-        if special:
-            bin_cmd = [ i * 2 ] + c
-        else:
-            a = R.index(a)
-            assert a < NR
-            bin_cmd = [ i * 2 + 1 ] + c + [ a ]
+                assert False
 
-    elif op == "get": bin_cmd = [ 39, R.index(subst(w[1])) ]
+            if a == "[[6]++]":
+                bin_cmd = [ i * 2 ] + c
+            else:
+                a = R.index(a)
+                assert a < NR
+                bin_cmd = [ i * 2 + 1 ] + c + [ a ]
 
-    elif op in ["rnd", "addrnd"]:
-        b = subst(w[2])
-        assert b.isdigit()
-        c = num_to_code(int(b))
-        assert len(c) == 1
-        bin_cmd = [ 41 if op == "rnd" else 27 ] + c + [ R.index(subst(w[1])) ]
+        elif op == "put":
+            if w:
+                b = subst(w.pop())
+                assert b.isdigit()
+                c = num_to_code(int(b))
+                assert len(c) < 3
+                if len(c) == 2: assert c[0] == 1
+                bin_cmd = [ 45 - len(c), c[-1] ]
+            else:
+                bin_cmd = [ 42 ]
 
-    elif op == "put":
-        if len(w) == 1:
-            bin_cmd = [ 42 ]
-        else:
-            b = subst(w[1])
-            assert b.isdigit()
-            c = num_to_code(int(b))
-            assert len(c) < 3
-            if len(c) == 2: assert c[0] == 1
-            bin_cmd = [ 45 - len(c), c[-1] ]
+        elif op in JMP_OPS:
+            bin_cmd = [ JMP_OPS[op], w.pop() ]
 
-    elif op in jmp_ops: bin_cmd = [ 45 + jmp_ops.index(op) * 9, w[1] ]
+        elif op == "slp":
+            bin_cmd = [ 63 ]
 
-    elif op == "slp": bin_cmd = [ 63 ]
+        else: assert False
+        assert w == []
 
-    else:
-        print "WOOT"
-        bin_cmd = [ int(op) ]
+        counter += len(bin_cmd)
+        bin_cmds += [ bin_cmd ]
 
-    counter += len(bin_cmd)
-    bin_cmds += [ bin_cmd ]
-    txt_cmds += [ "%-28s" % " ".join("%-5s" % x for x in w) ]
+    # apply labels
+    counter = 0
+    out = []
+
+    for txt, c in zip(txt_cmds, bin_cmds):
+        if c[-1] in labels:
+            l = ([0, 0] + num_to_code(labels[c[-1]]))[-2:]
+            assert l[0] < 9 # label must be small enough
+            c[0] += l[0]
+            c[1] = l[1]
+        print(txt, "%4d:" % counter, " ".join("%2d" % x for x in c))
+        counter += len(c)
+        out += c
+
+    out += [0]
+
+    for i in range(32, 52):
+        c = "".join(chr(i + x) for x in out)
+        print("%2d" % i, "".join(sorted(set(c))), c.count("\\"))
 
 
+    code = "".join(chr(OFFSET + x) for x in out)
+    print(code)
+    print(len(code))
+    return code
 
 
-# apply labels
-counter = 0
-out = []
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("input")
+    parser.add_argument("output")
+    args = parser.parse_args()
+    code = assemble(open(args.input))
+    open(args.output, "w").write(code)
 
-for txt, c in zip(txt_cmds, bin_cmds):
-    if c[-1] in labels:
-        l = ([0, 0] + num_to_code(labels[c[-1]]))[-2:]
-        assert l[0] < 9 # label must be small enough
-        c[0] += l[0]
-        c[1] = l[1]
-    print txt, "%4d:" % counter, " ".join("%2d" % x for x in c)
-    counter += len(c)
-    out += c
+main()
 
-out += [0]
 
-for i in range(32, 52):
-    c = "".join(chr(i + x) for x in out)
-    print "%2d" % i, "".join(sorted(set(c))),
-    print c.count("\\")
-
-code = "".join(chr(47 + x) for x in out)
-print code
-print len(code)
-file("code", "w").write(code)
