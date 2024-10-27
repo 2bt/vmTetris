@@ -329,8 +329,8 @@ start:
 	mov	Q	rand	7
 	add	Q	30
 	# multiply by 12
-	mov	C	11
-	mov	STONE	Q
+	mov	C	12
+	mov	STONE	0
 	stoneloop:
 		add	STONE	Q
 		sub	C	1
